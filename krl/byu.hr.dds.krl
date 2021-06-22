@@ -196,10 +196,15 @@ window.addEventListener("pageshow",()=>{
 <h2>Existing Persons</h2>
 >>
       + filterPersons(element,re)
+      + <<<p>Count: <span id="count"></span></p>
+>>
       + <<<div id="entitylist" style="margin-top:1em;height:24em;overflow:auto">
 >>
       + existing(read_only,element,re)
       + <<</div>
+<script type="text/javascript">
+document.getElementById("count").textContent = document.getElementById("entitylist").getElementsByTagName("div").length
+</script>
 >>
       + (read_only => "" | download_link())
       + (read_only => "" | new_person_form())
