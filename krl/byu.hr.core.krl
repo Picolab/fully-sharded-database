@@ -162,7 +162,7 @@ ruleset byu.hr.core {
 <p>JSON</p>
 <pre>#{getJSON().encode()}</pre>
 <p>TSV (string)</p>
-<pre>#{getTSV().encode()}</pre>
+<pre>#{getOneTSV()}</pre>
 <p>TSV (file)</p>
 <pre>#{getTSV()}</pre>
 </div>
