@@ -182,6 +182,7 @@ window.addEventListener("pageshow",()=>{
         .join(10.chr())
     }
     index = function(element,re,_headers){
+      time_start = time:now()
       read_only = wrangler:channels()
         .filter(function(c){c.get("id")==meta:eci})
         .head()
@@ -209,6 +210,11 @@ document.getElementById("count").textContent = document.getElementById("entityli
       + (read_only => "" | download_link())
       + (read_only => "" | new_person_form())
       + <<</div>
+<pre>
+Final time: #{time:now()}
+Start time: #{time_start}
+Elapsed seconds: #{elapsed_seconds(time_start,time:now()).math:round(3)}
+</pre>
 >>
       + html:footer()
     }
@@ -217,6 +223,14 @@ document.getElementById("count").textContent = document.getElementById("entityli
       "io.picolabs.pds",
       "byu.hr.core",
     ]
+    elapsed_seconds = function(start,end){
+      minutes_and_seconds = re#^[^:]*:(\d\d):(\d\d.\d\d\d)Z#
+      start_parts = start.extract(minutes_and_seconds)
+      end_parts = end.extract(minutes_and_seconds)
+      difference = end_parts[1].as("Number") - start_parts[1].as("Number")
+      start_parts[0] == end_parts[0] => difference
+        | difference + 60
+    }
   }
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
