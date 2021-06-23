@@ -6,7 +6,7 @@ ruleset byu.hr.dds {
     shares index, logout, getTSV
   }
   global {
-    existing = function(read_only,el,re){
+    make_index = function(read_only){
       main_field_name = element_names.head()
       child_desig = function(c){
         name = c.get("name")
@@ -17,18 +17,31 @@ ruleset byu.hr.dds {
                      | "adminECI" // admin ECI
         )
         return
-        [json.get(main_field_name),name,the_eci].join("|")
+        [json.get(main_field_name),name,the_eci,eci].join("|")
       }
       wrangler:children()
         .filter(function(c){
           eci = c.get("eci") // family channel ECI
           omit_child = match(c.get("name"),re#^\*#)
-          omit_child => false
-            | (not el || not re) => true
-            | ctx:query(eci,"byu.hr.core","getFilter",{"element":el,"re":re})
+          omit_child => false | true
         })
         .map(child_desig)
         .sort()
+    }
+    existing = function(read_only,el,re){
+      eiro = ent:existing_index_read_only
+      ei = ent:existing_index
+      all = read_only => (eiro => eiro | make_index(read_only))
+                       | (ei => ei | make_index(read_only))
+      doFilter = function(cd){
+        eci = cd.split("|")[3] // the family channel
+        ctx:query(eci,"byu.hr.core","getFilter",{"element":el,"re":re})
+      }
+      the_list = (not el || not re) => all | all.filter(doFilter)
+      the_list.display_list(read_only)
+    }
+    display_list = function(the_list,read_only){
+      the_list
         .map(function(cd){
           parts = cd.split("|")
           full_name = parts.head()
@@ -332,6 +345,13 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now()).math:round(3)}
     if eci.klog("eci to delete") then noop()
     fired {
       raise wrangler event "child_deletion_request" attributes {"eci":eci}
+    }
+  }
+  rule createIndexes {
+    select when byu_hr_dds index_refresh
+    fired {
+      ent:existing_index := make_index()
+      ent:existing_index_read_only := make_index(true)
     }
   }
 }
