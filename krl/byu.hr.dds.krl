@@ -163,6 +163,14 @@ var delPerson = function(theLink){
     filterPersons = function(el,re){
       reValue = re => <<value="#{re}">>
                     | <<placeholder="Reg Exp">>
+      jsClear = [
+        "form[0].selectedIndex=0",
+        "form[1].value=''",
+        "return true"
+      ].join(";")
+      clearOption =
+        re || el => <<<button type="submit" onclick="#{jsClear}">X</button>
+>> | ""
       <<<div>
 <form id="filter" method="get">
 Filter: <select name="element">
@@ -170,7 +178,7 @@ Filter: <select name="element">
 #{options(el)}</select>
 <input type="text" name="re" #{reValue}>
 <button type="submit">apply</button>
-</form>
+#{clearOption}</form>
 </div>
 <script type="text/javascript">
 window.addEventListener("pageshow",()=>{
