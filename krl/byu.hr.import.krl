@@ -24,23 +24,24 @@ ruleset byu.hr.import {
       content = ok => response{"content"} | null
       content => content.split(10.chr()) | []
     }
-  }
-  rule doImport {
-    select when byu_hr_dds import_available
-      url re#(.+)#
-      setting(url)
-    foreach lines_from(event:attrs{"url"}) setting(line)
-    pre {
+    lineAsAttributes = function(line){
       fields = line.split(9.chr())
       netid = fields.head()
       data = fields.tail()
       json = element_names.reduce(function(a,en,i){
         a.put(en,data[i])
       },{})
+      return {"person_id":netid,"import_data":json.encode()}
     }
+  }
+  rule doImportFromURL {
+    select when byu_hr_dds import_available
+      url re#(.+)#
+      setting(url)
+    foreach lines_from(event:attrs{"url"}) setting(line)
     fired {
       raise byu_hr_dds event "new_person_available" attributes
-        {"person_id":netid,"import_data":json.encode()}
+        line.lineAsAttributes()
     }
   }
 }
