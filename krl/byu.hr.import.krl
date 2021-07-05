@@ -44,4 +44,13 @@ ruleset byu.hr.import {
         line.lineAsAttributes()
     }
   }
+  rule doImportOfOneLine {
+    select when byu_hr_dds import_available
+      line re#(.+)#
+      setting(line)
+    fired {
+      raise byu_hr_dds event "new_person_available" attributes
+        line.lineAsAttributes()
+    }
+  }
 }
