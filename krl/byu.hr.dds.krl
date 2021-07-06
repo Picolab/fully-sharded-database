@@ -244,13 +244,22 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now()).math:round(3)}
       "io.picolabs.pds",
       "byu.hr.core",
     ]
-    elapsed_seconds = function(start,end){
-      minutes_and_seconds = re#^[^:]*:(\d\d):(\d\d.\d\d\d)Z#
-      start_parts = start.extract(minutes_and_seconds)
-      end_parts = end.extract(minutes_and_seconds)
-      difference = end_parts[1].as("Number") - start_parts[1].as("Number")
-      start_parts[0] == end_parts[0] => difference
-        | difference + 60
+    elapsed_seconds = function(start,final){
+      hours_minutes_and_seconds = re#^[^T]*T(\d\d):(\d\d):(\d\d.\d\d\d)Z#
+      start_parts = start.extract(hours_minutes_and_seconds)
+      start_hour = start_parts[0].as("Number")
+      start_min = start_parts[1].as("Number")
+      start_sec = start_parts[2].as("Number")
+      final_parts = final.extract(hours_minutes_and_seconds)
+      final_hour = final_parts[0].as("Number")
+      final_min = final_parts[1].as("Number")
+      final_sec = final_parts[2].as("Number")
+      sec_diff = final_sec - start_sec
+      min_borrowed = sec_diff < 0 => 1 | 0
+      min_diff = final_min - start_min + (start_hour==final_hour => 0 | 60)
+        - min_borrowed
+      start_parts[1] == final_parts[1] => sec_diff
+        | sec_diff + 60 * min_diff
     }
   }
   rule initialize {
@@ -357,9 +366,24 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now()).math:round(3)}
   }
   rule createIndexes {
     select when byu_hr_dds index_refresh
+    pre {
+      start_time = time:now()
+    }
     fired {
       ent:existing_index := make_index()
       ent:existing_index_read_only := make_index(true)
+      raise byu_hr_dds event "timed_evaluation_complete"
+        attributes {"start_time":start_time}
     }
+  }
+  rule reportElapsedTime {
+    select when byu_hr_dds timed_evaluation_complete
+      start_time re#(.+)#
+      setting(start_time)
+    send_directive("timer",{
+      "start_time":start_time,
+      "final_time":time:now(),
+      "elapsed_time":elapsed_seconds(start_time,time:now()).math:round(3)
+    })
   }
 }
