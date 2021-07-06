@@ -234,7 +234,7 @@ document.getElementById("count").textContent = document.getElementById("entityli
 <pre>
 Final time: #{time:now()}
 Start time: #{time_start}
-Elapsed seconds: #{elapsed_seconds(time_start,time:now()).math:round(3)}
+Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
 </pre>
 >>
       + html:footer()
@@ -254,12 +254,11 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now()).math:round(3)}
       final_hour = final_parts[0].as("Number")
       final_min = final_parts[1].as("Number")
       final_sec = final_parts[2].as("Number")
-      sec_diff = final_sec - start_sec
-      min_borrowed = sec_diff < 0 => 1 | 0
+      min_borrowed = final_sec < start_sec => 1 | 0
+      sec_diff = final_sec - start_sec + 60 * min_borrowed
       min_diff = final_min - start_min + (start_hour==final_hour => 0 | 60)
         - min_borrowed
-      start_parts[1] == final_parts[1] => sec_diff
-        | sec_diff + 60 * min_diff
+      math:round(sec_diff + 60 * min_diff,3)
     }
   }
   rule initialize {
@@ -383,7 +382,7 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now()).math:round(3)}
     send_directive("timer",{
       "start_time":start_time,
       "final_time":time:now(),
-      "elapsed_time":elapsed_seconds(start_time,time:now()).math:round(3)
+      "elapsed_time":elapsed_seconds(start_time,time:now())
     })
   }
 }
