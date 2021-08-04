@@ -35,21 +35,21 @@ ruleset byu.hr.import {
     }
   }
   rule doImportFromURL {
-    select when byu_hr_dds import_available
+    select when byu_hr_iot import_available
       url re#(.+)#
       setting(url)
     foreach lines_from(event:attrs{"url"}) setting(line)
     fired {
-      raise byu_hr_dds event "new_person_available" attributes
+      raise byu_hr_iot event "new_person_available" attributes
         line.lineAsAttributes()
     }
   }
   rule doImportOfOneLine {
-    select when byu_hr_dds import_available
+    select when byu_hr_iot import_available
       line re#(.+)#
       setting(line)
     fired {
-      raise byu_hr_dds event "new_person_available" attributes
+      raise byu_hr_iot event "new_person_available" attributes
         line.lineAsAttributes()
     }
   }
