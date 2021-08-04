@@ -115,6 +115,15 @@ var delPerson = function(theLink){
 }
 </script>
 >>
+    new_person_form = function(){
+      <<<h2>New Person</h2>
+<form method="post" action="#{meta:host}/c/#{meta:eci}/event/byu_hr_dds/new_person_available" onsubmit="return doCreate(this)">
+<input name="person_id" required placeholder="Person ID"><br>
+<textarea name="import_data" placeholder="Import data if any"></textarea><br>
+<button type="submit">Create</button>
+</form>
+>>
+    }
     element_names = [
       "Full Name (Last, First)",
       "First Name",
@@ -206,6 +215,7 @@ window.addEventListener("pageshow",()=>{
       + (read_only => "" | <<<iframe id="person"></iframe>
 >>)
       + <<<div id="chooser">
+<h2>Existing Persons</h2>
 >>
       + filterPersons(element,re)
       + <<<p>Count: <span id="count"></span></p>
@@ -219,6 +229,7 @@ document.getElementById("count").textContent = document.getElementById("entityli
 </script>
 >>
       + (read_only => "" | download_link())
+      + (read_only => "" | new_person_form())
       + <<</div>
 <pre>
 Final time: #{time:now()}
@@ -265,6 +276,60 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
       )
     }
   }
+  rule checkForDuplicateNewPerson {
+    select when byu_hr_dds new_person_available
+      person_id re#(.+)# // required
+      setting(person_id)
+    pre {
+      duplicate = wrangler:children()
+        .any(function(c){c.get("name")==person_id})
+    }
+    if duplicate then send_directive("duplcate",{"person_id":person_id})
+    fired {
+      last
+    }
+  }
+  rule createNewPerson {
+    select when byu_hr_dds new_person_available
+      person_id re#(.+)# // required
+      setting(person_id)
+    fired {
+      raise wrangler event "new_child_request" attributes {
+        "name": "*"+person_id,
+        "import_data": event:attr("import_data")
+      }
+    }
+  }
+  rule installRulesetsInChild {
+    select when wrangler new_child_created
+    foreach core_rids setting(rid)
+    pre {
+      eci = event:attr("eci")
+      name = event:attr("name")
+      good_name = name.split("").tail().join("")
+    }
+    event:send({"eci":eci,"eid":"install-ruleset",
+      "domain":"wrangler", "type":"install_ruleset_request",
+      "attrs":{"absoluteURL":meta:rulesetURI,"rid":rid}
+    })
+    fired {
+      raise byu_hr_dds event "child_has_rulesets"
+        attributes event:attrs.put({"good_name":good_name}) on final
+    }
+  }
+  rule renameChild {
+    select when byu_hr_dds child_has_rulesets
+    every {
+      event:send({"eci":event:attr("eci"),"eid":"rename-child-engine-ui",
+        "domain":"engine_ui","type":"box",
+        "attrs":{"name":event:attr("good_name")}
+      })
+      event:send({"eci":event:attr("eci"),"eid":"rename-child-wrangler",
+        "domain":"wrangler","type":"name_changed",
+        "attrs":{"name":event:attr("good_name")}
+      })
+    }
+  }
   rule populateChild {
     select when wrangler child_initialized
       import_data re#(.+)# setting(import_data)
@@ -281,6 +346,21 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
       TSV  => event:send({"eci":eci,"eid":"import TSV",
                 "domain":"byu_hr_core", "type":"tsv_import_available",
                 "attrs":{"content":import_data.decode()}})
+    }
+  }
+  rule deleteChild {
+    select when byu_hr_dds person_deletion_request
+      person_id re#(.+)# // required
+      setting(person_id)
+    pre {
+      eci = wrangler:children()
+        .filter(function(c){
+          c.get("name")==person_id
+        }).head().get("eci")
+    }
+    if eci.klog("eci to delete") then noop()
+    fired {
+      raise wrangler event "child_deletion_request" attributes {"eci":eci}
     }
   }
   rule createIndexes {
