@@ -36,8 +36,8 @@ ruleset byu.hr.login {
       }
     </style>
 >>
-      html:header("HR DDS Login",styles)
-      + <<<h1>HR Domain Data Store -- Login</h1>
+      html:header("HR OIT Login",styles)
+      + <<<h1>HR OIT: Personnel -- Login</h1>
 <p>Please demonstrate that you a member of the BYU community.</p>
 <p>To obtain a credential, visit <a href="https://ycred.byu.edu" target="_blank">YCred.byu.edu</a>.</p>
 <div id="loginchoice">
@@ -50,8 +50,8 @@ ruleset byu.hr.login {
     }
     password = function(){
       loginURL = <<#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_login/needed>>
-      html:header("HR DDS Login")
-      + <<<h1>HR Domain Data Store -- Login</h1>
+      html:header("HR OIT Login")
+      + <<<h1>HR OIT: Personnel -- Login</h1>
 <h2>Login with password</h2>
 <div id="d1">
 <form method="get" action="#{loginURL}">
@@ -128,8 +128,8 @@ $(function(){
 });
 </script>
 >>
-      html:header("HR DDS Login",scripts)
-      + <<<h1>HR Domain Data Store -- Login</h1>
+      html:header("HR OIT Login",scripts)
+      + <<<h1>HR OIT: Personnel -- Login</h1>
 <h2>Login with credential</h2>
 <div id="d2">
 <span id="generating">Generating code...</span>
@@ -143,7 +143,7 @@ Scan with digital wallet to login
       + html:footer()
     }
     authz = function(netid){ //defaction(netid) left-curly-brace
-//    request = {"request":{"subject":netid,"client":"HR DDS"}}
+//    request = {"request":{"subject":netid,"client":"HR OIT"}}
 //    response = http:post("",json=request)
       return admins >< netid  => "ADMIN" | "VIEW"
     }
@@ -156,7 +156,7 @@ Scan with digital wallet to login
       raise byu_hr_login event "cookie_set" attributes event:attrs
     }
   }
-  rule loadDDS {
+  rule redirectToIOTindex {
     select when byu_hr_login cookie_set
       netid re#(.+)# setting(netid)
     pre {
