@@ -160,10 +160,10 @@ Scan with digital wallet to login
     select when byu_hr_login cookie_set
       netid re#(.+)# setting(netid)
     pre {
-      adminECI = wrangler:channels("byu-hr-dds").head().get("id")
-      adminURL = <<#{meta:host}/c/#{adminECI}/query/byu.hr.dds/index.html>>
-      viewECI = wrangler:channels("byu-hr-dds,read-only").head().get("id")
-      viewURL =  <<#{meta:host}/c/#{viewECI}/query/byu.hr.dds/index.html>>
+      adminECI = wrangler:channels("byu-hr-iot").head().get("id")
+      adminURL = <<#{meta:host}/c/#{adminECI}/query/byu.hr.iot/index.html>>
+      viewECI = wrangler:channels("byu-hr-iot,read-only").head().get("id")
+      viewURL =  <<#{meta:host}/c/#{viewECI}/query/byu.hr.iot/index.html>>
       answer = authz(netid)
     }
 //  every {
