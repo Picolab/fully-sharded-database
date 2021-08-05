@@ -171,7 +171,7 @@ ruleset byu.hr.core {
     logout = function(_headers){
       ctx:query(
         wrangler:parent_eci(),
-        "byu.hr.iot",
+        "byu.hr.oit",
         "logout",
         {"_headers":_headers}
       )

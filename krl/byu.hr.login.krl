@@ -156,14 +156,14 @@ Scan with digital wallet to login
       raise byu_hr_login event "cookie_set" attributes event:attrs
     }
   }
-  rule redirectToIOTindex {
+  rule redirectToOITindex {
     select when byu_hr_login cookie_set
       netid re#(.+)# setting(netid)
     pre {
-      adminECI = wrangler:channels("byu-hr-iot").head().get("id")
-      adminURL = <<#{meta:host}/c/#{adminECI}/query/byu.hr.iot/index.html>>
-      viewECI = wrangler:channels("byu-hr-iot,read-only").head().get("id")
-      viewURL =  <<#{meta:host}/c/#{viewECI}/query/byu.hr.iot/index.html>>
+      adminECI = wrangler:channels("byu-hr-oit").head().get("id")
+      adminURL = <<#{meta:host}/c/#{adminECI}/query/byu.hr.oit/index.html>>
+      viewECI = wrangler:channels("byu-hr-oit,read-only").head().get("id")
+      viewURL =  <<#{meta:host}/c/#{viewECI}/query/byu.hr.oit/index.html>>
       answer = authz(netid)
     }
 //  every {

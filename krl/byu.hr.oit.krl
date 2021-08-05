@@ -1,4 +1,4 @@
-ruleset byu.hr.iot {
+ruleset byu.hr.oit {
   meta {
     name "HR for IT Offices"
     use module io.picolabs.wrangler alias wrangler
@@ -49,7 +49,7 @@ ruleset byu.hr.iot {
           the_eci = parts[2]
           <<<div class="entity">
 <a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name+" -- "+person_id}</a>
->> + (read_only => "" | <<<a href="#{meta:host}/c/#{meta:eci}/event/byu_hr_iot/person_deletion_request?person_id=#{person_id}" onclick="return delPerson(this)" class="delperson">delete</a>
+>> + (read_only => "" | <<<a href="#{meta:host}/c/#{meta:eci}/event/byu_hr_oit/person_deletion_request?person_id=#{person_id}" onclick="return delPerson(this)" class="delperson">delete</a>
 >>)
           + <<</div>
 >>
@@ -117,7 +117,7 @@ var delPerson = function(theLink){
 >>
     new_person_form = function(){
       <<<h2>New Person</h2>
-<form method="post" action="#{meta:host}/c/#{meta:eci}/event/byu_hr_iot/new_person_available" onsubmit="return doCreate(this)">
+<form method="post" action="#{meta:host}/c/#{meta:eci}/event/byu_hr_oit/new_person_available" onsubmit="return doCreate(this)">
 <input name="person_id" required placeholder="Person ID"><br>
 <textarea name="import_data" placeholder="Import data if any"></textarea><br>
 <button type="submit">Create</button>
@@ -266,7 +266,7 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
     every {
       wrangler:createChannel(
         [meta:rid],
-        {"allow":[{"domain":"byu_hr_iot","name":"*"}],"deny":[]},
+        {"allow":[{"domain":"byu_hr_oit","name":"*"}],"deny":[]},
         {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
       )
       wrangler:createChannel(
@@ -277,7 +277,7 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
     }
   }
   rule checkForDuplicateNewPerson {
-    select when byu_hr_iot new_person_available
+    select when byu_hr_oit new_person_available
       person_id re#(.+)# // required
       setting(person_id)
     pre {
@@ -290,7 +290,7 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
     }
   }
   rule createNewPerson {
-    select when byu_hr_iot new_person_available
+    select when byu_hr_oit new_person_available
       person_id re#(.+)# // required
       setting(person_id)
     fired {
@@ -313,12 +313,12 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
       "attrs":{"absoluteURL":meta:rulesetURI,"rid":rid}
     })
     fired {
-      raise byu_hr_iot event "child_has_rulesets"
+      raise byu_hr_oit event "child_has_rulesets"
         attributes event:attrs.put({"good_name":good_name}) on final
     }
   }
   rule renameChild {
-    select when byu_hr_iot child_has_rulesets
+    select when byu_hr_oit child_has_rulesets
     every {
       event:send({"eci":event:attr("eci"),"eid":"rename-child-engine-ui",
         "domain":"engine_ui","type":"box",
@@ -349,7 +349,7 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
     }
   }
   rule deleteChild {
-    select when byu_hr_iot person_deletion_request
+    select when byu_hr_oit person_deletion_request
       person_id re#(.+)# // required
       setting(person_id)
     pre {
@@ -364,19 +364,19 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
     }
   }
   rule createIndexes {
-    select when byu_hr_iot index_refresh
+    select when byu_hr_oit index_refresh
     pre {
       start_time = time:now()
     }
     fired {
       ent:existing_index := make_index()
       ent:existing_index_read_only := make_index(true)
-      raise byu_hr_iot event "timed_evaluation_complete"
+      raise byu_hr_oit event "timed_evaluation_complete"
         attributes {"start_time":start_time}
     }
   }
   rule reportElapsedTime {
-    select when byu_hr_iot timed_evaluation_complete
+    select when byu_hr_oit timed_evaluation_complete
       start_time re#(.+)#
       setting(start_time)
     send_directive("timer",{
