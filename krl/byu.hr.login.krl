@@ -43,7 +43,7 @@ ruleset byu.hr.login {
 <div id="loginchoice">
 <button onclick="location='credential.html'">Login with credential</button>
 <p>OR</p>
-<button onclick="location='password.html'">Login with password</button>
+<button onclick="location='password.html'" disabled>Login with password</button>
 </div>
 >>
       + html:footer()
