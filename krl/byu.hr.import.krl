@@ -14,8 +14,6 @@ ruleset byu.hr.import {
       "Supervisor Name",
       "Org Chart Supervisor",
       "F/T-P/T Status",
-      "Employee Classification Description",
-      "Employee Pay Classification",
     ]
     lines_from = function(url){
       response = http:get(url)

@@ -136,8 +136,6 @@ var delPerson = function(theLink){
       "Supervisor Name",
       "Org Chart Supervisor",
       "F/T-P/T Status",
-      "Employee Classification Description",
-      "Employee Pay Classification",
     ]
     options = function(el){
       element_names.map(function(e){

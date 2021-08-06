@@ -43,8 +43,6 @@ ruleset byu.hr.core {
       "Supervisor Name",
       "Org Chart Supervisor",
       "F/T-P/T Status",
-      "Employee Classification Description",
-      "Employee Pay Classification",
     ]
     element_descriptions = [
       "This is the employee's official name on record.",
@@ -58,8 +56,6 @@ ruleset byu.hr.core {
       "This will populate with either the supervisor name or the reports to name from Job data",
       "This will populate from position management data for those employees who have a position assigned to them.",
       "This identifies full-time, 3/4 part-time, and 1/2 part-time status of the employee.",
-      "This info would come from the empl class table where we would get a description from of the value from the table",
-      "This is being defined by the pay group.",
     ]
     getData = function(){
       [element_names,element_descriptions].pairwise(function(name,desc){
