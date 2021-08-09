@@ -17,3 +17,7 @@ todo: make it so
 `html` is even more general purpose, and we need to figure out where it goes. This was borrowed (copied) from another repo and augmented.
 
 todo: figure out where it belongs
+
+`layout` is also general purpose, but maybe shouldn't be needed if the UI were to automatically layout new picos
+
+todo: decide where it belongs
