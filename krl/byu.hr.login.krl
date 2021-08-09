@@ -57,7 +57,7 @@ ruleset byu.hr.login {
 <form method="get" action="#{loginURL}">
 Your NetID is
 <input name="netid" autofocus>
-<button type="submit">Go</button>
+<button type="submit" disabled>Go</button>
 </form>
 </div>
 >>
