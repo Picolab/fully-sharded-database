@@ -155,7 +155,7 @@ Scan with digital wallet to login
       referer = event:attrs{["_headers","referer"]}
       prefix = meta:host + "/c/" + meta:eci + "/query/" + meta:rid + "/"
       pages = "(credential|password).html"
-      expected_re = (prefix + pages).as("RegExp")
+      expected_re = (prefix + pages).replace(re#[.]#g,"[.]").as("RegExp")
     }
     if referer && referer.match(expected_re) then 
       send_directive("_cookie",{"cookie": <<netid=#{netid}; Path=/c>>})
