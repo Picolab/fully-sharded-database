@@ -8,8 +8,8 @@ ruleset byu.hr.core {
     use module html
     use module io.picolabs.wrangler alias wrangler
     shares getData, getTSV, getJSON, getECI, index, adminECI, getFilter
-      , getOneTSV
       , surrogate
+      , getOneTSV
   }
   global {
     event_types = [
