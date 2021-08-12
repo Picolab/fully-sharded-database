@@ -9,6 +9,7 @@ ruleset byu.hr.core {
     use module io.picolabs.wrangler alias wrangler
     shares getData, getTSV, getJSON, getECI, index, adminECI, getFilter
       , getOneTSV
+      , surrogate
   }
   global {
     event_types = [
@@ -199,6 +200,17 @@ if(window.frameElement){
     getFilter = function(element,re){
       element && re => pds:getData("person",element).match(re)
                      | true
+    }
+    surrogate = function(){
+      stuff_names = [
+        "Last Name",
+        "Work Email",
+        "F/T-P/T Status",
+      ]
+      stuff = stuff_names.map(function(n){
+        pds:getData("person",n)
+      }).join(":")
+      stuff
     }
   }
   rule importTSV {
