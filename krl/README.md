@@ -1,6 +1,6 @@
 # KRL rulesets
 
-Note: three of these rulesets don't really belong in this repository.
+Note: four of these rulesets don't really belong in this repository.
 
 ## A different organization
 
