@@ -12,12 +12,13 @@ ruleset byu.hr.oit {
         name = c.get("name")
         eci = c.get("eci") // family channel ECI
         json = ctx:query(eci,"byu.hr.core","getJSON")
+        skey = ctx:query(eci,"byu.hr.core","getKey")
         the_eci = ctx:query(eci,"byu.hr.core",
           read_only => "getECI" // read-only ECI
                      | "adminECI" // admin ECI
         )
         return
-        [json.get(main_field_name),name,the_eci,eci].join("|")
+        [json.get(main_field_name),name,the_eci,eci,skey].join("|")
       }
       wrangler:children()
         .filter(function(c){
@@ -47,8 +48,9 @@ ruleset byu.hr.oit {
           full_name = parts.head()
           person_id = parts[1]
           the_eci = parts[2]
+          skey = parts[3]
           <<<div class="entity">
-<a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name+" -- "+person_id}</a>
+<a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name+" -- "+person_id+" -- "+skey}</a>
 >> + (read_only => "" | <<<a href="#{meta:host}/c/#{meta:eci}/event/byu_hr_oit/person_deletion_request?person_id=#{person_id}" onclick="return delPerson(this)" class="delperson">delete</a>
 >>)
           + <<</div>
