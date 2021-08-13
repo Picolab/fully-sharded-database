@@ -8,8 +8,8 @@ ruleset byu.hr.core {
     use module html
     use module io.picolabs.wrangler alias wrangler
     shares getData, getTSV, getJSON, getECI, index, adminECI, getFilter
-      , surrogate
       , getOneTSV
+      , getKey
   }
   global {
     event_types = [
@@ -201,7 +201,7 @@ if(window.frameElement){
       element && re => pds:getData("person",element).match(re)
                      | true
     }
-    surrogate = function(){
+    getKey = function(){
       stuff_names = [
         "Last Name",
         "Work Email",
@@ -210,7 +210,8 @@ if(window.frameElement){
       stuff = stuff_names.map(function(n){
         pds:getData("person",n)
       }).join(":")
-      stuff
+      math:hash("sha256",stuff)
+        .substr(0,24)
     }
   }
   rule importTSV {
