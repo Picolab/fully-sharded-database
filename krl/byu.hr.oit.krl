@@ -12,7 +12,7 @@ ruleset byu.hr.oit {
         name = c.get("name")
         eci = c.get("eci") // family channel ECI
         json = ctx:query(eci,"byu.hr.core","getJSON")
-        skey = ctx:query(eci,"byu.hr.core","getKey")
+        skey = ctx:query(eci,"byu.hr.core","getKey").substr(0,9)
         the_eci = ctx:query(eci,"byu.hr.core",
           read_only => "getECI" // read-only ECI
                      | "adminECI" // admin ECI
