@@ -9,16 +9,10 @@ ruleset byu.hr.oit {
     make_index = function(read_only){
       main_field_name = element_names.head()
       child_desig = function(c){
-        name = c.get("name")
         eci = c.get("eci") // family channel ECI
-        json = ctx:query(eci,"byu.hr.core","getJSON")
-        skey = ctx:query(eci,"byu.hr.core","getKey").substr(0,9)
-        the_eci = ctx:query(eci,"byu.hr.core",
-          read_only => "getECI" // read-only ECI
-                     | "adminECI" // admin ECI
-        )
-        return
-        [json.get(main_field_name),name,the_eci,eci,skey].join("|")
+        ctx:query(eci,"byu.hr.core","child_desig",{
+          "name":c.get("name"),"read_only":read_only
+        })
       }
       wrangler:children()
         .filter(function(c){
@@ -48,7 +42,7 @@ ruleset byu.hr.oit {
           full_name = parts.head()
           person_id = parts[1]
           the_eci = parts[2]
-          skey = parts[4]
+          skey = parts[3]
           <<<div class="entity">
 <a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name+" -- "+person_id+" -- "+skey}</a>
 >> + (read_only => "" | <<<a href="#{meta:host}/c/#{meta:eci}/event/byu_hr_oit/person_deletion_request?person_id=#{person_id}" onclick="return delPerson(this)" class="delperson">delete</a>

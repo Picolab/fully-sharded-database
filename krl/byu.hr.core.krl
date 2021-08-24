@@ -9,7 +9,7 @@ ruleset byu.hr.core {
     use module io.picolabs.wrangler alias wrangler
     shares getData, getTSV, getJSON, getECI, index, adminECI, getFilter
       , getOneTSV
-      , getKey
+      , child_desig
   }
   global {
     event_types = [
@@ -211,7 +211,16 @@ if(window.frameElement){
         pds:getData("person",n)
       }).join(":")
       math:hash("sha256",stuff)
-        .substr(0,24)
+        .substr(0,9)
+    }
+    child_desig = function(name,read_only){
+      full_name = pds:getData("person",element_names.head())
+      skey = getKey()
+      the_eci = 
+        read_only => getECI() // read-only ECI
+                   | adminECI() // admin ECI
+      return
+      [full_name,name,the_eci,skey].join("|")
     }
   }
   rule importTSV {
