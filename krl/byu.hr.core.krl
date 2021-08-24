@@ -7,9 +7,7 @@ ruleset byu.hr.core {
     use module io.picolabs.pds alias pds
     use module html
     use module io.picolabs.wrangler alias wrangler
-    shares getData, getTSV, getJSON, getECI, index, adminECI, getFilter
-      , getOneTSV
-      , child_desig
+    shares getData, getTSV, getJSON, index, getFilter, getOneTSV, child_desig
   }
   global {
     event_types = [
