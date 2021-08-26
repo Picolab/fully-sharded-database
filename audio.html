@@ -7,9 +7,11 @@
   <body>
 <input type="file" accept="audio/*" capture id="recorder">
 <audio id="player" controls></audio>
+<pre id="file_size"></pre>
 <script>
   const recorder = document.getElementById('recorder');
   const player = document.getElementById('player');
+  const file_size = document.getElementById('file_size');
 
   recorder.addEventListener('change', function(e) {
     const file = e.target.files[0];
@@ -20,6 +22,7 @@
     reader.addEventListener('load', function() {
       const url = reader.result;
       player.src = url;
+      file_size.innerText = file.size + '\n' + url.length;
     }, false);
     reader.readAsDataURL(file);
   });
