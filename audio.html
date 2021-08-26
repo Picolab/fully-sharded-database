@@ -7,20 +7,19 @@
   <body>
 <input type="file" accept="audio/*" capture id="recorder">
 <audio id="player" controls></audio>
-<a id="playback" target="_blank">playback</a>
 <script>
   const recorder = document.getElementById('recorder');
   const player = document.getElementById('player');
 
   recorder.addEventListener('change', function(e) {
     const file = e.target.files[0];
-    const url = URL.createObjectURL(file);
-    // Do something with the audio file.
-    player.src = url;
+    //const url = URL.createObjectURL(file);
+    //player.src = url;
     // let blob = await fetch(url).then(r => r.blob());
     const reader = new FileReader();
     reader.addEventListener('load', function() {
-      document.getElementById('playback').href = reader.result;
+      const url = reader.result;
+      player.src = url;
     }, false);
     reader.readAsDataURL(file);
   });
