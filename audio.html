@@ -5,9 +5,34 @@
     <meta charset="UTF-8">
   </head>
   <body>
+<h1>Record audio of your name</h1>
+<h2>Instructions</h2>
+<ol>
+<li>Make a recording of yourself pronouncing your name.
+Here are some websites that allow you to do this:
+<ul>
+<li><a href="https://www.rev.com/onlinevoicerecorder">https://www.rev.com/onlinevoicerecorder</a></li>
+<li><a href="https://vocaroo.com/">https://vocaroo.com/</a></li>
+<li><a href="https://online-voice-recorder.com/">https://online-voice-recorder.com/</a></li>
+</ul>
+Download the recording into a file on your computer.</li>
+<li>Upload the file you just saved:
 <input type="file" accept="audio/*" capture id="recorder">
+</li>
+<li>Check to make sure you sound okay:
 <audio id="player" controls></audio>
+If you don't like it, go back to step 1 and record again.
+</li>
+<li>Check to make sure the file is not too large.
+File sizes:
 <pre id="file_size"></pre>
+Be sure the file size is no more than two hundred thousand.
+If it is, go back to step 1 and try again.
+</li>
+<li>Save your recording and then close this tab.
+<button disabled title="Not yet implemented">Save</button>
+</li>
+</ol>
 <script>
   const recorder = document.getElementById('recorder');
   const player = document.getElementById('player');
