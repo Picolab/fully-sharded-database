@@ -7,6 +7,7 @@
   <body>
 <input type="file" accept="audio/*" capture id="recorder">
 <audio id="player" controls></audio>
+<a id="playback" target="_blank">playback</a>
 <script>
   const recorder = document.getElementById('recorder');
   const player = document.getElementById('player');
@@ -17,6 +18,11 @@
     // Do something with the audio file.
     player.src = url;
     // let blob = await fetch(url).then(r => r.blob());
+    const reader = new FileReader();
+    reader.addEventListener('load', function() {
+      document.getElementById('playback').href = reader.result;
+    }, false);
+    reader.readAsDataURL(file);
   });
 </script>
   </body>
