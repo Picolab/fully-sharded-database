@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
 <style type="text/css">
 li { margin: 10px 0; }
+li[title] { color: gray; }
+audio { vertical-align: middle; }
+span.hide { visibility: hidden; }
 </style>
   </head>
   <body>
@@ -12,28 +15,34 @@ li { margin: 10px 0; }
 <h2>Instructions</h2>
 <ol>
 <li>Make a recording of yourself pronouncing your name.
+Try to be brief; a name takes only a second or two to say.
+Trim empty space at the start and end of your name.
+<br>
+<br>
 Here are some websites that allow you to do this:
 <ul>
 <li><a href="https://www.rev.com/onlinevoicerecorder">https://www.rev.com/onlinevoicerecorder</a></li>
 <li><a href="https://vocaroo.com/">https://vocaroo.com/</a></li>
 <li><a href="https://online-voice-recorder.com/">https://online-voice-recorder.com/</a></li>
 </ul>
-Download the recording into a file on your computer.</li>
+Download the recording into a file on your computer.
+</li>
 <li>Upload the file you just saved:
 <input type="file" accept="audio/*" capture id="recorder">
+<br>
+File sizes:
+<span id="file_size">No file chosen</span>.
+<span class="hide" id="cond_display">
+If the file size is more than about two hundred thousand (200,000),
+please choose a smaller file.
+</span>
 </li>
-<li>Check to make sure you sound okay:
+<li>Replay to make sure you sound okay:
 <audio id="player" controls></audio>
 If you don't like it, go back to step 1 and record again.
 </li>
-<li>Check to make sure the file is not too large.
-File sizes:
-<pre id="file_size"></pre>
-Be sure the file size is no more than two hundred thousand.
-If it is, go back to step 1 and try again.
-</li>
-<li>Save your recording and then close this tab.
-<button disabled title="Not yet implemented">Save</button>
+<li title="Not yet implemented">Save your recording and then close this tab.
+<button disabled>Save</button>
 </li>
 </ol>
 <script>
@@ -50,7 +59,13 @@ If it is, go back to step 1 and try again.
     reader.addEventListener('load', function() {
       const url = reader.result;
       player.src = url;
-      file_size.innerText = file.size + '\n' + url.length;
+      file_size.innerText =
+        file.size.toLocaleString()
+        + '; '
+        + url.length.toLocaleString();
+      if (url.length > 200000) {
+        document.getElementById('cond_display').classList.remove('hide');
+      }
     }, false);
     reader.readAsDataURL(file);
   });
