@@ -110,7 +110,10 @@ If you don't like it, go back to step 1 and record again.
   }
   rule accept_new_audio {
     select when byu_hr_core new_audio
-      the_audio re#^(data:audio/.*)# setting(the_audio)
+    pre {
+      the_audio = event:attr("the_audio")
+    }
+    if the_audio then noop()
     fired {
       raise pds event "new_data_available" attributes {
         "domain":"person","key":"audio","value":the_audio
