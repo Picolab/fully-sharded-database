@@ -1,21 +1,16 @@
 ruleset byu.hr.record {
   meta {
+    use module html
     shares audio
   }
   global {
-    audio = function(){
-      <<
-<!DOCTYPE HTML>
-<html>
-  <head>
-    <title>record audio</title>
-    <meta charset="UTF-8">
-<style type="text/css">
+    styles = <<<style type="text/css">
 li { margin: 10px 0; }
 audio { vertical-align: middle; }
 .hide { visibility: hidden; }
 </style>
-<script type="text/javascript">
+>>
+    scripts = <<<script type="text/javascript">
   var host = location.origin;
   var eci = location.pathname.split("/")[2];
   var doSave = function(theForm){
@@ -31,8 +26,10 @@ audio { vertical-align: middle; }
     return false;
   }
 </script>
-  </head>
-  <body>
+>>
+    audio = function(){
+      html:header("record audio",styles+scripts)
+      + <<
 <h1>Record audio of your name</h1>
 <h2>Instructions</h2>
 <ol>
@@ -97,9 +94,8 @@ If you don't like it, go back to step 1 and record again.
     reader.readAsDataURL(file);
   });
 </script>
-  </body>
-</html>
 >>
+      + html:footer()
     }
   }
 }
