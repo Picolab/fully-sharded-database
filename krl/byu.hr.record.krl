@@ -1,3 +1,10 @@
+ruleset byu.hr.record {
+  meta {
+    shares audio
+  }
+  global {
+    audio = function(){
+      <<
 <!DOCTYPE HTML>
 <html>
   <head>
@@ -9,7 +16,7 @@ audio { vertical-align: middle; }
 .hide { visibility: hidden; }
 </style>
 <script type="text/javascript">
-  var host = 'http://52.90.46.172:3000';
+  var host = location.origin;
   var eci = location.hash.substr(1) || 'ckrz0u3g200pmbvpb4s673tu4';
   var doSave = function(theForm){
     var url = host+'/c/'+eci+'/event/byu_hr_core/new_audio';
@@ -92,3 +99,7 @@ If you don't like it, go back to step 1 and record again.
 </script>
   </body>
 </html>
+>>
+    }
+  }
+}
