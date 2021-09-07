@@ -17,7 +17,7 @@ audio { vertical-align: middle; }
 </style>
 <script type="text/javascript">
   var host = location.origin;
-  var eci = location.hash.substr(1) || 'ckrz0u3g200pmbvpb4s673tu4';
+  var eci = location.pathname.split("/")[2];
   var doSave = function(theForm){
     var url = host+'/c/'+eci+'/event/byu_hr_core/new_audio';
     var params = {};
