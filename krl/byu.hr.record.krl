@@ -1,7 +1,8 @@
 ruleset byu.hr.record {
   meta {
     use module html
-    shares audio
+    use module io.picolabs.pds alias pds
+    shares audio, test_audio
   }
   global {
     styles = <<<style type="text/css">
@@ -96,6 +97,21 @@ If you don't like it, go back to step 1 and record again.
 </script>
 >>
       + html:footer()
+    }
+    test_audio = function(){
+      html:header("test audio")
+      + <<<audio src="#{pds:getData("person","audio")}"></audio>
+>>
+      + html:footer()
+    }
+  }
+  rule accept_new_audio {
+    select when byu_hr_core new_audio
+      the_audio re#^(data:audio/.*)# setting(the_audio)
+    fired {
+      raise pds event "new_data_available" attributes {
+        "domain":"person","key":"audio","value":the_audio
+      }
     }
   }
 }
