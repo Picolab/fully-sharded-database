@@ -35,6 +35,7 @@ audio { vertical-align: middle; }
 </script>
 >>
     audio = function(){
+      saved_audio = pds:getData("person","audio")
       html:header("record audio",styles+scripts)
       + <<
 <h1>Record audio of your name</h1>
@@ -102,6 +103,8 @@ If you don't like it, go back to step 1 and record again.
   });
 </script>
 >>
+      + saved_audio => <<<audio src="#{saved_audio}"></audio>
+>> | ""
       + html:footer()
     }
   }
