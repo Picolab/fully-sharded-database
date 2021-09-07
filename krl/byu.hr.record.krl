@@ -5,6 +5,12 @@ ruleset byu.hr.record {
     shares audio, test_audio
   }
   global {
+    test_audio = function(){
+      html:header("test audio")
+      + <<<audio src="#{pds:getData("person","audio")}"></audio>
+>>
+      + html:footer()
+    }
     styles = <<<style type="text/css">
 li { margin: 10px 0; }
 audio { vertical-align: middle; }
@@ -95,12 +101,6 @@ If you don't like it, go back to step 1 and record again.
     reader.readAsDataURL(file);
   });
 </script>
->>
-      + html:footer()
-    }
-    test_audio = function(){
-      html:header("test audio")
-      + <<<audio src="#{pds:getData("person","audio")}"></audio>
 >>
       + html:footer()
     }
