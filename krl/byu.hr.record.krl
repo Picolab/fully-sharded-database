@@ -103,8 +103,6 @@ If you don't like it, go back to step 1 and record again.
   });
 </script>
 >>
-      + saved_audio => <<<audio src="#{saved_audio}"></audio>
->> | ""
       + html:footer()
     }
   }
