@@ -7,7 +7,7 @@ ruleset byu.hr.record {
   global {
     test_audio = function(){
       html:header("test audio")
-      + <<<audio src="#{pds:getData("person","audio")}"></audio>
+      + <<<audio controls src="#{pds:getData("person","audio")}"></audio>
 >>
       + html:footer()
     }
