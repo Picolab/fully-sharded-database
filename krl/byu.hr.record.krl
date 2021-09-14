@@ -2,6 +2,7 @@ ruleset byu.hr.record {
   meta {
     use module html
     use module io.picolabs.pds alias pds
+    use module io.picolabs.wrangler alias wrangler
     shares audio, test_audio
   }
   global {
