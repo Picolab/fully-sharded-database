@@ -184,7 +184,7 @@ if(window.frameElement){
       audio = pds:getData("person","audio")
       play_audio_tag = audio => <<<audio controls src="#{audio}"></audio>
 >> | ""
-      record_audio_link + 10.chr() + play_audio_tag
+      record_audio_link + 10.chr() + play_audio_tag + "<br>" + 10.chr()
     }
     index = function(_headers){
       read_only = wrangler:channels()
