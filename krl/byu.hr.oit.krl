@@ -237,6 +237,7 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
       "html",
       "io.picolabs.pds",
       "byu.hr.core",
+      "byu.hr.record",
     ]
     elapsed_seconds = function(start,final){
       hours_minutes_and_seconds = re#^[^T]*T(\d\d):(\d\d):(\d\d.\d\d\d)Z#
