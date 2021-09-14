@@ -195,7 +195,7 @@ if(window.frameElement){
       audio_eci = wrangler:channels("record_audio")
         .head()
         .get("id")
-      html:header("person",(read_only => styles | scripts()))
+      html:header("person",styles + (read_only => "" | scripts()))
       + logout(_headers)
       + <<<table>
 >>
