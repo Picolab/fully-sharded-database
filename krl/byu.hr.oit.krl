@@ -116,7 +116,7 @@ var delPerson = function(theLink){
 <form method="post" action="#{meta:host}/c/#{meta:eci}/event/byu_hr_oit/new_person_available" onsubmit="return doCreate(this)">
 <input name="person_id" required placeholder="Net ID"><br>
 <textarea name="import_data" placeholder="Import data if any"></textarea><br>
-<button type="submit">Create</button>
+<button type="submit" disabled title="broken">Create</button>
 </form>
 >>
     }
