@@ -182,6 +182,10 @@ if(window.frameElement){
         .filter(function(c){c.get("id")==meta:eci})
         .head()
         .get("tags") >< "read-only"
+      audio_eci = wrangler:channels("record_audio")
+        .head()
+        .get("id")
+      netid = html:cookies(_headers).get("netid")
       html:header("person",(read_only => styles | scripts()))
       + logout(_headers)
       + <<<table>
@@ -189,6 +193,12 @@ if(window.frameElement){
       + getData().map(function(s){s.entry(read_only)}).join("")
       + <<</table>
 >>
+      + (audio_eci => <<<pre>
+audio_eci = #{audio_eci}
+netid = #{netid}
+login = #{wrangler:name()}
+</pre>
+>> | "")
       + (read_only => exports() | "")
       + html:footer()
     }
