@@ -106,6 +106,16 @@ If you don't like it, go back to step 1 and record again.
       + html:footer()
     }
   }
+  rule initialize {
+    select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
+    every {
+      wrangler:createChannel(
+        "record_audio",
+        {"allow":[{"domain":"byu_hr_core","name":"new_audio"}],"deny":[]},
+        {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
+      )
+    }
+  }
   rule accept_new_audio {
     select when byu_hr_core new_audio
     pre {
