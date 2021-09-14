@@ -203,7 +203,7 @@ if(window.frameElement){
       + <<</table>
 >>
       + (audio_eci => audio_widgets(netid,audio_eci) | "")
-      + (read_only => exports() | "")
+      + exports()
       + html:footer()
     }
     adminECI = function(){
