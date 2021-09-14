@@ -177,15 +177,24 @@ if(window.frameElement){
 </script>
 >>
     }
+    audio_widgets = function(netid,eci){
+      record_audio_link = netid == wrangler:name()
+        => <<<a href="#{meta:host}/c/#{eci}/query/byu.hr.record/audio.html" target="_blank">Record audio</a><br>
+>> | "<br>"
+      audio = pds:getData("person","audio")
+      play_audio_tag = audio => <<<audio controls src="#{audio}"></audio>
+>> | ""
+      record_audio_link + 10.chr() + play_audio_tag
+    }
     index = function(_headers){
       read_only = wrangler:channels()
         .filter(function(c){c.get("id")==meta:eci})
         .head()
         .get("tags") >< "read-only"
+      netid = html:cookies(_headers).get("netid")
       audio_eci = wrangler:channels("record_audio")
         .head()
         .get("id")
-      netid = html:cookies(_headers).get("netid")
       html:header("person",(read_only => styles | scripts()))
       + logout(_headers)
       + <<<table>
@@ -193,12 +202,7 @@ if(window.frameElement){
       + getData().map(function(s){s.entry(read_only)}).join("")
       + <<</table>
 >>
-      + (audio_eci => <<<pre>
-audio_eci = #{audio_eci}
-netid = #{netid}
-login = #{wrangler:name()}
-</pre>
->> | "")
+      + (audio_eci => audio_widgets(netid,audio_eci) | "")
       + (read_only => exports() | "")
       + html:footer()
     }
