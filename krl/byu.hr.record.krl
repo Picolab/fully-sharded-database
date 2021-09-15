@@ -21,12 +21,16 @@ audio { vertical-align: middle; }
     scripts = <<<script type="text/javascript">
   var host = location.origin;
   var eci = location.pathname.split("/")[2];
+  var audioSaved = funtion(){
+    alert('Audio saved');
+    location = document.referrer;
+  }
   var doSave = function(theForm){
     var url = host+'/c/'+eci+'/event/byu_hr_core/new_audio';
     var params = {};
     params.the_audio = theForm.the_audio.value;
     var xhr = new XMLHttpRequest();
-    xhr.onload = function(){setTimeout('alert("Audio saved")',100);}
+    xhr.onload = function(){setTimeout('audioSaved()',100);}
     xhr.onerror = function(){alert(xhr.responseText);}
     xhr.open('POST',url,true);
     xhr.setRequestHeader('Content-type','application/json')

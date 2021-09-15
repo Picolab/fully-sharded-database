@@ -179,7 +179,7 @@ if(window.frameElement){
     }
     audio_widgets = function(netid,eci){
       record_audio_link = netid == wrangler:name()
-        => <<<a href="#{meta:host}/c/#{eci}/query/byu.hr.record/audio.html" target="_blank">Record audio</a><br>
+        => <<<a href="#{meta:host}/c/#{eci}/query/byu.hr.record/audio.html">Record audio</a><br>
 >> | "<br>"
       audio = pds:getData("person","audio")
       play_audio_tag = audio => <<<audio controls src="#{audio}"></audio>
