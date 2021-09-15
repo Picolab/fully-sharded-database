@@ -21,7 +21,7 @@ audio { vertical-align: middle; }
     scripts = <<<script type="text/javascript">
   var host = location.origin;
   var eci = location.pathname.split("/")[2];
-  var audioSaved = funtion(){
+  var audioSaved = function(){
     alert('Audio saved');
     location = document.referrer;
   }
