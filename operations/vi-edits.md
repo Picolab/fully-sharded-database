@@ -12,7 +12,7 @@ When using `vi` to edit the `bash` file, make these changes (commands shown here
 ```
 %s/^/echo /
 %s/:/; curl -G --data-urlencode "line=/
-%s+$+" http://localhost:3000/sky/event/ckr3yc3ev00053p2rfh5685iy/import/byu_hr_dds/import_available; echo; date+
+%s+$+" http://localhost:3000/sky/event/ckryzy1y409904rpb8kqc9vgt/import/byu_hr_oit/import_available; echo; date+
 set ff=unix
 ```
 
