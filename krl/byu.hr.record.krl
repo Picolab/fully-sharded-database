@@ -6,8 +6,23 @@ ruleset byu.hr.record {
     shares audio, test_audio
   }
   global {
-    test_audio = function(){
+    logout = function(_headers){
+      ctx:query(
+        wrangler:parent_eci(),
+        "byu.hr.oit",
+        "logout",
+        {"_headers":_headers}
+      )
+      + <<<script type="text/javascript">
+if(window.frameElement){
+  document.getElementById("whoami").style.visibility="hidden";
+}
+</script>
+>>
+    }
+    test_audio = function(_headers){
       html:header("test audio")
+      + logout(_headers)
       + <<<audio controls src="#{pds:getData("person","audio")}"></audio>
 >>
       + html:footer()
@@ -39,9 +54,10 @@ audio { vertical-align: middle; }
   }
 </script>
 >>
-    audio = function(){
+    audio = function(_headers){
       saved_audio = pds:getData("person","audio")
       html:header("record audio",styles+scripts)
+      + logout(_headers)
       + <<
 <h1>Record audio of your name</h1>
 <h2>Instructions</h2>
