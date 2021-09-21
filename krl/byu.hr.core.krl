@@ -187,12 +187,14 @@ if(window.frameElement){
       record_audio_link + 10.chr() + play_audio_tag + "<br>" + 10.chr()
     }
     linkToList = function(netid,position){
-      ctx:query(
+      url = ctx:query(
         wrangler:parent_eci(),
         "byu.hr.login",
         "listURL",
         {"netid":netid,"position":position}
       )
+      <<<a href="#{url}">View list of existing persons<a/>
+>>
     }
     index = function(_headers){
       read_only = wrangler:channels()
