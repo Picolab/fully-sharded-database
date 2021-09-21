@@ -105,6 +105,15 @@ ruleset byu.hr.core {
       input[type="checkbox"]:checked ~ div#exports {
         display:block;
       }
+      a {
+        display: inline-block;
+        margin: 5px 0;
+        border: 1px solid gray;
+        text-decoration: none;
+        border-radius: 15px;
+        padding: 10px;
+        color: black;
+      }
     </style>
 >>
     scripts = function() {
@@ -193,7 +202,7 @@ if(window.frameElement){
         "listURL",
         {"netid":netid,"position":position}
       )
-      <<<a href="#{url}">View list of existing persons<a/>
+      <<<a href="#{url}">View list of existing persons</a>
 >>
     }
     index = function(_headers){
