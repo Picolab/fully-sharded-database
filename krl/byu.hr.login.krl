@@ -147,6 +147,14 @@ Scan with digital wallet to login
 //    response = http:post("",json=request)
       return admins >< netid  => "ADMIN" | "VIEW"
     }
+    listURL = function(netid){
+      adminECI = wrangler:channels("byu-hr-oit").head().get("id")
+      adminURL = <<#{meta:host}/c/#{adminECI}/query/byu.hr.oit/index.html>>
+      viewECI = wrangler:channels("byu-hr-oit,read-only").head().get("id")
+      viewURL =  <<#{meta:host}/c/#{viewECI}/query/byu.hr.oit/index.html>>
+      answer = authz(netid)
+      answer == "ADMIN" => adminURL | viewURL
+    }
   }
   rule setCookie {
     select when byu_hr_login needed
@@ -166,20 +174,7 @@ Scan with digital wallet to login
   rule redirectToOITindex {
     select when byu_hr_login cookie_set
       netid re#(.+)# setting(netid)
-    pre {
-      adminECI = wrangler:channels("byu-hr-oit").head().get("id")
-      adminURL = <<#{meta:host}/c/#{adminECI}/query/byu.hr.oit/index.html>>
-      viewECI = wrangler:channels("byu-hr-oit,read-only").head().get("id")
-      viewURL =  <<#{meta:host}/c/#{viewECI}/query/byu.hr.oit/index.html>>
-      answer = authz(netid)
-    }
-//  every {
-//    authz(netid) setting(answer)
-      choose answer {
-        ADMIN => send_directive("_redirect",{"url":adminURL})
-        VIEW  => send_directive("_redirect",{"url":viewURL})
-      }
-//  }
+    send_directive("_redirect",{"url":listURL(netid)})
   }
   rule logout {
     select when byu_hr_login logout_request
