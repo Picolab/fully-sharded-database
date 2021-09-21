@@ -43,7 +43,7 @@ ruleset byu.hr.oit {
           person_id = parts[1]
           the_eci = parts[2]
           skey = parts[3]
-          <<<div class="entity">
+          <<<div class="entity" id="#{person_id}">
 <a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name+" -- "+person_id+" -- "+skey}</a>
 >> + (read_only => "" | <<<a href="#{meta:host}/c/#{meta:eci}/event/byu_hr_oit/person_deletion_request?person_id=#{person_id}" onclick="return delPerson(this)" class="delperson">delete</a>
 >>)
