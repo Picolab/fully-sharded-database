@@ -4,7 +4,9 @@ ruleset byu.hr.login {
     use module io.picolabs.wrangler alias wrangler
     use module id.trinsic.sdk alias trinsic
       with apiKey = meta:rulesetConfig{"api_key"} // a String from Trinsic
-    shares index, password, credential, verificationResponse, getVerification
+    shares index, password, credential,
+      verificationResponse, getVerification,
+      listURL
   }
   global {
     policyId = "abacb4f4-ed09-427f-c4cf-08d8ef1f9e90"
@@ -147,13 +149,15 @@ Scan with digital wallet to login
 //    response = http:post("",json=request)
       return admins >< netid  => "ADMIN" | "VIEW"
     }
-    listURL = function(netid){
+    listURL = function(netid,position){
       adminECI = wrangler:channels("byu-hr-oit").head().get("id")
       adminURL = <<#{meta:host}/c/#{adminECI}/query/byu.hr.oit/index.html>>
       viewECI = wrangler:channels("byu-hr-oit,read-only").head().get("id")
       viewURL =  <<#{meta:host}/c/#{viewECI}/query/byu.hr.oit/index.html>>
       answer = authz(netid)
-      answer == "ADMIN" => adminURL | viewURL
+      fragment = position => "#" + position
+                           | "#" + netid
+      answer == "ADMIN" => adminURL+fragment | viewURL+fragment
     }
   }
   rule setCookie {
