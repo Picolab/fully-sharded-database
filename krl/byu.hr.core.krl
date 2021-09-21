@@ -186,6 +186,10 @@ if(window.frameElement){
 >> | ""
       record_audio_link + 10.chr() + play_audio_tag + "<br>" + 10.chr()
     }
+    linkToList = function(netid,position){
+      <<<p>I am #{netid} looking at the record for #{position}</p>
+>>
+    }
     index = function(_headers){
       read_only = wrangler:channels()
         .filter(function(c){c.get("id")==meta:eci})
@@ -197,6 +201,7 @@ if(window.frameElement){
         .get("id")
       html:header("person",styles + (read_only => "" | scripts()))
       + logout(_headers)
+      + linkToList(netid,wrangler:name())
       + <<<table>
 >>
       + getData().map(function(s){s.entry(read_only)}).join("")
