@@ -96,6 +96,15 @@ If you don't like it, go back to step 1 and record again.
 </form>
 </li>
 </ol>
+<h2>Privacy Notice</h2>
+<p>
+By saving a recording of your voice saying your name,
+you consent to its use by other members of the BYU community
+so that they can hear how you like your name pronounced.
+</p>
+<p>
+This recording will not be used for any other purpose.
+</p>
 <script type="text/javascript">
   const recorder = document.getElementById('recorder');
   const player = document.getElementById('player');
