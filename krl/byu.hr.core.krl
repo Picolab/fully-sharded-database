@@ -251,8 +251,9 @@ if(window.frameElement){
       the_eci = 
         read_only => getECI() // read-only ECI
                    | adminECI() // admin ECI
+      has_audio = pds:getData("person","audio").encode()
       return
-      [full_name,name,the_eci,skey].join("|")
+      [full_name,name,the_eci,skey,has_audio].join("|")
     }
   }
   rule importTSV {

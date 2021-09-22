@@ -35,6 +35,8 @@ ruleset byu.hr.oit {
       the_list = (not el || not re) => all | all.filter(doFilter)
       the_list.display_list(read_only)
     }
+    has_audio_img = <<<img src="https://img.icons8.com/material-outlined/24/000000/high-volume.png"/>
+>>
     display_list = function(the_list,read_only){
       the_list
         .map(function(cd){
@@ -43,8 +45,9 @@ ruleset byu.hr.oit {
           person_id = parts[1]
           the_eci = parts[2]
           skey = parts[3]
+          has_audio = parts[4].decode()
           <<<div class="entity" id="#{person_id}">
-<a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name+" -- "+person_id+" -- "+skey}</a>
+<a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name+" -- "+person_id+" -- "+skey+(has_audio => has_audio_img | "")}</a>
 >> + (read_only => "" | <<<a href="#{meta:host}/c/#{meta:eci}/event/byu_hr_oit/person_deletion_request?person_id=#{person_id}" onclick="return delPerson(this)" class="delperson">delete</a>
 >>)
           + <<</div>
@@ -230,6 +233,7 @@ Final time: #{time:now()}
 Start time: #{time_start}
 Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
 </pre>
+<a href="https://icons8.com/icon/86839/audio">Audio icon by Icons8</a>
 >>
       + html:footer()
     }
