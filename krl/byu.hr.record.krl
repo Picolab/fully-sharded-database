@@ -118,7 +118,7 @@ If you don't like it, go back to step 1 and record again.
         document.getElementById('cond_display').classList.remove('hide');
       }
       document.getElementById('the_audio').value = url;
-      document.getElementById('the_button').style.visibility = "visible";
+      document.getElementById('the_button').classList.remove('hide');
     }, false);
     reader.readAsDataURL(file);
   });
