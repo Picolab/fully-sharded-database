@@ -12,7 +12,7 @@ ruleset byu.hr.oit {
         eci = c.get("eci") // family channel ECI
         ctx:query(eci,"byu.hr.core","child_desig",{
           "name":c.get("name"),"read_only":read_only
-        })
+        })+"|"+eci
       }
       wrangler:children()
         .filter(function(c){
@@ -29,7 +29,7 @@ ruleset byu.hr.oit {
       all = read_only => (eiro => eiro | make_index(read_only))
                        | (ei => ei | make_index(read_only))
       doFilter = function(cd){
-        eci = cd.split("|")[3] // the family channel
+        eci = cd.split("|")[5] // the family channel
         ctx:query(eci,"byu.hr.core","getFilter",{"element":el,"re":re})
       }
       the_list = (not el || not re) => all | all.filter(doFilter)
