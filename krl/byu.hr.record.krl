@@ -92,6 +92,7 @@ If you don't like it, go back to step 1 and record again.
 <li>Save your recording and then close this tab.
 <form method="POST" id="the_form" onsubmit="return doSave(this)">
 <button type="submit" class="hide" id="the_button">Save</button>
+<button onclick="location=document.referrer;return false">Cancel</a>
 <input name="the_audio" id="the_audio" type="hidden">
 </form>
 </li>
