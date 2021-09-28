@@ -91,7 +91,7 @@ If you don't like it, go back to step 1 and record again.
 </li>
 <li>Save your recording and then close this tab.
 <form method="POST" id="the_form" onsubmit="return doSave(this)">
-<button type="submit" class="hide" id="the_button">Save</button>
+<button type="submit" disabled id="the_button">Save</button>
 <button onclick="location=document.referrer;return false">Cancel</a>
 <input name="the_audio" id="the_audio" type="hidden">
 </form>
@@ -128,7 +128,7 @@ This recording will not be used for any other purpose.
         document.getElementById('cond_display').classList.remove('hide');
       }
       document.getElementById('the_audio').value = url;
-      document.getElementById('the_button').classList.remove('hide');
+      document.getElementById('the_button').disabled = false;
     }, false);
     reader.readAsDataURL(file);
   });
