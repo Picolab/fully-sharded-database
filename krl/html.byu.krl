@@ -72,10 +72,10 @@ ruleset html.byu {
   </head>
   <body>#{netid
   => <<<div id="byu_bar">
-<img class="logo" src="images/BYU%20logo.svg">
+<img class="logo" src="/images/BYU%20logo.svg">
 <span class="title">Calling Me By Name</span>
 <span class="logout"><a href="#{url}">Sign Out</a></span>
-<img class="user-circle" src="images/user-circle-o-white.svg">
+<img class="user-circle" src="/images/user-circle-o-white.svg">
 <span class="username">#{netid}</span>
 </div>
 >>
