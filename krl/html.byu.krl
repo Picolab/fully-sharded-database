@@ -1,4 +1,4 @@
-ruleset html {
+ruleset html.byu {
   meta {
     use module io.picolabs.wrangler alias wrangler
     provides header, footer, cookies
