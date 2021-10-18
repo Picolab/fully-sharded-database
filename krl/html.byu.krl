@@ -58,6 +58,7 @@ ruleset html.byu {
   margin: 23px 20px 0 0;
 }
 #byu_bar .logout a {
+  color: inherit;
   text-decoration: none;
 }
 #byu_bar .username {
