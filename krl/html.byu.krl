@@ -28,10 +28,6 @@ ruleset html.byu {
 #byu_bar {
   background-color: #002E5D;
   height: 65px;
-  position: fixed;
-  top: 0px;
-  left: 1px;
-  right: 1px;
 }
 #byu_bar img {
   padding: 20px;
