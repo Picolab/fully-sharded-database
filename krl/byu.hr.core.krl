@@ -105,7 +105,7 @@ ruleset byu.hr.core {
       input[type="checkbox"]:checked ~ div#exports {
         display:block;
       }
-      a {
+      a.button {
         display: inline-block;
         margin: 5px 0;
         border: 1px solid gray;
@@ -202,7 +202,7 @@ if(window.frameElement){
         "listURL",
         {"netid":netid,"position":position}
       )
-      <<<a href="#{url}">View list of existing persons</a>
+      <<<a class="button" href="#{url}">View list of existing persons</a>
 >>
     }
     index = function(_headers){
