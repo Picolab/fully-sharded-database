@@ -2,7 +2,7 @@ ruleset byu.hr.oit {
   meta {
     name "HR for IT Offices"
     use module io.picolabs.wrangler alias wrangler
-    use module html
+    use module html.byu alias html
     shares index, logout, getTSV
   }
   global {
@@ -203,9 +203,9 @@ window.addEventListener("pageshow",()=>{
         .filter(function(c){c.get("id")==meta:eci})
         .head()
         .get("tags") >< "read-only"
-      html:header("HR OIT - Public",(read_only => "" | styles+scripts))
-      + logout(_headers)
-      + <<<h1>HR OIT: Personnel</h1>
+      url = logout(_headers).extract(re#location='([^']*)'#).head()
+      html:header("HR OIT",(read_only => "" | styles+scripts),url,_headers)
+      + <<<h1>HR OIT</h1>
 >>
       + (read_only => "" | <<<iframe id="person"></iframe>
 >>)
@@ -235,7 +235,7 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
       + html:footer()
     }
     core_rids = [
-      "html",
+      "html.byu",
       "io.picolabs.pds",
       "byu.hr.core",
       "byu.hr.record",
