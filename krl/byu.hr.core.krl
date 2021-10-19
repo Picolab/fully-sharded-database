@@ -5,7 +5,7 @@ ruleset byu.hr.core {
       Core personal information of the organization's employees available for all organizational users to see.
     >>
     use module io.picolabs.pds alias pds
-    use module html
+    use module html.byu alias html
     use module io.picolabs.wrangler alias wrangler
     shares getData, getTSV, getJSON, index, getFilter, getOneTSV, child_desig
   }
@@ -214,8 +214,8 @@ if(window.frameElement){
       audio_eci = wrangler:channels("record_audio")
         .head()
         .get("id")
-      html:header("person",styles + (read_only => "" | scripts()))
-      + logout(_headers)
+      url = logout(_headers).extract(re#location='([^']*)'#).head()
+      html:header("person",styles + (read_only => "" | scripts()),url,_headers)
       + linkToList(netid,wrangler:name())
       + <<<table>
 >>
