@@ -1,6 +1,5 @@
 ruleset html.byu {
   meta {
-    use module io.picolabs.wrangler alias wrangler
     provides header, footer, cookies
     shares __testing
   }
@@ -13,11 +12,9 @@ ruleset html.byu {
       //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
       ]
     }
-    header = function(title,scripts,_headers) {
+    header = function(title,scripts,logout_url,_headers) {
       netid = cookies(_headers).get("netid")
       action = netid => "Sign Out" | "Sign In"
-      eci = wrangler:channels("byu-hr-login").head().get("id")
-      url = <<#{meta:host}/sky/event/#{eci}/none/byu_hr_login/logout_request>>
       <<<!DOCTYPE HTML>
 <html>
   <head>
@@ -70,12 +67,12 @@ ruleset html.byu {
   => <<<div id="byu_bar">
 <img class="logo" src="/images/BYU%20logo.svg">
 <span class="title">Calling Me By Name</span>
-<span class="logout"><a href="#{url}">Sign Out</a></span>
+<span class="logout"><a href="#{logout_url}">Sign Out</a></span>
 <img class="user-circle" src="/images/user-circle-o-white.svg">
 <span class="username">#{netid}</span>
 </div>
 >>
-   | <<<script type="text/javascript">location="#{url}"</script>
+   | <<<script type="text/javascript">location="#{logout_url}"</script>
 >>}
 >>
     }
