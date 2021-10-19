@@ -15,7 +15,7 @@ ruleset testing {
           "byu.hr.oit",
           "logout",
           {"_headers":_headers}
-        ).extract(re#location *= *"([^"]*)"#).head()
+        ).extract(re#location='([^']*)'#).head()
       url = <<#{meta:host}/sky/event/#{eci}/none/byu_hr_login/logout_request>>
       html:header("testing","",url,_headers)
         + <<<h1>testing</h1>

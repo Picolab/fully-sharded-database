@@ -152,7 +152,7 @@ var delPerson = function(theLink){
 <button onclick="location='#{url}'">Logout</button>
 </p>
 >>
-        | <<<script type="text/javascript">location = "#{url}"</script>
+        | <<<script type="text/javascript">location='#{url}'</script>
 >>
     }
     filterPersons = function(el,re){

@@ -14,7 +14,6 @@ ruleset html.byu {
     }
     header = function(title,scripts,logout_url,_headers) {
       netid = cookies(_headers).get("netid")
-      action = netid => "Sign Out" | "Sign In"
       <<<!DOCTYPE HTML>
 <html>
   <head>
