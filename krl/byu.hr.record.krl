@@ -20,12 +20,9 @@ if(window.frameElement){
 </script>
 >>
     }
-    logoutURL = function(_headers){
-      logout(_headers).extract(re#location='([^']*)'#).head()
-    }
     test_audio = function(_headers){
-      html:header("test audio","",logoutURL(_headers),_headers)
-      + logout(_headers)
+      url = logout(_headers).extract(re#location='([^']*)'#).head()
+      html:header("test audio","",url,_headers)
       + <<<audio controls src="#{pds:getData("person","audio")}"></audio>
 >>
       + html:footer()
@@ -59,8 +56,8 @@ audio { vertical-align: middle; }
 >>
     audio = function(_headers){
       saved_audio = pds:getData("person","audio")
-      html:header("record audio",styles+scripts,logoutURL(_headers),_headers)
-      + logout(_headers)
+      url = logout(_headers).extract(re#location='([^']*)'#).head()
+      html:header("record audio",styles+scripts,url,_headers)
       + <<
 <h1>Record audio of your name</h1>
 <h2>Instructions</h2>
