@@ -212,7 +212,7 @@ ruleset byu.hr.core {
       html:header("person",styles + (read_only => "" | scripts()),url,_headers)
       + <<<script type="text/javascript">
 if(window.frameElement){
-  document.getElementById("byu_bar").style.visibility="hidden";
+  document.getElementById("byu_bar").style.display="none";
 }
 </script>
 >>
