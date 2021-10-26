@@ -179,12 +179,6 @@ ruleset byu.hr.core {
         "logout",
         {"_headers":_headers}
       )
-      + <<<script type="text/javascript">
-if(window.frameElement){
-  document.getElementById("whoami").style.visibility="hidden";
-}
-</script>
->>
     }
     audio_widgets = function(netid,eci){
       record_audio_link = netid == wrangler:name()
@@ -216,6 +210,12 @@ if(window.frameElement){
         .get("id")
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       html:header("person",styles + (read_only => "" | scripts()),url,_headers)
+      + <<<script type="text/javascript">
+if(window.frameElement){
+  document.getElementById("byu_bar").style.visibility="hidden";
+}
+</script>
+>>
       + linkToList(netid,wrangler:name())
       + <<<table>
 >>
