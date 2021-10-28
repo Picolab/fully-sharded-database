@@ -45,7 +45,7 @@ ruleset byu.hr.oit {
           skey = parts[3]
           has_audio = parts[4].decode()
           <<<div class="entity" id="#{person_id}">
-<a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name+" -- "+person_id+" -- "+skey+(has_audio => " -- audio" | "")}</a>
+<a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name+(has_audio => "<span style='float:right'>🔈</span>" | "")}</a>
 >> + (read_only => "" | <<<a href="#{meta:host}/c/#{meta:eci}/event/byu_hr_oit/person_deletion_request?person_id=#{person_id}" onclick="return delPerson(this)" class="delperson">delete</a>
 >>)
           + <<</div>
@@ -64,7 +64,7 @@ a.delperson {
   padding-right:15px;
 }
 div#chooser {
-  max-width:40%
+  width:480px;
 }
 #person {
   float:right;
@@ -217,7 +217,7 @@ window.addEventListener("pageshow",()=>{
 >>
       + <<lookup: <span id="lookup" contenteditable onkeyup="do_lookup(event)" style="display:inline-block;width:10em"></span>
 >>
-      + <<<div id="entitylist" style="margin-top:1em;height:24em;overflow:auto">
+      + <<<div id="entitylist" style="height:24em;overflow:auto;font-size:120%">
 >>
       + existing(read_only,element,re)
       + <<<div id="spacer" style="height:23em;overflow:hidden"></div>
