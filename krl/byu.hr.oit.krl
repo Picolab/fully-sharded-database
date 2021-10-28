@@ -64,7 +64,7 @@ a.delperson {
   padding-right:15px;
 }
 div#chooser {
-  width:480px;
+  max-width:40%;
 }
 #person {
   float:right;
@@ -209,7 +209,7 @@ window.addEventListener("pageshow",()=>{
 >>
       + (read_only => "" | <<<iframe id="person"></iframe>
 >>)
-      + <<<div id="chooser">
+      + <<<div id="chooser" style="width:480px">
 <h2>Existing Persons</h2>
 >>
       + filterPersons(element,re)
