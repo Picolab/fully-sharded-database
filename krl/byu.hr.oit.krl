@@ -45,7 +45,7 @@ ruleset byu.hr.oit {
           skey = parts[3]
           has_audio = parts[4].decode()
           <<<div class="entity" id="#{person_id}" style="margin-bottom:7px">
-<a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name+(has_audio => "<span style='float:left'>🔈</span>" | "<span style='visibility:hidden'>🔈</span>")}</a>
+<a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name}<span style="float:left#{has_audio => "" | ";visibility:hidden"}">🔈</span></a>
 >> + (read_only => "" | <<<a href="#{meta:host}/c/#{meta:eci}/event/byu_hr_oit/person_deletion_request?person_id=#{person_id}" onclick="return delPerson(this)" class="delperson">delete</a>
 >>)
           + <<</div>
