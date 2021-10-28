@@ -215,12 +215,14 @@ window.addEventListener("pageshow",()=>{
       + filterPersons(element,re)
       + <<<p>Count: <span id="count"></span></p>
 >>
+      + <<lookup: <span id="lookup" contenteditable onkeyup="do_lookup(event)" style="display:inline-block;width:10em"></span>
+>>
       + <<<div id="entitylist" style="margin-top:1em;height:24em;overflow:auto">
 >>
       + existing(read_only,element,re)
       + <<</div>
 <script type="text/javascript">
-document.getElementById("count").textContent = document.getElementById("entitylist").getElementsByTagName("div").length
+document.getElementById("count").textContent = document.getElementById("entitylist").getElementsByTagName("a").length
 </script>
 >>
       + (read_only => "" | download_link())
@@ -231,6 +233,27 @@ Final time: #{time:now()}
 Start time: #{time_start}
 Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
 </pre>
+>>
+      + <<    <script type="text/javascript">
+      var entitylist = document.getElementById("entitylist");
+      function do_lookup(ev) {
+        var e = ev || window.event;
+        var keyCode = e.code || e.keyCode;
+        if(keyCode==27 || keyCode==="Escape"){
+          e.target.blur();
+        }else if(keyCode==="Backspace" || keyCode.startsWith("Key")){
+          var the_prefix = e.target.textContent.toUpperCase();
+          anchors = entitylist.getElementsByTagName("a");
+          for(var i=0; i<anchors.length; ++i){
+            if(anchors[i].text.toUpperCase().startsWith(the_prefix)){
+              anchors[i].scrollIntoView();
+              break;
+            }
+          }
+        }
+        return false;
+      }
+    </script>
 >>
       + html:footer()
     }
