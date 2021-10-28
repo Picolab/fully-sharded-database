@@ -220,7 +220,8 @@ window.addEventListener("pageshow",()=>{
       + <<<div id="entitylist" style="margin-top:1em;height:24em;overflow:auto">
 >>
       + existing(read_only,element,re)
-      + <<</div>
+      + <<<div id="spacer" style="height:23em;overflow:hidden"></div>
+</div>
 <script type="text/javascript">
 document.getElementById("count").textContent = document.getElementById("entitylist").getElementsByTagName("a").length
 </script>
