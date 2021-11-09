@@ -21,6 +21,10 @@ ruleset html.byu {
     <meta charset="UTF-8">
 #{scripts.defaultsTo("")}
 <style type="text/css">
+body {
+  background: linear-gradient(60deg, #D1CCBD, #FBFBFA);
+  overflow: hidden;
+}
 #byu_bar {
   background-color: #002E5D;
   height: 65px;
