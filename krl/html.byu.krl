@@ -23,7 +23,6 @@ ruleset html.byu {
 <style type="text/css">
 body {
   background: linear-gradient(60deg, #D1CCBD, #FBFBFA);
-  overflow: hidden;
 }
 #byu_bar {
   background-color: #002E5D;
