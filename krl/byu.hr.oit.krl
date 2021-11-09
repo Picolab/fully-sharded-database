@@ -248,12 +248,16 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
           for(var i=0; i<anchors.length; ++i){
             if(anchors[i].text.toUpperCase().startsWith(the_prefix)){
               anchors[i].scrollIntoView();
+              window.scrollTo(0, 0);
               break;
             }
           }
         }
         return false;
       }
+      window.onload = function(){
+        window.scrollTo(0, 0);
+      };
     </script>
 >>
       + html:footer()
