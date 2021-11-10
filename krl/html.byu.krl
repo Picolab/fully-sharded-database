@@ -12,6 +12,8 @@ ruleset html.byu {
       //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
       ]
     }
+    byu_logo_svg = "https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/BYU%20logo.svg"
+    user_circle_svg = "https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/user-circle-o-white.svg"
     header = function(title,scripts,logout_url,_headers) {
       netid = cookies(_headers).get("netid")
       <<<!DOCTYPE HTML>
@@ -67,10 +69,10 @@ body {
   </head>
   <body>#{netid
   => <<<div id="byu_bar">
-<img class="logo" src="/images/BYU%20logo.svg">
+<img class="logo" src="#{byu_logo_svg}">
 <span class="title">Calling Me By Name</span>
 <span class="logout"><a href="#{logout_url}">Sign Out</a></span>
-<img class="user-circle" src="/images/user-circle-o-white.svg">
+<img class="user-circle" src="#{user_circle_svg}">
 <span class="username">#{netid}</span>
 </div>
 >>
