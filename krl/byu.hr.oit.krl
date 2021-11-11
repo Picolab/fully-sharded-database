@@ -9,6 +9,7 @@ ruleset byu.hr.oit {
     make_index = function(read_only){
       main_field_name = element_names.head()
       child_desig = function(c){
+        name = c.get("name").klog("name")
         eci = c.get("eci") // family channel ECI
         ctx:query(eci,"byu.hr.core","child_desig",{
           "name":c.get("name"),"read_only":read_only
