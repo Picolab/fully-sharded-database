@@ -214,7 +214,7 @@ window.addEventListener("pageshow",()=>{
 >>
       + (read_only => "" | <<<iframe id="person"></iframe>
 >>)
-      + <<<div id="chooser">
+      + <<<div id="chooser" style="max-width:40%;margin: 0 auto">
 <h2>Existing Persons</h2>
 >>
       + filterPersons(element,re)
