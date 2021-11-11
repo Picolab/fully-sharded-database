@@ -227,7 +227,7 @@ window.addEventListener("pageshow",()=>{
       + <<<div id="spacer" style="height:23em;overflow:hidden"></div>
 </div>
 <script type="text/javascript">
-document.getElementById("count").textContent = document.getElementById("entitylist").getElementsByTagName("a").length
+document.getElementById("count").textContent = document.getElementById("entitylist").getElementsByTagName("a").length#{read_only => "" | "/2"}
 </script>
 >>
       + (read_only => "" | download_link())
