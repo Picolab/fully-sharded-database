@@ -9,7 +9,6 @@ ruleset byu.hr.oit {
     make_index = function(read_only){
       main_field_name = element_names.head()
       child_desig = function(c){
-        name = c.get("name").klog("name")
         eci = c.get("eci") // family channel ECI
         ctx:query(eci,"byu.hr.core","child_desig",{
           "name":c.get("name"),"read_only":read_only
@@ -23,6 +22,10 @@ ruleset byu.hr.oit {
         })
         .map(child_desig)
         .sort()
+    }
+    clean_index = function(read_only,name){
+      (read_only => ent:existing_index_read_only | ent:existing_index)
+        .filter(function(ie){ie.split("|")[1] != name})
     }
     existing = function(read_only,el,re){
       eiro = ent:existing_index_read_only
@@ -386,6 +389,9 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
     if eci.klog("eci to delete") then noop()
     fired {
       raise wrangler event "child_deletion_request" attributes {"eci":eci}
+    } else {
+      urk = clean_index(true,person_id).length().klog("read_only length")
+      foo = clean_index(false,person_id).length().klog("length")
     }
   }
   rule createIndexes {
