@@ -390,8 +390,8 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
     fired {
       raise wrangler event "child_deletion_request" attributes {"eci":eci}
     } else {
-      urk = clean_index(true,person_id).length().klog("read_only length")
-      foo = clean_index(false,person_id).length().klog("length")
+      ent:existing_index := clean_index(false,person_id)
+      ent:existing_index_read_only := clean_index(true,person_id)
     }
   }
   rule createIndexes {
