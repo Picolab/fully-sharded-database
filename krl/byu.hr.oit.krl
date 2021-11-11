@@ -220,7 +220,7 @@ window.addEventListener("pageshow",()=>{
       + filterPersons(element,re)
       + <<<p>Count: <span id="count"></span></p>
 >>
-      + <<lookup: <span id="lookup" contenteditable onkeyup="do_lookup(event)" style="display:inline-block;width:10em"></span>
+      + <<<span style="transform:scale(-1, 1)">👀</span><span id="lookup" contenteditable onkeyup="do_lookup(event)" style="display:inline-block;width:10em;background-color:white;border:1px solid #D1CCBD"></span>
 >>
       + <<<div id="entitylist" style="height:24em;overflow:auto;font-size:120%">
 >>
