@@ -27,17 +27,12 @@ ruleset byu.hr.oit {
       (read_only => ent:existing_index_read_only | ent:existing_index)
         .filter(function(ie){ie.split("|")[1] != name})
     }
-    existing = function(read_only,el,re){
+    existing = function(read_only){
       eiro = ent:existing_index_read_only
       ei = ent:existing_index
       all = read_only => (eiro => eiro | make_index(read_only))
                        | (ei => ei | make_index(read_only))
-      doFilter = function(cd){
-        eci = cd.split("|")[5] // the family channel
-        ctx:query(eci,"byu.hr.core","getFilter",{"element":el,"re":re})
-      }
-      the_list = (not el || not re) => all | all.filter(doFilter)
-      the_list.display_list(read_only)
+      all.display_list(read_only)
     }
     display_list = function(the_list,read_only){
       the_list
@@ -175,7 +170,7 @@ var delPerson = function(theLink){
         })
         .join(10.chr())
     }
-    index = function(element,re,_headers){
+    index = function(_headers){
       read_only = wrangler:channels()
         .filter(function(c){c.get("id")==meta:eci})
         .head()
@@ -193,7 +188,7 @@ var delPerson = function(theLink){
 >>
       + <<<div id="entitylist" style="height:24em;overflow:auto;font-size:150%;resize:vertical">
 >>
-      + existing(read_only,element,re)
+      + existing(read_only)
       + <<<div id="spacer" style="height:23em;overflow:hidden"></div>
 </div>
 >>
