@@ -19,7 +19,6 @@ ruleset byu.hr.login {
       content = ok => response{"content"}.decode() | null
       content
     }
-    admins = meta:rulesetConfig{"admins"} // an Array of strings (Net IDs)
     index = function(netid){
       styles = <<    <style type="text/css">
       div#loginchoice {
@@ -144,20 +143,12 @@ Scan with digital wallet to login
 >>
       + html:footer()
     }
-    authz = function(netid){ //defaction(netid) left-curly-brace
-//    request = {"request":{"subject":netid,"client":"HR OIT"}}
-//    response = http:post("",json=request)
-      return admins >< netid  => "ADMIN" | "VIEW"
-    }
     listURL = function(netid,position){
-      adminECI = wrangler:channels("byu-hr-oit").head().get("id")
-      adminURL = <<#{meta:host}/c/#{adminECI}/query/byu.hr.oit/index.html>>
-      viewECI = wrangler:channels("byu-hr-oit,read-only").head().get("id")
-      viewURL =  <<#{meta:host}/c/#{viewECI}/query/byu.hr.oit/index.html>>
-      answer = authz(netid)
+      theECI = wrangler:channels("byu-hr-oit").head().get("id")
+      theURL = <<#{meta:host}/c/#{theECI}/query/byu.hr.oit/index.html>>
       fragment = position => "#" + position
                            | "#" + netid
-      answer == "ADMIN" => adminURL+fragment | viewURL+fragment
+      theURL+fragment
     }
   }
   rule setCookie {
