@@ -160,33 +160,6 @@ var delPerson = function(theLink){
         | <<<script type="text/javascript">location='#{url}'</script>
 >>
     }
-    filterPersons = function(el,re){
-      reValue = re => <<value="#{re}">>
-                    | <<placeholder="Reg Exp">>
-      jsClear = [
-        "form[0].selectedIndex=0",
-        "form[1].value=''",
-        "return true"
-      ].join(";")
-      clearOption =
-        re || el => <<<button type="submit" onclick="#{jsClear}">X</button>
->> | ""
-      <<<div>
-<form id="filter" method="get">
-Filter: <select name="element">
-<option value="">none</option>
-#{options(el)}</select>
-<input type="text" name="re" #{reValue}>
-<button type="submit">apply</button>
-#{clearOption}</form>
-</div>
-<script type="text/javascript">
-window.addEventListener("pageshow",()=>{
-  document.getElementById("filter").reset()
-})
-</script>
->>
-    }
     download_link = function(){
       <<<br>
 <a href="#{meta:host}/sky/cloud/#{meta:eci}/#{meta:rid}/getTSV.txt" download="all.tsv">Download TSV</a>
@@ -210,35 +183,24 @@ window.addEventListener("pageshow",()=>{
         .get("tags") >< "read-only"
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       html:header("HR OIT",(read_only => "" | styles+scripts),url,_headers)
-      + <<<h1>HR OIT</h1>
->>
       + (read_only => "" | <<<iframe id="person"></iframe>
 >>)
-      + <<<div id="chooser" style="max-width:40%;margin: 0 auto">
-<h2>Existing Persons</h2>
+      + <<<div id="chooser" style="max-width:40%;margin: 10% auto">
 >>
-      + filterPersons(element,re)
-      + <<<p>Count: <span id="count"></span></p>
+      + <<<div id="lookup" title="start typing last name">
+  <span style="transform:scale(-1, 1);display:inline-block">👀</span>
+  <span id="lookup" contenteditable onkeyup="do_lookup(event)" style="display:inline-block;width:10em;background-color:white;border:1px solid #D1CCBD;font-family: Arial, Helvetica, sans-serif;font-size:150%;text-transform:capitalize"></span>
+</div>
 >>
-      + <<<span style="transform:scale(-1, 1);display:inline-block">👀</span><span id="lookup" contenteditable onkeyup="do_lookup(event)" style="display:inline-block;width:10em;background-color:white;border:1px solid #D1CCBD"></span>
->>
-      + <<<div id="entitylist" style="height:24em;overflow:auto;font-size:120%">
+      + <<<div id="entitylist" style="height:24em;overflow:auto;font-size:150%;resize:vertical">
 >>
       + existing(read_only,element,re)
       + <<<div id="spacer" style="height:23em;overflow:hidden"></div>
 </div>
-<script type="text/javascript">
-document.getElementById("count").textContent = document.getElementById("entitylist").getElementsByTagName("a").length#{read_only => "" | "/2"}
-</script>
 >>
       + (read_only => "" | download_link())
       + (read_only => "" | new_person_form())
       + <<</div>
-<pre>
-Final time: #{time:now()}
-Start time: #{time_start}
-Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
-</pre>
 >>
       + <<    <script type="text/javascript">
       var entitylist = document.getElementById("entitylist");
@@ -273,22 +235,6 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
       "byu.hr.core",
       "byu.hr.record",
     ]
-    elapsed_seconds = function(start,final){
-      hours_minutes_and_seconds = re#^[^T]*T(\d\d):(\d\d):(\d\d.\d\d\d)Z#
-      start_parts = start.extract(hours_minutes_and_seconds)
-      start_hour = start_parts[0].as("Number")
-      start_min = start_parts[1].as("Number")
-      start_sec = start_parts[2].as("Number")
-      final_parts = final.extract(hours_minutes_and_seconds)
-      final_hour = final_parts[0].as("Number")
-      final_min = final_parts[1].as("Number")
-      final_sec = final_parts[2].as("Number")
-      min_borrowed = final_sec < start_sec => 1 | 0
-      sec_diff = final_sec - start_sec + 60 * min_borrowed
-      min_diff = final_min - start_min + (start_hour==final_hour => 0 | 60)
-        - min_borrowed
-      math:round(sec_diff + 60 * min_diff,3)
-    }
   }
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
@@ -403,19 +349,7 @@ Elapsed seconds: #{elapsed_seconds(time_start,time:now())}
     fired {
       ent:existing_index := make_index()
       ent:existing_index_read_only := make_index(true)
-      raise byu_hr_oit event "timed_evaluation_complete"
-        attributes {"start_time":start_time}
     }
-  }
-  rule reportElapsedTime {
-    select when byu_hr_oit timed_evaluation_complete
-      start_time re#(.+)#
-      setting(start_time)
-    send_directive("timer",{
-      "start_time":start_time,
-      "final_time":time:now(),
-      "elapsed_time":elapsed_seconds(start_time,time:now())
-    })
   }
   rule addRecordRuleset { // temporary; new persons will have it already
     select when byu_hr_oit need_record_ruleset
