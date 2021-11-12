@@ -176,7 +176,6 @@ var delPerson = function(theLink){
         .join(10.chr())
     }
     index = function(element,re,_headers){
-      time_start = time:now()
       read_only = wrangler:channels()
         .filter(function(c){c.get("id")==meta:eci})
         .head()
@@ -185,7 +184,7 @@ var delPerson = function(theLink){
       html:header("HR OIT",(read_only => "" | styles+scripts),url,_headers)
       + (read_only => "" | <<<iframe id="person"></iframe>
 >>)
-      + <<<div id="chooser" style="max-width:40%;margin: 10% auto">
+      + <<<div id="chooser" style="max-width:40%;margin: 3em auto">
 >>
       + <<<div id="lookup" title="start typing last name">
   <span style="transform:scale(-1, 1);display:inline-block">👀</span>
