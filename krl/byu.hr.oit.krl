@@ -27,14 +27,15 @@ ruleset byu.hr.oit {
       (read_only => ent:existing_index_read_only | ent:existing_index)
         .filter(function(ie){ie.split("|")[1] != name})
     }
-    existing = function(read_only){
+    existing = function(read_only,netid){
       eiro = ent:existing_index_read_only
       ei = ent:existing_index
       all = read_only => (eiro => eiro | make_index(read_only))
                        | (ei => ei | make_index(read_only))
-      all.display_list(read_only)
+      all.display_list(read_only,netid)
     }
-    display_list = function(the_list,read_only){
+    display_list = function(the_list,read_only,netid){
+      is_self = netid == wrangler:name()
       the_list
         .map(function(cd){
           parts = cd.split("|")
@@ -43,10 +44,10 @@ ruleset byu.hr.oit {
           the_eci = parts[2]
           skey = parts[3]
           has_audio = parts[4].decode()
-          <<<div class="entity" id="#{person_id}" style="margin-bottom:7px">
+          <<<div class="entity" id="#{person_id}" style="margin-bottom:7px"#{is_self => << title="this is you">> | ""}>
 <a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name}<span style="float:left#{has_audio => "" | ";visibility:hidden"}">🔈</span></a>
 >> + (read_only => "" | <<<a href="#{meta:host}/c/#{meta:eci}/event/byu_hr_oit/person_deletion_request?person_id=#{person_id}" onclick="return delPerson(this)" class="delperson">delete</a>
->>)
+>>) + (is_self => "&#x1F3A4;" | "")
           + <<</div>
 >>
         })
@@ -171,6 +172,7 @@ var delPerson = function(theLink){
         .join(10.chr())
     }
     index = function(_headers){
+      netid = html:cookies(_headers).get("netid")
       read_only = wrangler:channels()
         .filter(function(c){c.get("id")==meta:eci})
         .head()
@@ -188,7 +190,7 @@ var delPerson = function(theLink){
 >>
       + <<<div id="entitylist" style="height:24em;overflow:auto;font-size:150%;resize:vertical">
 >>
-      + existing(read_only)
+      + existing(read_only,netid)
       + <<<div id="spacer" style="height:23em;overflow:hidden"></div>
 </div>
 >>
