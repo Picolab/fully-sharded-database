@@ -42,7 +42,7 @@ ruleset byu.hr.oit {
           skey = parts[3]
           has_audio = parts[4].decode()
           is_self = netid == person_id
-          <<<div class="entity" id="#{person_id}" style="margin-bottom:7px"#{is_self => << title="this is you">> | ""}>
+          <<<div class="entity" id="#{person_id}"#{is_self => << title="this is you">> | ""}>
 <a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html">#{full_name}<span style="float:left#{has_audio => "" | ";visibility:hidden"}">🔈</span></a>
 >> + (is_self => "&#x1F3A4;" | "")
           + <<</div>
@@ -51,10 +51,36 @@ ruleset byu.hr.oit {
         .join("")
     }
     styles = <<<style type="text/css">
+div.entity {
+  margin-bottom:7px;
+}
 div.entity a {
   text-decoration: none;
   font-family: Arial, Helvetica, sans-serif;
   color: black;
+}
+div#chooser {
+  max-width:40%;
+  margin: 3em auto;
+}
+span#lookup {
+  display:inline-block;
+  width:10em;
+  background-color:white;
+  border:1px solid #D1CCBD;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:150%;
+  text-transform:capitalize;
+}
+div#entityList {
+  height:24em;
+  overflow:auto;
+  font-size:150%;
+  resize:vertical;
+}
+div#spacer {
+  height:23em;
+  overflow:hidden;
 }
 </style>
 >>
@@ -96,17 +122,17 @@ div.entity a {
       netid = html:cookies(_headers).get("netid")
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       html:header("HR OIT",styles,url,_headers)
-      + <<<div id="chooser" style="max-width:40%;margin: 3em auto">
+      + <<<div id="chooser">
 >>
       + <<<div id="lookup" title="start typing last name">
   <span style="transform:scale(-1, 1);display:inline-block">👀</span>
-  <span id="lookup" contenteditable onkeyup="do_lookup(event)" style="display:inline-block;width:10em;background-color:white;border:1px solid #D1CCBD;font-family: Arial, Helvetica, sans-serif;font-size:150%;text-transform:capitalize"></span>
+  <span id="lookup" contenteditable onkeyup="do_lookup(event)"></span>
 </div>
 >>
-      + <<<div id="entitylist" style="height:24em;overflow:auto;font-size:150%;resize:vertical">
+      + <<<div id="entitylist">
 >>
       + existing(netid)
-      + <<<div id="spacer" style="height:23em;overflow:hidden"></div>
+      + <<<div id="spacer"></div>
 </div>
 >>
       + <<</div>
