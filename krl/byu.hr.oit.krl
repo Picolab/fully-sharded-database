@@ -35,7 +35,6 @@ ruleset byu.hr.oit {
       all.display_list(read_only,netid)
     }
     display_list = function(the_list,read_only,netid){
-      is_self = netid == wrangler:name()
       the_list
         .map(function(cd){
           parts = cd.split("|")
@@ -44,6 +43,7 @@ ruleset byu.hr.oit {
           the_eci = parts[2]
           skey = parts[3]
           has_audio = parts[4].decode()
+          is_self = netid == person_id
           <<<div class="entity" id="#{person_id}" style="margin-bottom:7px"#{is_self => << title="this is you">> | ""}>
 <a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name}<span style="float:left#{has_audio => "" | ";visibility:hidden"}">🔈</span></a>
 >> + (read_only => "" | <<<a href="#{meta:host}/c/#{meta:eci}/event/byu_hr_oit/person_deletion_request?person_id=#{person_id}" onclick="return delPerson(this)" class="delperson">delete</a>
