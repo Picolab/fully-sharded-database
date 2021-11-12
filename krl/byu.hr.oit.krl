@@ -71,8 +71,9 @@ span#lookup {
   font-family: Arial, Helvetica, sans-serif;
   font-size:150%;
   text-transform:capitalize;
+  margin-bottom: 5px;
 }
-div#entityList {
+div#entitylist {
   height:24em;
   overflow:auto;
   font-size:150%;
@@ -124,7 +125,7 @@ div#spacer {
       html:header("HR OIT",styles,url,_headers)
       + <<<div id="chooser">
 >>
-      + <<<div id="lookup" title="start typing last name">
+      + <<<div id="lookupdiv" title="start typing last name">
   <span style="transform:scale(-1, 1);display:inline-block">👀</span>
   <span id="lookup" contenteditable onkeyup="do_lookup(event)"></span>
 </div>
