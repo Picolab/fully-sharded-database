@@ -81,6 +81,14 @@ div#chooser {
 }
 </style>
 >>
+    s2 = <<<style type="text/css">
+div.entity a {
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+}
+</style>
+>>
     scripts = <<<script type="text/javascript">
 var display = function(theLink){
   var theDiv = document.getElementById("person");
@@ -178,7 +186,7 @@ var delPerson = function(theLink){
         .head()
         .get("tags") >< "read-only"
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      html:header("HR OIT",(read_only => "" | styles+scripts),url,_headers)
+      html:header("HR OIT",(read_only => s2 | styles+scripts),url,_headers)
       + (read_only => "" | <<<iframe id="person"></iframe>
 >>)
       + <<<div id="chooser" style="max-width:40%;margin: 3em auto">
