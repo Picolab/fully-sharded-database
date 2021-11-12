@@ -3,15 +3,15 @@ ruleset byu.hr.oit {
     name "HR for IT Offices"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    shares index, logout, getTSV
+    shares index, logout
   }
   global {
-    make_index = function(read_only){
+    make_index = function(){
       main_field_name = element_names.head()
       child_desig = function(c){
         eci = c.get("eci") // family channel ECI
         ctx:query(eci,"byu.hr.core","child_desig",{
-          "name":c.get("name"),"read_only":read_only
+          "name":c.get("name"),"read_only":true
         })+"|"+eci
       }
       wrangler:children()
@@ -23,18 +23,16 @@ ruleset byu.hr.oit {
         .map(child_desig)
         .sort()
     }
-    clean_index = function(read_only,name){
-      (read_only => ent:existing_index_read_only | ent:existing_index)
+    clean_index = function(name){
+      ent:existing_index
         .filter(function(ie){ie.split("|")[1] != name})
     }
-    existing = function(read_only,netid){
-      eiro = ent:existing_index_read_only
-      ei = ent:existing_index
-      all = read_only => (eiro => eiro | make_index(read_only))
-                       | (ei => ei | make_index(read_only))
-      all.display_list(read_only,netid)
+    existing = function(netid){
+      eiro = ent:existing_index
+      all = eiro => eiro | make_index()
+      all.display_list(netid)
     }
-    display_list = function(the_list,read_only,netid){
+    display_list = function(the_list,netid){
       the_list
         .map(function(cd){
           parts = cd.split("|")
@@ -45,43 +43,14 @@ ruleset byu.hr.oit {
           has_audio = parts[4].decode()
           is_self = netid == person_id
           <<<div class="entity" id="#{person_id}" style="margin-bottom:7px"#{is_self => << title="this is you">> | ""}>
-<a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html"#{read_only => "" | << onclick="return display(this)">>}>#{full_name}<span style="float:left#{has_audio => "" | ";visibility:hidden"}">🔈</span></a>
->> + (read_only => "" | <<<a href="#{meta:host}/c/#{meta:eci}/event/byu_hr_oit/person_deletion_request?person_id=#{person_id}" onclick="return delPerson(this)" class="delperson">delete</a>
->>) + (is_self => "&#x1F3A4;" | "")
+<a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html">#{full_name}<span style="float:left#{has_audio => "" | ";visibility:hidden"}">🔈</span></a>
+>> + (is_self => "&#x1F3A4;" | "")
           + <<</div>
 >>
         })
         .join("")
     }
     styles = <<<style type="text/css">
-a {
-  text-decoration:none;
-  color:black;
-}
-a.delperson {
-  display:block;
-  float:right;
-  padding-right:15px;
-}
-div#chooser {
-  max-width:40%;
-  margin: 0 auto;
-}
-#person {
-  float:right;
-  width:60%;
-  height:100%;
-  padding-left:5px;
-  min-height:90vh;
-  border:none;
-  border-left: dashed grey 1px;
-}
-.entity:hover a:first-child {
-  background-color:LightGray;
-}
-</style>
->>
-    s2 = <<<style type="text/css">
 div.entity a {
   text-decoration: none;
   font-family: Arial, Helvetica, sans-serif;
@@ -89,47 +58,6 @@ div.entity a {
 }
 </style>
 >>
-    scripts = <<<script type="text/javascript">
-var display = function(theLink){
-  var theDiv = document.getElementById("person");
-  theDiv.src = theLink.href;
-  return false;
-}
-var doCreate = function(theForm){
-  var params = {};
-  params.person_id = theForm.person_id.value;
-  params.import_data = theForm.import_data.value;
-  var xhr = new XMLHttpRequest();
-  xhr.onload = function(){setTimeout("location.reload()",100);}
-  xhr.onerror = function(){alert(xhr.responseText);}
-  xhr.open(theForm.method,theForm.action,true);
-  xhr.setRequestHeader('Content-type','application/json')
-  xhr.send(JSON.stringify(params));
-  return false;
-}
-var delPerson = function(theLink){
-  var theHref = theLink.href;
-  var parts = theHref.split(/person_id=/);
-  if(parts.length>1 && confirm("Delete "+parts[1]+"?")){
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function(){setTimeout("location.reload()",100);}
-    xhr.onerror = function(){alert(xhr.responseText);}
-    xhr.open("post",theHref,true);
-    xhr.send();
-  }
-  return false;
-}
-</script>
->>
-    new_person_form = function(){
-      <<<h2>New Person</h2>
-<form method="post" action="#{meta:host}/c/#{meta:eci}/event/byu_hr_oit/new_person_available" onsubmit="return doCreate(this)">
-<input name="person_id" required placeholder="Net ID"><br>
-<textarea name="import_data" placeholder="Import data if any"></textarea><br>
-<button type="submit" disabled title="broken">Create</button>
-</form>
->>
-    }
     element_names = [
       "Full Name (Last, First)",
       "First Name",
@@ -164,31 +92,10 @@ var delPerson = function(theLink){
         | <<<script type="text/javascript">location='#{url}'</script>
 >>
     }
-    download_link = function(){
-      <<<br>
-<a href="#{meta:host}/sky/cloud/#{meta:eci}/#{meta:rid}/getTSV.txt" download="all.tsv">Download TSV</a>
->>
-    }
-    getTSV = function(){
-      wrangler:children()
-        .filter(function(c){
-          not match(c.get("name"),re#^\*#)
-        })
-        .map( function(c){
-          ctx:query(c.get("eci"),"byu.hr.core","getOneTSV")
-        })
-        .join(10.chr())
-    }
     index = function(_headers){
       netid = html:cookies(_headers).get("netid")
-      read_only = wrangler:channels()
-        .filter(function(c){c.get("id")==meta:eci})
-        .head()
-        .get("tags") >< "read-only"
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      html:header("HR OIT",(read_only => s2 | styles+scripts),url,_headers)
-      + (read_only => "" | <<<iframe id="person"></iframe>
->>)
+      html:header("HR OIT",styles,url,_headers)
       + <<<div id="chooser" style="max-width:40%;margin: 3em auto">
 >>
       + <<<div id="lookup" title="start typing last name">
@@ -198,12 +105,10 @@ var delPerson = function(theLink){
 >>
       + <<<div id="entitylist" style="height:24em;overflow:auto;font-size:150%;resize:vertical">
 >>
-      + existing(read_only,netid)
+      + existing(netid)
       + <<<div id="spacer" style="height:23em;overflow:hidden"></div>
 </div>
 >>
-      + (read_only => "" | download_link())
-      + (read_only => "" | new_person_form())
       + <<</div>
 >>
       + <<    <script type="text/javascript">
@@ -247,11 +152,6 @@ var delPerson = function(theLink){
         [meta:rid],
         {"allow":[{"domain":"byu_hr_oit","name":"*"}],"deny":[]},
         {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
-      )
-      wrangler:createChannel(
-        [meta:rid,"read-only"],
-        {"allow":[],"deny":[{"domain":"*","name":"*"}]},
-        {"allow":[{"rid":meta:rid,"name":"index"}],"deny":[]}
       )
     }
   }
@@ -341,8 +241,7 @@ var delPerson = function(theLink){
     fired {
       raise wrangler event "child_deletion_request" attributes {"eci":eci}
     } else {
-      ent:existing_index := clean_index(false,person_id)
-      ent:existing_index_read_only := clean_index(true,person_id)
+      ent:existing_index := clean_index(person_id)
     }
   }
   rule createIndexes {
@@ -352,7 +251,6 @@ var delPerson = function(theLink){
     }
     fired {
       ent:existing_index := make_index()
-      ent:existing_index_read_only := make_index(true)
     }
   }
   rule addRecordRuleset { // temporary; new persons will have it already
