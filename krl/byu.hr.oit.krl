@@ -68,6 +68,7 @@ span#lookup {
   font-size:150%;
   text-transform:capitalize;
   margin-bottom: 5px;
+  padding-left: 5px;
 }
 div#entitylist {
   height:24em;
