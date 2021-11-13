@@ -28,11 +28,7 @@ ruleset byu.hr.oit {
         .filter(function(ie){ie.split("|")[1] != name})
     }
     existing = function(netid){
-      eiro = ent:existing_index
-      all = eiro => eiro | make_index()
-      all.display_list(netid)
-    }
-    display_list = function(the_list,netid){
+      the_list = ent:existing_index || make_index()
       the_list
         .map(function(cd){
           parts = cd.split("|")
