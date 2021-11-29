@@ -3,12 +3,77 @@
   <head>
     <title>Calling Me By Name</title>
     <meta charset="UTF-8">
-    <link rel="icon"type="image/png"href="/favicon-32x32.png">
-    <link rel="icon"type="image/png"href="/favicon-16x16.png">
+    <link rel="icon"type="image/png" href="/favicon-32x32.png">
+    <link rel="icon"type="image/png" href="/favicon-16x16.png">
+<style type="text/css">
+body {
+  background: linear-gradient(60deg, #D1CCBD, #FBFBFA);
+  min-height: 100vh;
+}
+#byu_bar {
+  background-color: #002E5D;
+  height: 65px;
+}
+#byu_bar img {
+  padding: 20px;
+  vertical-align: middle;
+}
+#byu_bar img.logo {
+  border-right: solid 1px #0057b8;
+}
+#byu_bar img.user-circle {
+  float:right;
+}
+#byu_bar .title {
+  color: white;
+  vertical-align: middle;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  padding-left: 20px;
+}
+#byu_bar .login {
+  float: right;
+  color: white;
+  font-family: Arial, sans-serif;
+  vertical-align: middle;
+  margin: 23px 20px 0 0;
+}
+#byu_bar .login a {
+  color: inherit;
+  text-decoration: none;
+}
+</style>
+    <style type="text/css">
+      div#loginchoice {
+       max-width:200px;
+       text-align:center;
+       border: 2px solid grey;
+       border-radius: 5px;
+       padding: 15px 5px;
+       margin-left: 20px;
+      }
+      div#loginchoice button {
+        cursor:pointer;
+      }
+      div#loginchoice p {
+        color: grey;
+      }
+    </style>
   </head>
   <body>
-    Click
-    <a href="https://bruceatbyu.com/s/OITapp">here</a>
-    to login to "Calling Me By Name"
+<div id="byu_bar">
+<img class="logo" src="https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/BYU%20logo.svg">
+<span class="title">Calling Me By Name</span>
+<span class="login">Sign In</span>
+<img class="user-circle" src="https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/user-circle-o-white.svg">
+</div>
+<h1>Login</h1>
+<p>Please demonstrate that you a member of the BYU community.</p>
+<p>To obtain a credential, visit <a href="https://ycred.byu.edu" target="_blank">YCred.byu.edu</a>.</p>
+<div id="loginchoice">
+<button onclick="location='credential.html'">Login with credential</button>
+<p>OR</p>
+<button title="not available" disabled>Login with password</button>
+</div>
   </body>
 </html>
