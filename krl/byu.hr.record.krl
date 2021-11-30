@@ -39,7 +39,7 @@ audio { vertical-align: middle; }
   var eci = location.pathname.split("/")[2];
   var audioSaved = function(){
     alert('Audio saved');
-    location = document.referrer + "#" + netid;
+    location = document.referrer+'##{netid}';
   }
   var doSave = function(theForm){
     var url = host+'/c/'+eci+'/event/byu_hr_core/new_audio';
@@ -95,7 +95,7 @@ If you don't like it, go back to step 1 and record again.
 <li>Save your recording and then close this tab.
 <form method="POST" id="the_form" onsubmit="return doSave(this)">
 <button type="submit" disabled id="the_button">Save</button>
-<button onclick="location=document.referrer+"##{netid}";return false">Cancel</a>
+<button onclick="location=document.referrer+'##{netid}';return false">Cancel</a>
 <input name="the_audio" id="the_audio" type="hidden">
 </form>
 </li>
