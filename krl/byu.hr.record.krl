@@ -33,12 +33,13 @@ audio { vertical-align: middle; }
 .hide { visibility: hidden; }
 </style>
 >>
-    scripts = <<<script type="text/javascript">
+    scripts = function(netid){
+<<<script type="text/javascript">
   var host = location.origin;
   var eci = location.pathname.split("/")[2];
   var audioSaved = function(){
     alert('Audio saved');
-    location = document.referrer;
+    location = document.referrer + "#" + netid;
   }
   var doSave = function(theForm){
     var url = host+'/c/'+eci+'/event/byu_hr_core/new_audio';
@@ -54,10 +55,12 @@ audio { vertical-align: middle; }
   }
 </script>
 >>
+    }
     audio = function(_headers){
+      netid = html:cookies(_headers).get("netid")
       saved_audio = pds:getData("person","audio")
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      html:header("record audio",styles+scripts,url,_headers)
+      html:header("record audio",styles+scripts(netid),url,_headers)
       + <<
 <h1>Record audio of your name</h1>
 <h2>Instructions</h2>
@@ -92,7 +95,7 @@ If you don't like it, go back to step 1 and record again.
 <li>Save your recording and then close this tab.
 <form method="POST" id="the_form" onsubmit="return doSave(this)">
 <button type="submit" disabled id="the_button">Save</button>
-<button onclick="location=document.referrer;return false">Cancel</a>
+<button onclick="location=document.referrer+"##{netid}";return false">Cancel</a>
 <input name="the_audio" id="the_audio" type="hidden">
 </form>
 </li>
