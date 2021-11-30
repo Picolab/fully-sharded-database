@@ -7,7 +7,7 @@ ruleset byu.hr.core {
     use module io.picolabs.pds alias pds
     use module html.byu alias html
     use module io.picolabs.wrangler alias wrangler
-    shares getData, getTSV, getJSON, index, getFilter, getOneTSV, child_desig
+    shares getData, getTSV, getJSON, index, getOneTSV, child_desig
   }
   global {
     event_types = [
@@ -228,10 +228,6 @@ if(window.frameElement){
     }
     adminECI = function(){
       wrangler:channels("byu-hr-core").head().get("id")
-    }
-    getFilter = function(element,re){
-      element && re => pds:getData("person",element).match(re)
-                     | true
     }
     getKey = function(){
       stuff_names = [
