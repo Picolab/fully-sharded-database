@@ -9,10 +9,10 @@ ruleset byu.hr.oit {
     make_index = function(){
       main_field_name = element_names.head()
       child_desig = function(c){
-        eci = c.get("eci") // family channel ECI
-        ctx:query(eci,"byu.hr.core","child_desig",{
+        child_eci = c.get("eci") // family channel ECI
+        ctx:query(child_eci,"byu.hr.core","child_desig",{
           "name":c.get("name"),"read_only":true
-        })+"|"+eci
+        })+"|"+child_eci
       }
       wrangler:children()
         .filter(function(c){
@@ -38,9 +38,15 @@ ruleset byu.hr.oit {
           skey = parts[3]
           has_audio = parts[4].decode()
           is_self = netid == person_id
+          child_eci = parts[5]
+          record_audio_eci = is_self => ctx:query(child_eci,"byu.hr.core","record_audio_eci") | null
+          record_audio_link = is_self => <<#{meta:host}/c/#{record_audio_eci}/query/byu.hr.record/audio.html>> | ""
           <<<div class="entity" id="#{person_id}"#{is_self => << title="this is you">> | ""}>
 <a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html">#{full_name}<span style="float:left#{has_audio => "" | ";visibility:hidden"}">🔈</span></a>
->> + (is_self => "&#x1F3A4;" | "")
+#{is_self => <<
+<a href="#{record_audio_link}">&#x1F3A4;</a>
+>> | ""}
+>>
           + <<</div>
 >>
         })

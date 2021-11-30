@@ -7,7 +7,7 @@ ruleset byu.hr.core {
     use module io.picolabs.pds alias pds
     use module html.byu alias html
     use module io.picolabs.wrangler alias wrangler
-    shares getData, getTSV, getJSON, index, getOneTSV, child_desig
+    shares index, child_desig, record_audio_eci
   }
   global {
     event_types = [
@@ -180,6 +180,11 @@ ruleset byu.hr.core {
         {"_headers":_headers}
       )
     }
+    record_audio_eci = function(){
+      wrangler:channels("record_audio")
+        .head()
+        .get("id")
+    }
     audio_widgets = function(netid,eci){
       record_audio_link = netid == wrangler:name()
         => <<<a href="#{meta:host}/c/#{eci}/query/byu.hr.record/audio.html">Record audio</a><br>
@@ -205,9 +210,7 @@ ruleset byu.hr.core {
         .head()
         .get("tags") >< "read-only"
       netid = html:cookies(_headers).get("netid")
-      audio_eci = wrangler:channels("record_audio")
-        .head()
-        .get("id")
+      audio_eci = record_audio_eci()
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       html:header("person",styles + (read_only => "" | scripts()),url,_headers)
       + <<<script type="text/javascript">
