@@ -226,6 +226,12 @@ if(window.frameElement){
       + <<</table>
 >>
       + (audio_eci => audio_widgets(netid,audio_eci) | "")
+      + (netid == wrangler:name() => <<<p>
+You may edit your information:
+click in it, change, and press Enter key.
+Esc to undo a change.
+</p>
+>> | "")
       + exports()
       + html:footer()
     }
