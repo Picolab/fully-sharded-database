@@ -11,8 +11,7 @@ ruleset byu.hr.oit {
       child_desig = function(c){
         child_eci = c.get("eci") // family channel ECI
         ctx:query(child_eci,"byu.hr.core","child_desig",{
-          "name":c.get("name"),"read_only":true
-        })+"|"+child_eci
+          "name":c.get("name")})+"|"+child_eci
       }
       wrangler:children()
         .filter(function(c){
@@ -34,11 +33,12 @@ ruleset byu.hr.oit {
           parts = cd.split("|")
           full_name = parts.head()
           person_id = parts[1]
-          the_eci = parts[2]
-          skey = parts[3]
-          has_audio = parts[4].decode()
           is_self = netid == person_id
           child_eci = parts[5]
+          the_eci = is_self => ctx:query(child_eci,"byu.hr.core","adminECI")
+                             | parts[2]
+          skey = parts[3]
+          has_audio = parts[4].decode()
           record_audio_eci = is_self => ctx:query(child_eci,"byu.hr.core","record_audio_eci") | null
           record_audio_link = is_self => <<#{meta:host}/c/#{record_audio_eci}/query/byu.hr.record/audio.html>> | ""
           <<<div class="entity" id="#{person_id}"#{is_self => << title="this is you">> | ""}>

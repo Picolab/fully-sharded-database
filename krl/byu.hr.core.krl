@@ -7,7 +7,7 @@ ruleset byu.hr.core {
     use module io.picolabs.pds alias pds
     use module html.byu alias html
     use module io.picolabs.wrangler alias wrangler
-    shares index, child_desig, record_audio_eci
+    shares index, child_desig, record_audio_eci, adminECI
   }
   global {
     event_types = [
@@ -244,12 +244,10 @@ if(window.frameElement){
       math:hash("sha256",stuff)
         .substr(0,9)
     }
-    child_desig = function(name,read_only){
+    child_desig = function(name){
       full_name = pds:getData("person",element_names.head())
       skey = getKey()
-      the_eci = 
-        read_only => getECI() // read-only ECI
-                   | adminECI() // admin ECI
+      the_eci = getECI() // read-only ECI
       has_audio = pds:getData("person","audio").encode()
       return
       [full_name,name,the_eci,skey,has_audio].join("|")
