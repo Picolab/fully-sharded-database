@@ -92,7 +92,8 @@ please record again and/or choose a smaller file.
 <audio id="player" controls></audio>
 If you don't like it, go back to step 1 and record again.
 </li>
-<li>Save your recording and then close this tab.
+<li>Save your recording.
+Either button below will return to the previous page.
 <form method="POST" id="the_form" onsubmit="return doSave(this)">
 <button type="submit" disabled id="the_button">Save</button>
 <button onclick="location=document.referrer+'##{netid}';return false">Cancel</a>
