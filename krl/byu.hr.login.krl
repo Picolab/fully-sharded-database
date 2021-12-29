@@ -175,11 +175,11 @@ Scan with digital wallet to login
   rule logout {
     select when byu_hr_login logout_request
     pre {
-      loginPageURL = <<#{meta:host}/c/#{ent:eci}/query/#{meta:rid}/index.html>>
+      domain_root = meta:host.extract(re#(http.*):\d+$#).head()
     }
     every {
       send_directive("_cookie",{"cookie": <<netid=; Path=/c; Max-Age:-1>>})
-      send_directive("_redirect",{"url":loginPageURL})
+      send_directive("_redirect",{"url":domain_root})
     }
   }
   rule initialize {
@@ -188,10 +188,7 @@ Scan with digital wallet to login
       [meta:rid],
       {"allow":[{"domain":"byu_hr_login","name":"*"}],"deny":[]},
       {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
-    ) setting(channel)
-    fired {
-      ent:eci := channel.get("id")
-    }
+    )
   }
   rule createVerification {
     select when byu_hr_login need_verification
