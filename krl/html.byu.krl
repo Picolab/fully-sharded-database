@@ -26,6 +26,7 @@ ruleset html.byu {
 body {
   background: linear-gradient(60deg, #D1CCBD, #FBFBFA);
   min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
 }
 #byu_bar {
   background-color: #002E5D;
@@ -44,14 +45,12 @@ body {
 #byu_bar .title {
   color: white;
   vertical-align: middle;
-  font-family: Arial, sans-serif;
   font-size: 24px;
   padding-left: 20px;
 }
 #byu_bar .logout {
   float: right;
   color: white;
-  font-family: Arial, sans-serif;
   vertical-align: middle;
   margin: 23px 20px 0 0;
 }
@@ -62,7 +61,6 @@ body {
 #byu_bar .username {
   float: right;
   color: white;
-  font-family: Arial, sans-serif;
   vertical-align: middle;
   margin: 23px 0 0 0;
 }
