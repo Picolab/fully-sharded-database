@@ -156,7 +156,8 @@ Scan with digital wallet to login
       netid re#(.+)# setting(netid)
     pre {
       referer = event:attrs{["_headers","referer"]}
-      prefix = meta:host + "/c/" + meta:eci + "/query/" + meta:rid + "/"
+      tls_host = meta:host.replace("http://","https?://")
+      prefix = tls_host + "/c/" + meta:eci + "/query/" + meta:rid + "/"
       pages = "(credential|password).html"
       expected_re = ("^" + prefix + pages).replace(re#[.]#g,"[.]").as("RegExp")
       alt_re = "^https?://byname.byu.edu/".as("RegExp")
