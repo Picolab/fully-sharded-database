@@ -55,7 +55,7 @@ ruleset byu.hr.login {
       + <<<h1>HR OIT: Personnel -- Login</h1>
 <h2>Login with password</h2>
 <div id="d1">
-<form method="get" action="#{loginURL}">
+<form method="post" action="#{loginURL}">
 Your NetID is
 <input name="netid" autofocus>
 Your password is
