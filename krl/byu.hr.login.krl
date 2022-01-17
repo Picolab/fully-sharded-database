@@ -50,7 +50,7 @@ ruleset byu.hr.login {
       + html:footer()
     }
     password = function(){
-      loginURL = <<#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_login/needed>>
+      loginURL = <<#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_login/credentials>>
       html:header("HR OIT Login")
       + <<<h1>HR OIT: Personnel -- Login</h1>
 <h2>Login with password</h2>
@@ -58,7 +58,9 @@ ruleset byu.hr.login {
 <form method="get" action="#{loginURL}">
 Your NetID is
 <input name="netid" autofocus>
-<button type="submit" disabled>Go</button>
+Your password is
+<input name="password">
+<button type="submit">Go</button>
 </form>
 </div>
 >>
@@ -165,6 +167,24 @@ Scan with digital wallet to login
       send_directive("_cookie",{"cookie": <<netid=#{netid}; Path=/c>>})
     fired {
       raise byu_hr_login event "cookie_set" attributes event:attrs
+    }
+  }
+  rule checkCredentials {
+    select when byu_hr_login credentials
+      netid re#(.+)# password re#(.+)# setting(netid,password)
+    pre {
+      tserver = "https://cas.byu.edu/cas/v1/tickets"
+      args = {
+        "username":netid,
+        "password":password,
+        "service":"https://byname.byu.edu"
+      }
+    }
+    every {
+      http:post(tserver,form=args) setting(response)
+    }
+    fired {
+      ent:lastResponse := response
     }
   }
   rule redirectToOITindex {
