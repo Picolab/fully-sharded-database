@@ -188,6 +188,18 @@ Scan with digital wallet to login
       raise byu_hr_login event "st" attributes response
     }
   }
+  rule checkServiceTicket {
+    select when byu_hr_login st
+      status_code re#201#
+    pre {
+      vserver = "https://cas.byu.edu/cas/p3/serviceValidate"
+      args = {
+        "ticket":event:attrs{"content"},
+        "service":"https://byname.byu.edu"
+      }
+      info = http:get(vserver,qs=args).klog("info")
+    }
+  }
   rule redirectToOITindex {
     select when byu_hr_login cookie_set
       netid re#(.+)# setting(netid)
