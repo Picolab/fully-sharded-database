@@ -197,7 +197,9 @@ Scan with digital wallet to login
         "ticket":event:attrs{"content"},
         "service":"https://byname.byu.edu"
       }
-      info = http:get(vserver,qs=args).klog("info")
+      response = http:get(vserver,qs=args)
+      info = response{"status_code"} != 200 => null
+        | response{"content"}.decode().klog("info")
     }
   }
   rule redirectToOITindex {
