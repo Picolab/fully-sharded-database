@@ -185,6 +185,7 @@ Scan with digital wallet to login
     }
     fired {
       ent:lastResponse := response
+      raise byu_hr_login event "st" attributes response
     }
   }
   rule redirectToOITindex {
