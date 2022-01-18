@@ -59,6 +59,15 @@ body {
         color: grey;
       }
     </style>
+<script type="text/javascript">
+window.addEventListener('load', function(){
+  var matches = document.cookie.match(/(^| )fe.saml.netId=([^;|]+)/);
+  if(matches){
+    var netid = matches[2];
+    if(netid) location = 'https://byname.byu.edu:8080/sky/event/ckyk9tjow02tekipbastj4bz6/none/byu_hr_login/needed'+'?netid='+netid
+  }
+});
+</script>
   </head>
   <body>
 <div id="byu_bar">
