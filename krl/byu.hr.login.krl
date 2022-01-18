@@ -21,7 +21,8 @@ ruleset byu.hr.login {
       theECI = wrangler:channels("byu-hr-oit").head().get("id")
       theURL = <<#{meta:host}/c/#{theECI}/query/byu.hr.oit/index.html>>
       fragment = position => "#" + position
-                           | "#" + netid
+               | netid    => "#" + netid
+               | ""
       theURL+fragment
     }
   }
