@@ -65,6 +65,11 @@ div#chooser {
   max-width:40%;
   margin: 3em auto;
 }
+#lookupdiv .eyeball {
+  transform:scale(-1, 1);
+  display:inline-block;
+  cursor: pointer;
+}
 span#lookup {
   display:inline-block;
   width:10em;
@@ -129,7 +134,7 @@ div#spacer {
       + <<<div id="chooser">
 >>
       + <<<div id="lookupdiv" title="start typing last name">
-  <span style="transform:scale(-1, 1);display:inline-block">👀</span>
+  <span class="eyeball" onclick="document.getElementById('lookup').focus()">👀</span>
   <span id="lookup" contenteditable onkeyup="do_lookup(event)"></span>
 </div>
 >>
