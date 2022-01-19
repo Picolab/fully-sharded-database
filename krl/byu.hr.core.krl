@@ -232,6 +232,10 @@ click in it, change, and press Enter key.
 Esc to undo a change.
 </p>
 >> | "")
+      + (wrangler:name().match(re#^n\d{5}$#) && not ctx:query(wrangler:parent_eci(),"byu.hr.oit","personExists",{"netid":netid}) => <<<p>
+This might be you.
+</p>
+>> | "")
       + exports()
       + html:footer()
     }

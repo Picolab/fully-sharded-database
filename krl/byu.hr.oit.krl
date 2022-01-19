@@ -3,9 +3,13 @@ ruleset byu.hr.oit {
     name "HR for IT Offices"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    shares index, logout
+    shares index, logout, personExists
   }
   global {
+    personExists = function(netid){
+      wrangler:children()
+        .any(function(c){c.get("name")==netid})
+    }
     make_index = function(){
       main_field_name = element_names.head()
       child_desig = function(c){
@@ -195,8 +199,7 @@ div#spacer {
       person_id re#(.+)# // required
       setting(person_id)
     pre {
-      duplicate = wrangler:children()
-        .any(function(c){c.get("name")==person_id})
+      duplicate = personExists(person_id)
     }
     if duplicate then send_directive("duplcate",{"person_id":person_id})
     fired {
