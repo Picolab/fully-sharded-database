@@ -210,6 +210,8 @@ ruleset byu.hr.core {
         .head()
         .get("tags") >< "read-only"
       netid = html:cookies(_headers).get("netid")
+      unlisted = personExists.klog("personExists") == false
+      this_person = wrangler:name().klog("this_person")
       audio_eci = record_audio_eci()
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       html:header("person",styles + (read_only => "" | scripts()),url,_headers)
@@ -219,20 +221,20 @@ if(window.frameElement){
 }
 </script>
 >>
-      + linkToList(netid,wrangler:name())
+      + linkToList(netid,this_person)
       + <<<table>
 >>
       + getData().map(function(s){s.entry(read_only)}).join("")
       + <<</table>
 >>
       + (audio_eci => audio_widgets(netid,audio_eci) | "")
-      + (netid == wrangler:name() => <<<p>
+      + (netid == this_person => <<<p>
 You may edit your information:
 click in it, change, and press Enter key.
 Esc to undo a change.
 </p>
 >> | "")
-      + ((wrangler:name().match(re#^n\d{5}$#) && not personExists) => <<<p>
+      + ((this_person.match(re#^n\d{5}$#) && unlisted) => <<<p>
 This may be you.
 </p>
 >> | "")
