@@ -133,8 +133,8 @@ div#spacer {
       html:header("HR OIT",styles,url,_headers)
       + <<<div id="chooser">
 >>
-      + <<<div id="lookupdiv" title="start typing last name">
-  <span class="eyeball" onclick="document.getElementById('lookup').focus()">👀</span>
+      + <<<div id="lookupdiv" title="click and start typing last name" onclick="document.getElementById('lookup').focus()">
+  <span class="eyeball">👀</span>
   <span id="lookup" contenteditable onkeyup="do_lookup(event)"></span>
 </div>
 >>
