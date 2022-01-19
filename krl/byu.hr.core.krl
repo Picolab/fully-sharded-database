@@ -218,7 +218,7 @@ ruleset byu.hr.core {
       this_person = wrangler:name()
       audio_eci = record_audio_eci()
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      head_stuff = (read_only => scripts_ro | scripts)
+      head_stuff = styles + (read_only => scripts_ro | scripts)
       html:header("person",head_stuff,url,_headers)
       + <<<script type="text/javascript">
 if(window.frameElement){
