@@ -135,7 +135,7 @@ div#spacer {
 >>
       + <<<div id="lookupdiv" title="click and start typing last name" onclick="document.getElementById('lookup').focus()">
   <span class="eyeball">👀</span>
-  <span id="lookup" contenteditable onkeyup="do_lookup(event)"></span>
+  <span id="lookup" contenteditable onkeyup="do_lookup(event)" onkeydown="return event.keyCode!=13"></span>
 </div>
 >>
       + <<<div id="entitylist">
