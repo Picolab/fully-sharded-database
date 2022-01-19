@@ -210,8 +210,8 @@ ruleset byu.hr.core {
         .head()
         .get("tags") >< "read-only"
       netid = html:cookies(_headers).get("netid")
-      unlisted = personExists.klog("personExists") == "false"
-      this_person = wrangler:name().klog("this_person")
+      unlisted = personExists == "false"
+      this_person = wrangler:name()
       audio_eci = record_audio_eci()
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       html:header("person",styles + (read_only => "" | scripts()),url,_headers)
@@ -235,7 +235,7 @@ Esc to undo a change.
 </p>
 >> | "")
       + ((this_person.match(re#^n\d{5}$#) && unlisted) => <<<p>
-This may be you.
+<button>This is me!</button>
 </p>
 >> | "")
       + exports()
