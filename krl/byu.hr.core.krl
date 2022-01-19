@@ -204,7 +204,7 @@ ruleset byu.hr.core {
       <<<a class="button" href="#{url}">View list of existing persons</a>
 >>
     }
-    index = function(_headers){
+    index = function(_headers,personExists){
       read_only = wrangler:channels()
         .filter(function(c){c.get("id")==meta:eci})
         .head()
@@ -230,6 +230,10 @@ if(window.frameElement){
 You may edit your information:
 click in it, change, and press Enter key.
 Esc to undo a change.
+</p>
+>> | "")
+      + ((wrangler:name().match(re#^n\d{5}$#) && not personExists) => <<<p>
+This may be you.
 </p>
 >> | "")
       + exports()
