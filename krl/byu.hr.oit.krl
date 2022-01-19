@@ -237,15 +237,23 @@ div#spacer {
   }
   rule renameChild {
     select when byu_hr_oit child_has_rulesets
+             or byu_hr_oit pico_claimed
+    pre {
+      child_eci = event:attr("eci")
+      name = event:attr("good_name")
+    }
     every {
-      event:send({"eci":event:attr("eci"),"eid":"rename-child-engine-ui",
+      event:send({"eci":child_eci,"eid":"rename-child-engine-ui",
         "domain":"engine_ui","type":"box",
-        "attrs":{"name":event:attr("good_name")}
+        "attrs":{"name":name}
       })
-      event:send({"eci":event:attr("eci"),"eid":"rename-child-wrangler",
+      event:send({"eci":child_eci,"eid":"rename-child-wrangler",
         "domain":"wrangler","type":"name_changed",
-        "attrs":{"name":event:attr("good_name")}
+        "attrs":{"name":name}
       })
+    }
+    fired {
+      raise byu_hr_oit event "index_refresh"
     }
   }
   rule populateChild {
