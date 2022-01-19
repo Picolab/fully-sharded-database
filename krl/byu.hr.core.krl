@@ -210,7 +210,7 @@ ruleset byu.hr.core {
         .head()
         .get("tags") >< "read-only"
       netid = html:cookies(_headers).get("netid")
-      unlisted = personExists.klog("personExists") == false
+      unlisted = personExists.klog("personExists") == "false"
       this_person = wrangler:name().klog("this_person")
       audio_eci = record_audio_eci()
       url = logout(_headers).extract(re#location='([^']*)'#).head()
