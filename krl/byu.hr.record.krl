@@ -13,12 +13,6 @@ ruleset byu.hr.record {
         "logout",
         {"_headers":_headers}
       )
-      + <<<script type="text/javascript">
-if(window.frameElement){
-  document.getElementById("whoami").style.visibility="hidden";
-}
-</script>
->>
     }
     test_audio = function(_headers){
       url = logout(_headers).extract(re#location='([^']*)'#).head()
