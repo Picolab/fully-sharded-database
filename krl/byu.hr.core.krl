@@ -149,6 +149,11 @@ ruleset byu.hr.core {
         if(confirm("You are claiming that your full name is "+full_name+".")){
           alert(claimURL);
           alert(redirectURL);
+          var httpReq = new XMLHttpRequest();
+          httpReq.onload = function(){location = redirectURL;}
+          httpReq.onerror = function(){alert(httpReq.responseText);}
+          httpReq.open("GET",claimURL,true);
+          httpReq.send();
         }
       }
     </script>
