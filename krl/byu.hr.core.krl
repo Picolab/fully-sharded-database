@@ -145,9 +145,10 @@ ruleset byu.hr.core {
 }
     scripts_ro = function(){
 <<    <script type="text/javascript">
-      function claim_pico(full_name,claimURL){
+      function claim_pico(full_name,claimURL,redirectURL){
         if(confirm("You are claiming that your full name is "+full_name+".")){
           alert(claimURL);
+          alert(redirectURL);
         }
       }
     </script>
@@ -226,6 +227,7 @@ ruleset byu.hr.core {
       baseECI = listURL.extract(re#/c/([^/]+)/query/#).head()
       claimECI = wrangler:channels(["system","child"]).head().get("id")
       claimURL = meta:host+"/sky/event/"+baseECI+"/claim/byu_hr_oit/pico_claimed?eci="+claimECI+"&good_name="+netid
+      redirectURL = listURL.replace((this_person+"$").as("RegExp"),netid)
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       head_stuff = styles + (read_only => scripts_ro() | scripts())
       html:header("person",head_stuff,url,_headers)
@@ -243,7 +245,7 @@ Esc to undo a change.
 </p>
 >> | "")
       + ((this_person.match(re#^n\d{5}$#) && unlisted) => <<<p>
-<button onclick="claim_pico('#{full_name}','#{claimURL}')">This is me!</button>
+<button onclick="claim_pico('#{full_name}','#{claimURL}','#{redirectURL}')">This is me!</button>
 </p>
 >> | "")
       + exports()
