@@ -225,7 +225,7 @@ ruleset byu.hr.core {
       listURL = linkToList(netid,this_person)
       baseECI = listURL.extract(re#/c/([^/]+)/query/#).head()
       claimECI = wrangler:channels(["system","child"]).head().get("id")
-      claimURL = meta:host+"/sky/event/"+baseECI+"/claim/byu_hr_oit/claim_pico?eci="+claimECI+"&good_name="+netid
+      claimURL = meta:host+"/sky/event/"+baseECI+"/claim/byu_hr_oit/pico_claimed?eci="+claimECI+"&good_name="+netid
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       head_stuff = styles + (read_only => scripts_ro() | scripts())
       html:header("person",head_stuff,url,_headers)
