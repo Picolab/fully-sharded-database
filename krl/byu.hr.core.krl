@@ -147,13 +147,12 @@ ruleset byu.hr.core {
 <<    <script type="text/javascript">
       function claim_pico(full_name,claimURL,redirectURL){
         if(confirm("You are claiming that your full name is "+full_name+".")){
-          alert(claimURL);
-          alert(redirectURL);
           var httpReq = new XMLHttpRequest();
           httpReq.onload = function(){location = redirectURL;}
           httpReq.onerror = function(){alert(httpReq.responseText);}
           httpReq.open("GET",claimURL,true);
           httpReq.send();
+          alert("This will take just a moment.");
         }
       }
     </script>
