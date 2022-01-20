@@ -239,8 +239,8 @@ div#spacer {
     select when byu_hr_oit child_has_rulesets
              or byu_hr_oit pico_claimed
     pre {
-      child_eci = event:attr("eci")
-      name = event:attr("good_name")
+      child_eci = event:attr("eci").klog("child_eci")
+      name = event:attr("good_name").klog("name")
     }
     every {
       event:send({"eci":child_eci,"eid":"rename-child-engine-ui",
