@@ -116,7 +116,8 @@ ruleset byu.hr.core {
       }
     </style>
 >>
-    scripts = <<    <script type="text/javascript">
+    scripts = function(){
+<<    <script type="text/javascript">
       var updURL = "#{meta:host}/c/#{meta:eci}/event/byu_hr_core/new_field_value?";
       function selAll(cell){
         window.getSelection().selectAllChildren(cell);
@@ -141,12 +142,15 @@ ruleset byu.hr.core {
       }
     </script>
 >>
-    scripts_ro = <<    <script type="text/javascript">
+}
+    scripts_ro = function(){
+<<    <script type="text/javascript">
       function claim_pico(){
         confirm("Are you who you say you are?")
       }
     </script>
 >>
+}
     table_row = function(string,read_only){
       cell_attrs =
         << contenteditable onkeydown="munge(event)" onfocus="selAll(this)">>
@@ -218,7 +222,7 @@ ruleset byu.hr.core {
       this_person = wrangler:name()
       audio_eci = record_audio_eci()
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      head_stuff = styles + (read_only => scripts_ro | scripts)
+      head_stuff = styles + (read_only => scripts_ro() | scripts())
       html:header("person",head_stuff,url,_headers)
       + <<<script type="text/javascript">
 if(window.frameElement){
