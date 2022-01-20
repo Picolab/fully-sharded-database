@@ -145,8 +145,10 @@ ruleset byu.hr.core {
 }
     scripts_ro = function(){
 <<    <script type="text/javascript">
-      function claim_pico(full_name){
-        confirm("Are you "+full_name+"?")
+      function claim_pico(full_name,claimURL){
+        if(confirm("You are claiming that your full name is "+full_name+".")){
+          alert(claimURL);
+        }
       }
     </script>
 >>
@@ -203,14 +205,12 @@ ruleset byu.hr.core {
       record_audio_link + 10.chr() + play_audio_tag + "<br>" + 10.chr()
     }
     linkToList = function(netid,position){
-      url = ctx:query(
+      ctx:query(
         wrangler:parent_eci(),
         "byu.hr.login",
         "listURL",
         {"netid":netid,"position":position}
       )
-      <<<a class="button" href="#{url}">View list of existing persons</a>
->>
     }
     index = function(_headers,personExists){
       full_name = pds:getData("person",element_names.head())
@@ -222,11 +222,15 @@ ruleset byu.hr.core {
       unlisted = personExists == "false"
       this_person = wrangler:name()
       audio_eci = record_audio_eci()
+      listURL = linkToList(netid,this_person)
+      baseURL = listURL.extract(re#(.+)index.html#).head()
+      claimECI = wrangler:channels(["system","child"])
+      claimURL = baseURL+"claim_pico?eci="+claimECI+"&good_name="+netid
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       head_stuff = styles + (read_only => scripts_ro() | scripts())
       html:header("person",head_stuff,url,_headers)
-      + linkToList(netid,this_person)
-      + <<<table>
+      + <<<a class="button" href="#{listURL}">View list of existing persons</a>
+<table>
 >>
       + getData().map(function(s){s.entry(read_only)}).join("")
       + <<</table>
@@ -239,7 +243,7 @@ Esc to undo a change.
 </p>
 >> | "")
       + ((this_person.match(re#^n\d{5}$#) && unlisted) => <<<p>
-<button onclick="claim_pico('#{full_name}')">This is me!</button>
+<button onclick="claim_pico('#{full_name}','#{claimURL}')">This is me!</button>
 </p>
 >> | "")
       + exports()
