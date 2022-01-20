@@ -224,7 +224,7 @@ ruleset byu.hr.core {
       audio_eci = record_audio_eci()
       listURL = linkToList(netid,this_person)
       baseURL = listURL.extract(re#(.+)index.html#).head()
-      claimECI = wrangler:channels(["system","child"]).head()
+      claimECI = wrangler:channels(["system","child"]).head().get("id")
       claimURL = baseURL+"claim_pico?eci="+claimECI+"&good_name="+netid
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       head_stuff = styles + (read_only => scripts_ro() | scripts())
