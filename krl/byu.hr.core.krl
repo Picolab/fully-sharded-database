@@ -145,8 +145,8 @@ ruleset byu.hr.core {
 }
     scripts_ro = function(){
 <<    <script type="text/javascript">
-      function claim_pico(){
-        confirm("Are you who you say you are?")
+      function claim_pico(full_name){
+        confirm("Are you "+full_name+"?")
       }
     </script>
 >>
@@ -213,6 +213,7 @@ ruleset byu.hr.core {
 >>
     }
     index = function(_headers,personExists){
+      full_name = pds:getData("person",element_names.head())
       read_only = wrangler:channels()
         .filter(function(c){c.get("id")==meta:eci})
         .head()
@@ -238,7 +239,7 @@ Esc to undo a change.
 </p>
 >> | "")
       + ((this_person.match(re#^n\d{5}$#) && unlisted) => <<<p>
-<button onclick="claim_pico()">This is me!</button>
+<button onclick="claim_pico('#{full_name}')">This is me!</button>
 </p>
 >> | "")
       + exports()
