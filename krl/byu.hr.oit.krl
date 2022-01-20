@@ -75,6 +75,9 @@ div#chooser {
   display:inline-block;
   cursor: pointer;
 }
+#lookupdiv .eyeball:hover {
+  transform:scale(-1,-1);
+}
 span#lookup {
   display:inline-block;
   width:10em;
