@@ -170,6 +170,7 @@ div#spacer {
         var e = ev || window.event;
         var keyCode = e.code || e.keyCode;
         if(keyCode==27 || keyCode==="Escape"){
+          e.target.textContent = "";
           e.target.blur();
         }else if(keyCode==13 || keyCode==="Enter"){
           var the_a = find_a();
