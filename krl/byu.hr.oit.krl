@@ -155,28 +155,37 @@ div#spacer {
       + <<</div>
 >>
       + <<    <script type="text/javascript">
-      var entitylist = document.getElementById("entitylist");
+      function find_a(){
+        var prefx = document.getElementById("lookup").textContent.toUpperCase();
+        var entitylist = document.getElementById("entitylist");
+        anchors = entitylist.getElementsByTagName("a");
+        for(var i=0; i<anchors.length; ++i){
+          if(anchors[i].text.toUpperCase().startsWith(prefx)){
+            return anchors[i];
+          }
+        }
+        return null;
+      }
       function do_lookup(ev) {
         var e = ev || window.event;
         var keyCode = e.code || e.keyCode;
         if(keyCode==27 || keyCode==="Escape"){
           e.target.blur();
+        }else if(keyCode==13 || keyCode==="Enter"){
+          var the_a = find_a();
+          if(the_a){
+            the_a.click();
+          }
         }else if(keyCode==="Backspace" || keyCode.startsWith("Key")){
-          var the_prefix = e.target.textContent.toUpperCase();
-          anchors = entitylist.getElementsByTagName("a");
-          for(var i=0; i<anchors.length; ++i){
-            if(anchors[i].text.toUpperCase().startsWith(the_prefix)){
-              anchors[i].scrollIntoView();
-              window.scrollTo(0, 0);
-              break;
-            }
+          var the_a = find_a();
+          if(the_a){
+            the_a.scrollIntoView();
+            window.scrollTo(0, 0);
           }
         }
         return false;
       }
-      window.onload = function(){
-        window.scrollTo(0, 0);
-      };
+      window.scrollTo(0, 0);
     </script>
 >>
       + html:footer()
