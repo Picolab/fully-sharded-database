@@ -107,7 +107,7 @@ div#spacer {
 #pullleft div {
   display: none;
 }
-#pullleft p {
+#pullleft p, #pullleft form {
   margin: 10px;
 }
 #pullleft input[type="checkbox"] {
