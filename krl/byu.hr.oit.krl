@@ -136,7 +136,7 @@ div#spacer {
 >>}).join("")
     }
     pullleft = function(netid){
-      pe = personExists(netid)
+      pe = personExists(netid).klog("person exists")
       option_about = <<<input type="checkbox">About
 <div>
 <p>
@@ -168,8 +168,7 @@ Right to be forgotten
 >> | ""
       <<<div id="pullleft">
 #{option_about}<br>
-#{option_opt_in}<br>
-#{option_opt_out}
+#{option_opt_in}#{option_opt_out}
 </div>
 >>
     }
