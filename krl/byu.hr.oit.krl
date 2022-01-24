@@ -149,14 +149,12 @@ Joseph Smith—History 1:17
 >>
       option_opt_in = pe => "" | <<<input type="checkbox">Opt In
 <div>
-<p>
 <form>
 <input type="hidden" name="personid" value="#{netid}">
 <input name="last" placeholder="Lastname"><br>
 <input name="first" placeholder="Firstname"><br>
 <input type="submit" value="Submit">
 </form>
-</p>
 </div>
 >>
       option_opt_out = pe => <<<input type="checkbox">Opt Out
