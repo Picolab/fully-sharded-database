@@ -99,6 +99,22 @@ div#spacer {
   height:23em;
   overflow:hidden;
 }
+#pullleft {
+  position: fixed;
+  top: 40vh;
+  left: 0;
+}
+#pullleft div {
+  display: none;
+}
+#pullleft p {
+  margin: 10px;
+}
+#pullleft input[type="checkbox"] {
+}
+#pullleft input[type="checkbox"]:checked ~ div {
+  display:block;
+}
 </style>
 >>
     element_names = [
@@ -144,6 +160,17 @@ div#spacer {
       + <<<div id="lookupdiv" title="click and start typing last name" onclick="document.getElementById('lookup').focus()">
   <span class="eyeball">👀</span>
   <span id="lookup" contenteditable onkeyup="do_lookup(event)" onkeydown="return event.keyCode!=13" onfocus="this.textContent='';document.getElementById('entitylist').scrollTop=0"></span>
+</div>
+<div id="pullleft">
+<input type="checkbox">About
+<div>
+<p>
+"calling me by name"
+</p>
+<p>
+Joseph Smith—History 1:17
+</p>
+</div>
 </div>
 >>
       + <<<div id="entitylist">
