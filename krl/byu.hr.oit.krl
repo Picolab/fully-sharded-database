@@ -165,7 +165,7 @@ div#spacer {
 <input type="checkbox">About
 <div>
 <p>
-"calling me by name"
+"calling me <strong>by name</strong>"
 </p>
 <p>
 Joseph Smith—History 1:17
