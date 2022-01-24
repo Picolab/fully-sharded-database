@@ -135,6 +135,20 @@ div#spacer {
       <<<option#{e==el => " selected" | ""}>#{e}</option>
 >>}).join("")
     }
+    pullleft = function(){
+      <<<div id="pullleft">
+<input type="checkbox">About
+<div>
+<p>
+"calling me <strong>by name</strong>"
+</p>
+<p>
+Joseph Smith—History 1:17
+</p>
+</div>
+</div>
+>>
+    }
     logout = function(_headers){
       netid = html:cookies(_headers).get("netid")
       eci = wrangler:channels("byu-hr-login").head().get("id")
@@ -161,18 +175,8 @@ div#spacer {
   <span class="eyeball">👀</span>
   <span id="lookup" contenteditable onkeyup="do_lookup(event)" onkeydown="return event.keyCode!=13" onfocus="this.textContent='';document.getElementById('entitylist').scrollTop=0"></span>
 </div>
-<div id="pullleft">
-<input type="checkbox">About
-<div>
-<p>
-"calling me <strong>by name</strong>"
-</p>
-<p>
-Joseph Smith—History 1:17
-</p>
-</div>
-</div>
 >>
+      + pullleft()
       + <<<div id="entitylist">
 >>
       + existing(netid)
