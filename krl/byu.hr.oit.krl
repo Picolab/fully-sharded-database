@@ -1,6 +1,6 @@
 ruleset byu.hr.oit {
   meta {
-    name "HR for IT Offices"
+    name "list of persons"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
     shares index, logout, personExists
@@ -154,7 +154,7 @@ div#spacer {
     index = function(_headers){
       netid = html:cookies(_headers).get("netid")
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      html:header("HR OIT",styles,url,_headers)
+      html:header("BY NAME",styles,url,_headers)
       + <<<div id="chooser">
 >>
       + <<<div id="lookupdiv" title="click and start typing last name" onclick="document.getElementById('lookup').focus()">
