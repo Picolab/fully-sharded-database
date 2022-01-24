@@ -135,7 +135,7 @@ div#spacer {
       <<<option#{e==el => " selected" | ""}>#{e}</option>
 >>}).join("")
     }
-    pullleft = function(){
+    pullleft = function(netid){
       <<<div id="pullleft">
 <input type="checkbox">About
 <div>
@@ -145,6 +145,14 @@ div#spacer {
 <p>
 Joseph Smith—History 1:17
 </p>
+</div>
+<input type="checkbox">Opt In
+<div>
+<form>
+<input type="hidden" name="personid" value="#{netid}">
+<input name="last" placeholder="Lastname">
+<input name="first" placeholder="Firstname">
+</form>
 </div>
 </div>
 >>
