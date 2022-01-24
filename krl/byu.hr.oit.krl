@@ -146,13 +146,17 @@ div#spacer {
 Joseph Smith—History 1:17
 </p>
 </div>
+<br>
 <input type="checkbox">Opt In
 <div>
+<p>
 <form>
 <input type="hidden" name="personid" value="#{netid}">
-<input name="last" placeholder="Lastname">
-<input name="first" placeholder="Firstname">
+<input name="last" placeholder="Lastname"><br>
+<input name="first" placeholder="Firstname"><br>
+<input type="submit" value="Submit">
 </form>
+</p>
 </div>
 </div>
 >>
