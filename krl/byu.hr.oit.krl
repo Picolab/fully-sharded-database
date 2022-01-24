@@ -136,7 +136,7 @@ div#spacer {
 >>}).join("")
     }
     pullleft = function(netid){
-      pe = personExists(netid).klog("person exists")
+      pe = personExists(netid)
       option_about = <<<input type="checkbox">About
 <div>
 <p>
@@ -199,7 +199,7 @@ Right to be forgotten
   <span id="lookup" contenteditable onkeyup="do_lookup(event)" onkeydown="return event.keyCode!=13" onfocus="this.textContent='';document.getElementById('entitylist').scrollTop=0"></span>
 </div>
 >>
-      + pullleft()
+      + pullleft(netid)
       + <<<div id="entitylist">
 >>
       + existing(netid)
