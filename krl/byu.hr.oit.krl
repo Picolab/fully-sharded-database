@@ -136,8 +136,8 @@ div#spacer {
 >>}).join("")
     }
     pullleft = function(netid){
-      <<<div id="pullleft">
-<input type="checkbox">About
+      pe = personExists(netid)
+      option_about = <<<input type="checkbox">About
 <div>
 <p>
 "calling me <strong>by name</strong>"
@@ -146,8 +146,8 @@ div#spacer {
 Joseph Smith—History 1:17
 </p>
 </div>
-<br>
-<input type="checkbox">Opt In
+>>
+      option_opt_in = pe => "" | <<<input type="checkbox">Opt In
 <div>
 <p>
 <form>
@@ -158,6 +158,18 @@ Joseph Smith—History 1:17
 </form>
 </p>
 </div>
+>>
+      option_opt_out = pe => <<<input type="checkbox">Opt Out
+<div>
+<p>
+Right to be forgotten
+</p>
+</div>
+>> | ""
+      <<<div id="pullleft">
+#{option_about}<br>
+#{option_opt_in}<br>
+#{option_opt_out}
 </div>
 >>
     }
