@@ -339,9 +339,6 @@ Right to be forgotten
         "attrs":{"name":name}
       })
     }
-    fired {
-      raise byu_hr_oit event "index_refresh"
-    }
   }
   rule populateChild {
     select when wrangler child_initialized
@@ -383,12 +380,22 @@ Right to be forgotten
   }
   rule createIndexes {
     select when byu_hr_oit index_refresh
+             or byu_hr_oit child_populated
     pre {
       start_time = time:now()
     }
     fired {
       ent:existing_index := make_index()
+      raise byu_hr_oit event "index_refreshed"
+        attributes {"start_time":start_time}
     }
+  }
+  rule reportElapsedTime {
+    select when byu_hr_oit index_refreshed
+    send_directive("index_refreshed",{
+      "start_time":event:attrs{"start_time"},
+      "end_time":time:now()
+    })
   }
   rule addPersonOptingIn {
     select when byu_hr_oit opt_in
