@@ -379,7 +379,7 @@ Right to be forgotten
     }
   }
   rule createIndexes {
-    select when byu_hr_oit index_refresh
+    select when byu_hr_oit index_refresh_needed
              or byu_hr_oit child_populated
     pre {
       start_time = time:now()
