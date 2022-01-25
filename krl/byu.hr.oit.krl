@@ -253,7 +253,7 @@ Right to be forgotten
           var form_data = "person_id="+the_form.person_id.value
             + "&last="+encodeURIComponent(last)
             + "&first="+encodeURIComponent(first);
-          var redirectURL = location.href;
+          var redirectURL = '#{meta:host+"/c/"+meta:eci+"/query/byu.hr.oit/index.html"}';
           var httpReq = new XMLHttpRequest();
           httpReq.onload = function(){location = redirectURL;}
           httpReq.onerror = function(){alert(httpReq.responseText);}
@@ -268,7 +268,7 @@ Right to be forgotten
         var url = '#{meta:host+"/sky/event/"+meta:eci+"/opt_out/byu_hr_oit/person_deletion_request"}';
         if(confirm("You wish to be deleted. This cannot be undone.")){
           var form_data = "person_id="+the_form.person_id.value;
-          var redirectURL = location.href;
+          var redirectURL = '#{meta:host+"/c/"+meta:eci+"/query/byu.hr.oit/index.html"}';
           var httpReq = new XMLHttpRequest();
           httpReq.onload = function(){location = redirectURL;}
           httpReq.onerror = function(){alert(httpReq.responseText);}
