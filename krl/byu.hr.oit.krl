@@ -241,15 +241,13 @@ Right to be forgotten
       }
       window.scrollTo(0, 0);
       function doOptIn(the_form){
-        var url = '#{meta:host+"sky/event/"+meta:eci+"/opt_in/byu_hr_oit/opt_in"}';
-        alert(url);
+        var url = '#{meta:host+"/sky/event/"+meta:eci+"/opt_in/byu_hr_oit/opt_in"}';
         var last = the_form.last.value;
         var first = the_form.first.value;
         var full_name = last + ", " + first;
         if(confirm("You are opting in as "+full_name+".")){
           var form_data = "last="+encodeURIComponent(last)
             +"&first="+encodeURIComponent(first);
-          alert(form_data);
           var httpReq = new XMLHttpRequest();
           httpReq.onload = function(){location.reload();}
           httpReq.onerror = function(){alert(httpReq.responseText);}
@@ -391,9 +389,9 @@ Right to be forgotten
   }
   rule addPersonOptingIn {
     select when byu_hr_oit opt_in
-      person_id re#.+#
-      last re#.+#
-      first re#.+#
+      person_id re#(.+)#
+      last re#(.+)#
+      first re#(.+)#
       setting(person_id,last,first)
     pre {
       import_data = {}
