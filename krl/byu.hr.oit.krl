@@ -256,7 +256,7 @@ Right to be forgotten
             + "&first="+encodeURIComponent(first);
           var redirectURL = '#{meta:host+"/c/"+meta:eci+"/query/byu.hr.oit/index.html#"}'+person_id;
           var httpReq = new XMLHttpRequest();
-          httpReq.onload = function(){location = redirectURL;}
+          httpReq.onload = function(){location.replace(redirectURL);}
           httpReq.onerror = function(){alert(httpReq.responseText);}
           httpReq.open("POST",url,true);
           httpReq.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
