@@ -111,9 +111,10 @@ div#spacer {
 #pullleft p, #pullleft form {
   margin: 10px;
 }
-#pullleft input[type="checkbox"] {
+#pullleft input[type="checkbox"] + label {
+  cursor: pointer;
 }
-#pullleft input[type="checkbox"]:checked ~ div {
+#pullleft input[type="checkbox"]:checked + label + div {
   display:block;
 }
 </style>
@@ -138,7 +139,8 @@ div#spacer {
     }
     pullleft = function(netid){
       pe = personExists(netid,ent:existing_index)
-      option_about = <<<input type="checkbox">About
+      option_about = <<<input type="checkbox" id="checkbox_a">
+<label for="checkbox_a">About</label>
 <div>
 <p>
 "calling me <strong>by name</strong>"
@@ -148,7 +150,8 @@ Joseph Smith—History 1:17
 </p>
 </div>
 >>
-      option_opt_in = pe => "" | <<<input type="checkbox">Opt In
+      option_opt_in = pe => "" | <<<input type="checkbox" id="checkbox_oi">
+<label for="checkbox_oi">Opt In</label>
 <div>
 <form method="POST" onsubmit="return doOptIn(this)">
 <input type="hidden" name="person_id" value="#{netid}">
@@ -158,7 +161,8 @@ Joseph Smith—History 1:17
 </form>
 </div>
 >>
-      option_opt_out = pe => <<<input type="checkbox">Opt Out
+      option_opt_out = pe => <<<input type="checkbox" id="checkbox_oo">
+<label for="checkbox_oo">Opt Out</label>
 <div>
 <p>
 Right to be forgotten
