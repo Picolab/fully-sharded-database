@@ -6,9 +6,10 @@ ruleset byu.hr.oit {
     shares index, logout, personExists
   }
   global {
-    personExists = function(netid){
-      wrangler:children()
-        .any(function(c){c.get("name")==netid})
+    personExists = function(netid,list){
+      desig_re = ("^[^|]+[|]"+netid+"[|]").as("RegExp")
+      list.isnull() => wrangler:children().any(function(c){c{"name"}==netid})
+                     | list.any(function(d){d.match(desig_re)})
     }
     make_index = function(){
       main_field_name = element_names.head()
@@ -32,7 +33,7 @@ ruleset byu.hr.oit {
     }
     existing = function(netid){
       the_list = ent:existing_index || make_index()
-      pe = personExists(netid)
+      pe = personExists(netid,the_list)
       the_list
         .map(function(cd){
           parts = cd.split("|")
@@ -136,7 +137,7 @@ div#spacer {
 >>}).join("")
     }
     pullleft = function(netid){
-      pe = personExists(netid)
+      pe = personExists(netid,ent:existing_index)
       option_about = <<<input type="checkbox">About
 <div>
 <p>
@@ -265,9 +266,9 @@ Right to be forgotten
       person_id re#(.+)# // required
       setting(person_id)
     pre {
-      duplicate = personExists(person_id)
+      duplicate = personExists(person_id,ent:existing_index)
     }
-    if duplicate then send_directive("duplcate",{"person_id":person_id})
+    if duplicate then send_directive("duplicate",{"person_id":person_id})
     fired {
       last
     }
@@ -306,7 +307,7 @@ Right to be forgotten
     pre {
       child_eci = event:attr("eci")
       name = event:attr("good_name")
-      duplicate = personExists(name)
+      duplicate = personExists(name,ent:existing_index)
     }
     if not duplicate then every {
       event:send({"eci":child_eci,"eid":"rename-child-engine-ui",
