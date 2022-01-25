@@ -151,7 +151,7 @@ Joseph Smith—History 1:17
       option_opt_in = pe => "" | <<<input type="checkbox">Opt In
 <div>
 <form>
-<input type="hidden" name="personid" value="#{netid}">
+<input type="hidden" name="person_id" value="#{netid}">
 <input name="last" placeholder="Lastname"><br>
 <input name="first" placeholder="Firstname"><br>
 <input type="submit" value="Submit">
@@ -340,6 +340,9 @@ Right to be forgotten
                 "domain":"byu_hr_core", "type":"tsv_import_available",
                 "attrs":{"content":import_data.decode()}})
     }
+    fired {
+      raise byu_hr_oit event "child_populated" attributes event:attrs
+    }
   }
   rule deleteChild {
     select when byu_hr_oit person_deletion_request
@@ -382,5 +385,25 @@ Right to be forgotten
       "domain":"wrangler", "type":"install_ruleset_request",
       "attrs":{"absoluteURL":meta:rulesetURI,"rid":rid}
     })
+  }
+  rule addPersonOptingIn {
+    select when byu_hr_oit opt_in
+      person_id re#.+#
+      last re#.+#
+      first re#.+#
+      setting(person_id,last,first)
+    pre {
+      import_data = {}
+        .put(element_names[0],last+", "+first)
+        .put(element_names[1],first)
+        .put(element_names[2],last)
+        .encode()
+    }
+    fired {
+      raise byu_hr_oit event "new_person_available" attributes {
+        "person_id": person_id,
+        "import_data": import_data
+      }
+    }
   }
 }
