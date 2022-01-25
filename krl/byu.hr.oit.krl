@@ -150,7 +150,7 @@ Joseph Smith—History 1:17
 >>
       option_opt_in = pe => "" | <<<input type="checkbox">Opt In
 <div>
-<form>
+<form method="POST" onsubmit="return doOptIn(this)">
 <input type="hidden" name="person_id" value="#{netid}">
 <input name="last" placeholder="Lastname"><br>
 <input name="first" placeholder="Firstname"><br>
@@ -240,6 +240,25 @@ Right to be forgotten
         return false;
       }
       window.scrollTo(0, 0);
+      function doOptIn(the_form){
+        var url = '#{meta:host+"sky/event/"+meta:eci+"/opt_in/byu_hr_oit/opt_in"}';
+        alert(url);
+        var last = the_form.last.value;
+        var first = the_form.first.value;
+        var full_name = last + ", " + first;
+        if(confirm("You are opting in as "+full_name+".")){
+          var form_data = "last="+encodeURIComponent(last)
+            +"&first="+encodeURIComponent(first);
+          alert(form_data);
+          var httpReq = new XMLHttpRequest();
+          httpReq.onload = function(){location.reload();}
+          httpReq.onerror = function(){alert(httpReq.responseText);}
+          httpReq.open("POST",url,true);
+          httpReq.send(form_data);
+          alert("This will take just a moment.");
+        }
+        return false;
+      }
     </script>
 >>
       + html:footer()
