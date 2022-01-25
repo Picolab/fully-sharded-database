@@ -202,7 +202,6 @@ Right to be forgotten
   <span id="lookup" contenteditable onkeyup="do_lookup(event)" onkeydown="return event.keyCode!=13" onfocus="this.textContent='';document.getElementById('entitylist').scrollTop=0"></span>
 </div>
 >>
-      + pullleft(netid)
       + <<<div id="entitylist">
 >>
       + existing(netid)
@@ -211,6 +210,7 @@ Right to be forgotten
 >>
       + <<</div>
 >>
+      + pullleft(netid)
       + <<    <script type="text/javascript">
       function find_a(){
         var prefx = document.getElementById("lookup").textContent.toUpperCase();
