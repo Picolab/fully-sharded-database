@@ -246,12 +246,15 @@ Right to be forgotten
         var first = the_form.first.value;
         var full_name = last + ", " + first;
         if(confirm("You are opting in as "+full_name+".")){
-          var form_data = "last="+encodeURIComponent(last)
-            +"&first="+encodeURIComponent(first);
+          var form_data = "person_id="+the_form.person_id.value
+            + "&last="+encodeURIComponent(last)
+            + "&first="+encodeURIComponent(first);
+          var redirectURL = location.href;
           var httpReq = new XMLHttpRequest();
-          httpReq.onload = function(){location.reload();}
+          httpReq.onload = function(){location = redirectURL;}
           httpReq.onerror = function(){alert(httpReq.responseText);}
           httpReq.open("POST",url,true);
+          httpReq.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
           httpReq.send(form_data);
           alert("This will take just a moment.");
         }
