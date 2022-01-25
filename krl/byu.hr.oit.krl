@@ -370,22 +370,6 @@ Right to be forgotten
       ent:existing_index := make_index()
     }
   }
-  rule addRecordRuleset { // temporary; new persons will have it already
-    select when byu_hr_oit need_record_ruleset
-      netid re#(.+)# setting(netid)
-    pre {
-      eci = wrangler:children
-        .filter(function(c){
-          c{"name"} == netid
-        }).head().get("eci")
-      rid = "byu.hr.record"
-    }
-    if eci then
-    event:send({"eci":eci,"eid":"install-ruleset",
-      "domain":"wrangler", "type":"install_ruleset_request",
-      "attrs":{"absoluteURL":meta:rulesetURI,"rid":rid}
-    })
-  }
   rule addPersonOptingIn {
     select when byu_hr_oit opt_in
       person_id re#.+#
