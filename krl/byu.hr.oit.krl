@@ -163,6 +163,10 @@ Joseph Smith—History 1:17
 <p>
 Right to be forgotten
 </p>
+<form method="POST" onsubmit="return doOptOut(this)">
+<input type="hidden" name="person_id" value="#{netid}">
+<input type="submit" value="Opt Out">
+</form>
 </div>
 >> | ""
       <<<div id="pullleft">
@@ -249,6 +253,21 @@ Right to be forgotten
           var form_data = "person_id="+the_form.person_id.value
             + "&last="+encodeURIComponent(last)
             + "&first="+encodeURIComponent(first);
+          var redirectURL = location.href;
+          var httpReq = new XMLHttpRequest();
+          httpReq.onload = function(){location = redirectURL;}
+          httpReq.onerror = function(){alert(httpReq.responseText);}
+          httpReq.open("POST",url,true);
+          httpReq.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          httpReq.send(form_data);
+          alert("This will take just a moment.");
+        }
+        return false;
+      }
+      function doOptOut(the_form){
+        var url = '#{meta:host+"/sky/event/"+meta:eci+"/opt_out/byu_hr_oit/person_deletion_request"}';
+        if(confirm("You wish to be deleted. This cannot be undone.")){
+          var form_data = "person_id="+the_form.person_id.value;
           var redirectURL = location.href;
           var httpReq = new XMLHttpRequest();
           httpReq.onload = function(){location = redirectURL;}
@@ -381,6 +400,7 @@ Right to be forgotten
   rule createIndexes {
     select when byu_hr_oit index_refresh_needed
              or byu_hr_oit child_populated
+             or wrangler child_deleted
     pre {
       start_time = time:now()
     }
