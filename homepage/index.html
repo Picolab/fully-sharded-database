@@ -59,11 +59,17 @@ body {
       }
     </style>
 <script type="text/javascript">
+function trySSO(){
   var matches = document.cookie.match(/(^| )fe.saml.netId=([^;|]+)/);
   if(matches){
     var netid = matches[2];
     if(netid) location = 'https://byname.byu.edu:8080/sky/event/ckyk9tjow02tekipbastj4bz6/none/byu_hr_login/needed'+'?netid='+netid
+  } else {
+    var the_button = document.getElementById("password");
+    the_button.setAttribute("disabled", "disabled");
+    alert("Try BYU single sign on");
   }
+}
 </script>
   </head>
   <body>
@@ -79,7 +85,7 @@ body {
 <div id="loginchoice">
 <button onclick="location='credential.html'">Login with credential</button>
 <p>OR</p>
-<button onclick="location.reload()">Login with password</button>
+<button id="password" onclick="trySSO()" title="Try BYU single sign on">Login with password</button>
 </div>
   </body>
 </html>
