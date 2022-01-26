@@ -363,6 +363,9 @@ Right to be forgotten
         "attrs":{"name":name}
       })
     }
+    fired {
+      raise byu_hr_oit event "index_refresh_needed" if event:name == "pico_claimed"
+    }
   }
   rule populateChild {
     select when wrangler child_initialized
