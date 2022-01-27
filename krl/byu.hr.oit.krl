@@ -434,7 +434,7 @@ Right to be forgotten
       desig_re = ("^[^|]+[|]"+netid+"[|]").as("RegExp")
       sanity = new_child_desig.match(desig_re).klog("sanity")
       new_existing_index = ent:existing_index.map(function(cd){
-        cd.match(desig_re) => new_child_desig | cd})
+        cd.match(desig_re) => new_child_desig+"|"+cd.split("|")[5] | cd})
     }
     if sanity then noop()
     fired {
