@@ -145,7 +145,7 @@ This recording will not be used for any other purpose.
       )
     }
   }
-  rule accept_new_audio {
+  rule acceptNewAudio {
     select when byu_hr_core new_audio
     pre {
       the_audio = event:attr("the_audio")
@@ -156,6 +156,15 @@ This recording will not be used for any other purpose.
         "domain":"person","key":"audio","value":the_audio
       }
       raise byu_hr_core event "child_designation_changed"
+    }
+  }
+  rule removeAudio {
+    select when byu_hr_core audio_remove_request
+      where pds:getData("person","audio")
+    fired {
+      raise pds event "new_data_available" attributes {
+        "domain":"person","key":"audio","value":"null"
+      }
     }
   }
 }
