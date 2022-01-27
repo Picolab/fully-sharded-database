@@ -341,9 +341,12 @@ Esc to undo a change.
   }
   rule childDesigChanged {
     select when byu_hr_core child_designation_changed
+    pre {
+      netid = wrangler:name()
+    }
     event:send({"eci":wrangler:parent_eci(),"eid":"child_desig_changed",
       "domain":"byu_hr_oit", "type":"new_child_designation",
-      "attrs":{"netid":wrangler:name(),"child_desig":child_desig()}
+      "attrs":{"netid":netid,"child_desig":child_desig(netid)}
     })
   }
 }
