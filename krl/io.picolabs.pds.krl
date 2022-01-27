@@ -27,8 +27,8 @@ ruleset io.picolabs.pds {
       value re#(.*)#
       setting(domain,key,value)
     fired {
-      ent:pds{[domain,key]} := value
-      clear ent:pds{[domain,key]} if value.isnull()
+      ent:pds{[domain,key]} := value.decode()
+      clear ent:pds{[domain,key]} if value.decode().isnull()
       raise pds event "data_added" attributes event:attrs
     }
   }
