@@ -242,7 +242,7 @@ ruleset byu.hr.core {
       + <<</table>
 >>
       + (audio_eci => audio_widgets(netid,audio_eci) | "")
-      + (netid == this_person => <<<p>
+      + (netid == this_person && not read_only => <<<p>
 You may edit your information:
 click in it, change, and press Enter key.
 Esc to undo a change.
