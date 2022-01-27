@@ -155,6 +155,7 @@ This recording will not be used for any other purpose.
       raise pds event "new_data_available" attributes {
         "domain":"person","key":"audio","value":the_audio
       }
+      raise byu_hr_core event "child_designation_changed"
     }
   }
 }

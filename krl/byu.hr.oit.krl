@@ -425,6 +425,22 @@ Right to be forgotten
       "end_time":time:now()
     })
   }
+  rule childDesigChanged {
+    select when byu_hr_oit new_child_designation
+      netid re#(.+)#
+      child_desig re#(.+)#
+      setting(netid,new_child_desig)
+    pre {
+      desig_re = ("^[^|]+[|]"+netid+"[|]").as("RegExp")
+      sanity = new_child_desig.match(desig_re).klog("sanity")
+      new_existing_index = ent:existing_index.map(function(cd){
+        cd.match(desig_re) => new_child_desig | cd})
+    }
+    if sanity then noop()
+    fired {
+      ent:existing_index := new_existing_index
+    }
+  }
   rule addPersonOptingIn {
     select when byu_hr_oit opt_in
       person_id re#(.+)#

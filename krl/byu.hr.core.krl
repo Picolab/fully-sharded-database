@@ -258,13 +258,13 @@ Esc to undo a change.
     adminECI = function(){
       wrangler:channels("byu-hr-core").head().get("id")
     }
+    skey_names = [
+      "Last Name",
+      "Work Email",
+      "F/T-P/T Status",
+    ]
     getKey = function(){
-      stuff_names = [
-        "Last Name",
-        "Work Email",
-        "F/T-P/T Status",
-      ]
-      stuff = stuff_names.map(function(n){
+      stuff = skey_names.map(function(n){
         pds:getData("person",n)
       }).join(":")
       math:hash("sha256",stuff)
@@ -314,12 +314,18 @@ Esc to undo a change.
   rule updateField {
     select when byu_hr_core new_field_value
       where element_names >< event:attr("name")
+    pre {
+      name = event:attr("name")
+      full_name_changed = name == element_names.head()
+    }
     fired {
       raise pds event "new_data_available" attributes {
         "domain":"person",
-        "key":event:attr("name"),
+        "key":name,
         "value":event:attr("value")
       }
+      raise byu_hr_core event "child_designation_changed"
+        if full_name_changed || skey_names >< name
     }
   }
   rule initialize {
@@ -332,5 +338,12 @@ Esc to undo a change.
         {"allow":[{"rid":meta:rid,"name":"index"}],"deny":[]}
       )
     }
+  }
+  rule childDesigChanged {
+    select when byu_hr_core child_designation_changed
+    event:send({"eci":wrangler:parent_eci(),"eid":"child_desig_changed",
+      "domain":"byu_hr_oit", "type":"new_child_designation",
+      "attributes":{"netid":wrangler:name(),"child_desig":child_desig()}
+    })
   }
 }
