@@ -67,8 +67,9 @@ function trySSO(){
   } else {
     var the_button = document.getElementById("password");
     the_button.setAttribute("disabled", "disabled");
-    alert("Try BYU single sign on");
+    alert("Try BYU single sign on, then return to this page");
   }
+  return false;
 }
 </script>
   </head>
@@ -76,7 +77,7 @@ function trySSO(){
 <div id="byu_bar">
 <img class="logo" src="https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/BYU%20logo.svg">
 <span class="title">Calling Me By Name</span>
-<span class="login" onclick="location.reload()">Sign In</span>
+<span class="login" onclick="return trySSO()">Sign In</span>
 <img class="user-circle" src="https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/user-circle-o-white.svg">
 </div>
 <h1>Login</h1>
