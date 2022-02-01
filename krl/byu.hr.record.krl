@@ -40,7 +40,7 @@ audio { vertical-align: middle; }
     var params = {};
     params.the_audio = theForm.the_audio.value;
     var xhr = new XMLHttpRequest();
-    xhr.onload = function(){setTimeout('actionDone(theAction)',100);}
+    xhr.onload = function(){setTimeout(actionDone,100,theAction);}
     xhr.onerror = function(){alert(xhr.responseText);}
     xhr.open('POST',url,true);
     xhr.setRequestHeader('Content-type','application/json')
