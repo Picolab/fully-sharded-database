@@ -316,13 +316,15 @@ Esc to undo a change.
       where element_names >< event:attr("name")
     pre {
       name = event:attr("name")
+      valueString = event:attr("value")
+      value = valueString == "null" => null | valueString
       full_name_changed = name == element_names.head()
     }
     fired {
       raise pds event "new_data_available" attributes {
         "domain":"person",
         "key":name,
-        "value":event:attr("value")
+        "value":value
       }
       raise byu_hr_core event "child_designation_changed"
         if full_name_changed || skey_names >< name
