@@ -37,14 +37,13 @@ audio { vertical-align: middle; }
     var host = location.origin;
     var eci = location.pathname.split("/")[2];
     var url = host+'/c/'+eci+'/event/byu_hr_core/new_audio';
-    var params = {};
-    params.the_audio = theForm.the_audio.value;
+    var form_data = "the_audio=" + encodeURIComponent(theForm.the_audio.value);
     var xhr = new XMLHttpRequest();
     xhr.onload = function(){setTimeout(actionDone,100,theAction);}
     xhr.onerror = function(){alert(xhr.responseText);}
     xhr.open('POST',url,true);
-    xhr.setRequestHeader('Content-type','application/json')
-    xhr.send(JSON.stringify(params));
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.send(form_data);
     return false;
   }
 </script>
