@@ -87,11 +87,17 @@ please record again and/or choose a smaller file.
 If you don't like it, go back to step 1 and record again.
 </li>
 <li>Save your recording.
-Either button below will return to the previous page.
-<form method="POST" id="the_form" onsubmit="return doSave(this)">
+Buttons below will return to the previous page.
+<form method="POST" onsubmit="return doSave(this)">
 <button type="submit" disabled id="the_button">Save</button>
 <button onclick="location=document.referrer+'##{netid}';return false">Cancel</a>
 <input name="the_audio" id="the_audio" type="hidden">
+</form>
+</li>
+<li>If you wish, you may return to this page and delete your recording.
+<form method="POST" onsubmit="return doSave(this)">
+<button type="submit"#{saved_audio => "" | " disabled"}>Delete audio</button>
+<input name="the_audio" type="hidden" value="">
 </form>
 </li>
 </ol>
@@ -155,16 +161,12 @@ This recording will not be used for any other purpose.
       raise pds event "new_data_available" attributes {
         "domain":"person","key":"audio","value":the_audio
       }
-      raise byu_hr_core event "child_designation_changed"
-    }
-  }
-  rule removeAudio {
-    select when byu_hr_core audio_remove_request
-      where pds:getData("person","audio")
-    fired {
+    } else {
       raise pds event "data_not_pertinent" attributes {
         "domain":"person","key":"audio"
       }
+    }
+    finally {
       raise byu_hr_core event "child_designation_changed"
     }
   }
