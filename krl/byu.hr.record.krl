@@ -29,18 +29,18 @@ audio { vertical-align: middle; }
 >>
     scripts = function(netid){
 <<<script type="text/javascript">
-  var audioSaved = function(){
-    alert('Audio saved');
+  var actionDone = function(theAction){
+    alert('Audio '+theAction);
     location = document.referrer+'##{netid}';
   }
-  var doSave = function(theForm){
+  var doAction = function(theForm,theAction){
     var host = location.origin;
     var eci = location.pathname.split("/")[2];
     var url = host+'/c/'+eci+'/event/byu_hr_core/new_audio';
     var params = {};
     params.the_audio = theForm.the_audio.value;
     var xhr = new XMLHttpRequest();
-    xhr.onload = function(){setTimeout('audioSaved()',100);}
+    xhr.onload = function(){setTimeout('actionDone(theAction)',100);}
     xhr.onerror = function(){alert(xhr.responseText);}
     xhr.open('POST',url,true);
     xhr.setRequestHeader('Content-type','application/json')
@@ -88,14 +88,14 @@ If you don't like it, go back to step 1 and record again.
 </li>
 <li>Save your recording.
 Buttons below will return to the previous page.
-<form method="POST" onsubmit="return doSave(this)">
+<form method="POST" onsubmit="return doAction(this,'saved')">
 <button type="submit" disabled id="the_button">Save</button>
 <button onclick="location=document.referrer+'##{netid}';return false">Cancel</a>
 <input name="the_audio" id="the_audio" type="hidden">
 </form>
 </li>
 <li>If you wish, you may return to this page and delete your recording.
-<form method="POST" onsubmit="if(confirm('If you continue, your audio recording will be removed. This cannot be undone.')){return doSave(this);}">
+<form method="POST" onsubmit="if(confirm('If you continue, your audio recording will be removed. This cannot be undone.')){return doAction(this,'removed');}">
 <button type="submit"#{saved_audio => "" | " disabled"}>Delete audio</button>
 <input name="the_audio" type="hidden" value="">
 </form>
