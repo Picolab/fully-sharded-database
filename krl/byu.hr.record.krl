@@ -37,7 +37,6 @@ audio { vertical-align: middle; }
     var host = location.origin;
     var eci = location.pathname.split("/")[2];
     var url = host+'/c/'+eci+'/event/byu_hr_core/new_audio';
-alert(url);
     var params = {};
     params.the_audio = theForm.the_audio.value;
     var xhr = new XMLHttpRequest();
