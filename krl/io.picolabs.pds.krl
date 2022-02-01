@@ -24,12 +24,20 @@ ruleset io.picolabs.pds {
     select when pds new_data_available
       domain re#(.+)#
       key re#(.+)#
-      value re#(.*)#
-      setting(domain,key,value)
+      setting(domain,key)
     fired {
-      ent:pds{[domain,key]} := value.decode()
-      clear ent:pds{[domain,key]} if value.decode().isnull()
+      ent:pds{[domain,key]} := event:attrs{"value"}
       raise pds event "data_added" attributes event:attrs
+    }
+  }
+  rule clearData {
+    select when pds data_not_pertinent
+      domain re#(.+)#
+      key re#(.+)#
+      setting(domain,key)
+    fired {
+      clear ent:pds{[domain,key]}
+      raise pds event "data_removed" attributes event:attrs
     }
   }
   rule initialize {

@@ -162,8 +162,8 @@ This recording will not be used for any other purpose.
     select when byu_hr_core audio_remove_request
       where pds:getData("person","audio")
     fired {
-      raise pds event "new_data_available" attributes {
-        "domain":"person","key":"audio","value":"null"
+      raise pds event "data_not_pertinent" attributes {
+        "domain":"person","key":"audio"
       }
       raise byu_hr_core event "child_designation_changed"
     }
