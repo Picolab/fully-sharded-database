@@ -95,7 +95,7 @@ Buttons below will return to the previous page.
 </form>
 </li>
 <li>If you wish, you may return to this page and delete your recording.
-<form method="POST" onsubmit="return doSave(this)">
+<form method="POST" onsubmit="if(confirm('If you continue, your audio recording will be removed. This cannot be undone.')){return doSave(this);}">
 <button type="submit"#{saved_audio => "" | " disabled"}>Delete audio</button>
 <input name="the_audio" type="hidden" value="">
 </form>
