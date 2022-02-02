@@ -271,8 +271,9 @@ Right to be forgotten
       }
       function doOptOut(the_form){
         var url = '#{meta:host+"/sky/event/"+meta:eci+"/opt_out/byu_hr_oit/person_deletion_request"}';
-        if(confirm("You wish to be deleted. This cannot be undone.")){
-          var form_data = "person_id="+the_form.person_id.value;
+        var netid = the_form.person_id.value;
+        if(confirm("You (NetID "+netid+") wish to be deleted. This cannot be undone.")){
+          var form_data = "person_id="+netid;
           var redirectURL = '#{meta:host+"/c/"+meta:eci+"/query/byu.hr.oit/index.html"}';
           var httpReq = new XMLHttpRequest();
           httpReq.onload = function(){location = redirectURL;}
