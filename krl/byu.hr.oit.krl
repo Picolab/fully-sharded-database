@@ -27,10 +27,6 @@ ruleset byu.hr.oit {
         .map(child_desig)
         .sort()
     }
-    clean_index = function(name){
-      ent:existing_index
-        .filter(function(ie){ie.split("|")[1] != name})
-    }
     existing = function(netid){
       the_list = ent:existing_index || make_index()
       pe = personExists(netid,the_list)
@@ -394,16 +390,18 @@ Right to be forgotten
       person_id re#(.+)# // required
       setting(person_id)
     pre {
+      referer = event:attrs{["_headers","referer"]}
+      isExpected = function(refr){
+        refr == meta:host+"/c/"+meta:eci+"/query/"+meta:rid+"/index.html"
+      }
       eci = wrangler:children()
         .filter(function(c){
           c.get("name")==person_id
         }).head().get("eci")
     }
-    if eci.klog("eci to delete") then noop()
+    if referer.isExpected() &&  eci.klog("eci to delete") then noop()
     fired {
       raise wrangler event "child_deletion_request" attributes {"eci":eci}
-    } else {
-      ent:existing_index := clean_index(person_id)
     }
   }
   rule createIndexes {
