@@ -340,7 +340,8 @@ Esc to undo a change.
       wrangler:createChannel(
         [meta:rid,"read-only"],
         {"allow":[],"deny":[{"domain":"*","name":"*"}]},
-        {"allow":[{"rid":meta:rid,"name":"index"}],"deny":[]}
+        {"allow":[{"rid":meta:rid,"name":"index"},
+                  {"rid":meta:rid,"name":"audioURL"}],"deny":[]}
       )
     }
   }
