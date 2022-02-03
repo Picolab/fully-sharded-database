@@ -7,7 +7,7 @@ ruleset byu.hr.core {
     use module io.picolabs.pds alias pds
     use module html.byu alias html
     use module io.picolabs.wrangler alias wrangler
-    shares index, child_desig, record_audio_eci, adminECI
+    shares index, child_desig, record_audio_eci, adminECI, audioURL
   }
   global {
     event_types = [
@@ -277,6 +277,9 @@ Esc to undo a change.
       has_audio = pds:getData("person","audio").encode()
       return
       [full_name,name,the_eci,skey,has_audio].join("|")
+    }
+    audioURL = function(){
+      pds:getData("person","audio") || ""
     }
   }
   rule importTSV {
