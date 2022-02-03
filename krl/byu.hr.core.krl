@@ -78,6 +78,7 @@ ruleset byu.hr.core {
     }
     getECI = function(){
       wrangler:channels("byu-hr-core,read-only")
+        .reverse() // most recently created channel
         .head()
         .get("id")
     }

@@ -5,9 +5,9 @@ ruleset byu.hr.patch {
   }
   global {
     core_rids = [
-      "html.byu",
+//      "html.byu",
       "byu.hr.core",
-      "byu.hr.record",
+//      "byu.hr.record",
     ]
   }
   rule doPatch {
