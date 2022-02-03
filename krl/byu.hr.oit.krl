@@ -68,7 +68,7 @@ div.entity:hover {
   background-color: #EFECE7;
   cursor: pointer;
 }
-div.entity span:hover, div.entity a.microphone {
+div.entity span:hover, div.entity a.microphone:hover {
   background-color: #A0D1EA;
   border-radius: 50%;
 }
