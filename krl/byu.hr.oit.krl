@@ -44,7 +44,8 @@ ruleset byu.hr.oit {
           record_audio_eci = is_self => ctx:query(child_eci,"byu.hr.core","record_audio_eci") | null
           record_audio_link = is_self => <<#{meta:host}/c/#{record_audio_eci}/query/byu.hr.record/audio.html>> | ""
           <<<div class="entity" id="#{person_id}"#{is_self => << title="this is you">> | ""}>
-<a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html?personExists=#{pe}">#{full_name}<span style="float:left#{has_audio => "" | ";visibility:hidden"}">🔈</span></a>
+<a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html?personExists=#{pe}">#{full_name}</a>
+<span style="float:left#{has_audio => "" | ";visibility:hidden"}" onclick="playAudio('#{the_eci}')">🔈</span>
 #{is_self => <<
 <a href="#{record_audio_link}">&#x1F3A4;</a>
 >> | ""}
@@ -280,6 +281,20 @@ Right to be forgotten
           alert("This will take just a moment.");
         }
         return false;
+      }
+      function playAudio(eci){
+        var url = '#{meta:host}/c/'+eci+'/query/byu.hr.core/audioURL.txt';
+        var xhr = new XMLHttpRequest;
+        xhr.onload = function(){
+          var data = xhr.response;
+          if(data && data.length){
+            a=new Audio(data);
+            a.addEventListener('canplaythrough', event => {a.play();});
+          }
+        }
+        xhr.onerror = function(){alert(xhr.responseText);};
+        xhr.open("GET",url,true);
+        xhr.send();
       }
     </script>
 >>
