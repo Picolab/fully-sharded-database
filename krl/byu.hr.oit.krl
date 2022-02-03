@@ -47,7 +47,7 @@ ruleset byu.hr.oit {
 <a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html?personExists=#{pe}">#{full_name}</a>
 <span style="float:left#{has_audio => "" | ";visibility:hidden"}" onclick="playAudio('#{the_eci}')">🔈</span>
 #{is_self => <<
-<a href="#{record_audio_link}">&#x1F3A4;</a>
+<a class="microphone" href="#{record_audio_link}">&#x1F3A4;</a>
 >> | ""}
 >>
           + <<</div>
@@ -63,6 +63,14 @@ div.entity a {
   text-decoration: none;
   font-family: Arial, Helvetica, sans-serif;
   color: black;
+}
+div.entity:hover {
+  background-color: #EFECE7;
+  cursor: pointer;
+}
+div.entity span:hover, div.entity a.microphone {
+  background-color: #A0D1EA;
+  border-radius: 50%;
 }
 div#chooser {
   max-width:40%;
