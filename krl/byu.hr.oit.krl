@@ -66,11 +66,11 @@ div.entity a {
 }
 div.entity:hover {
   background-color: #EFECE7;
-  cursor: pointer;
 }
 div.entity span:hover, div.entity a.microphone:hover {
   background-color: #A0D1EA;
   border-radius: 50%;
+  cursor: pointer;
 }
 div#chooser {
   max-width:40%;
