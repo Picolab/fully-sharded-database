@@ -203,7 +203,9 @@ ruleset byu.hr.core {
     }
     audio_widgets = function(netid,eci){
       record_audio_link = netid == wrangler:name()
-        => <<<a href="#{meta:host}/c/#{eci}/query/byu.hr.record/audio.html">Record audio</a><br>
+        => <<<p>
+<a href="#{meta:host}/c/#{eci}/query/byu.hr.record/audio.html">&#x1F3A4; Manage your audio</a>
+</p>
 >> | "<br>"
       audio = pds:getData("person","audio")
       play_audio_tag = audio => <<<audio controls src="#{audio}"></audio>
