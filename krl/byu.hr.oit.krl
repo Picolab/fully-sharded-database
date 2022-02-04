@@ -45,7 +45,7 @@ ruleset byu.hr.oit {
           record_audio_link = is_self => <<#{meta:host}/c/#{record_audio_eci}/query/byu.hr.record/audio.html>> | ""
           <<<div class="entity" id="#{person_id}">
 <a href="#{meta:host}/c/#{the_eci}/query/byu.hr.core/index.html?personExists=#{pe}"#{is_self => << title="this is you">> | ""}>#{full_name}</a>
-<span style="float:left#{has_audio => "" | ";visibility:hidden"}" onclick="playAudio('#{the_eci}')">🔈</span>
+<span style="float:left#{has_audio => "" | ";visibility:hidden"}" onclick="playAudio('#{the_eci}')" title="click to hear name">🔈</span>
 #{is_self => <<<a class="microphone" href="#{record_audio_link}" title="manage your audio">&#x1F3A4;</a>
 >> | ""}
 >>
