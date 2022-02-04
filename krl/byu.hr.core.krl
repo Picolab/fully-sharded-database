@@ -204,7 +204,7 @@ ruleset byu.hr.core {
     audio_widgets = function(netid,eci){
       record_audio_link = netid == wrangler:name()
         => <<<p>
-<a href="#{meta:host}/c/#{eci}/query/byu.hr.record/audio.html">&#x1F3A4; Manage your audio</a>
+<a class="button" href="#{meta:host}/c/#{eci}/query/byu.hr.record/audio.html">&#x1F3A4; Manage your audio</a>
 </p>
 >> | "<br>"
       audio = pds:getData("person","audio")
@@ -238,7 +238,7 @@ ruleset byu.hr.core {
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       head_stuff = styles + (read_only => scripts_ro() | scripts())
       html:header("person",head_stuff,url,_headers)
-      + <<<a class="button" href="#{listURL}">View list of existing persons</a>
+      + <<<a class="button" href="#{listURL}">Back to list of names</a>
 <table>
 >>
       + getData().map(function(s){s.entry(read_only)}).join("")
