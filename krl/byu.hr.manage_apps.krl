@@ -14,11 +14,19 @@ ruleset byu.hr.manage_apps {
       )
     }
     built_ins = function(){
-      { "byu.hr.record":
-        { "name":"audio",
+      {
+        "byu.hr.manage_apps":
+        {
+          "name":"manage apps",
+          "status":"active",
+          "rid":meta:rid,
+        },
+        "byu.hr.record":
+        {
+          "name":"record audio",
           "status":"built-in",
           "rid":"byu.hr.record",
-        }
+        },
       }
     }
     display_app = function(app){
@@ -36,7 +44,7 @@ ruleset byu.hr.manage_apps {
 <th>Status</th>
 <tr>Ruleset</th>
 </tr>
-#{ent:apps.map(display_app)}.join("")}
+#{ent:apps.map(display_app).values().join("")}
 </table>
 >>
     }
