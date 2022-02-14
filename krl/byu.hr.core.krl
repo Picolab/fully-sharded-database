@@ -201,6 +201,7 @@ ruleset byu.hr.core {
     }
     manage_eci = function(){
       wrangler:channels("manage_apps")
+        .reverse()
         .head()
         .get("id")
     }
