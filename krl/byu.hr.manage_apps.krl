@@ -59,7 +59,7 @@ ruleset byu.hr.manage_apps {
       )
     }
     fired {
-      ent:apps := built_ins
+      ent:apps := built_ins()
     }
   }
 }
