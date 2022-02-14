@@ -196,6 +196,14 @@ ruleset byu.hr.core {
         {"_headers":_headers}
       )
     }
+    canManageApps = function(){
+      wrangler:installedRIDs() >< "byu.hr.manage_apps"
+    }
+    manage_eci = function(){
+      wrangler:channels("manage_apps")
+        .head()
+        .get("id")
+    }
     record_audio_eci = function(){
       wrangler:channels("record_audio")
         .head()
@@ -249,6 +257,10 @@ ruleset byu.hr.core {
 You may edit your information:
 click in it, change, and press Enter key.
 Esc to undo a change.
+</p>
+>> | "")
+      + (netid == this_person && canManageApps() => <<<p>
+<a class="button" href="#{meta:host}/c/#{manage_eci()}/query/byu.hr.manage_apps/manage.html">Manage your apps</a>
 </p>
 >> | "")
       + ((this_person.match(re#^n\d{5}$#) && unlisted) => <<<p>
