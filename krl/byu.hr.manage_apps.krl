@@ -46,6 +46,7 @@ ruleset byu.hr.manage_apps {
       + <<
 <h1>Manage apps</h1>
 >>
+      + built_ins()
       + html:footer()
     }
   }
