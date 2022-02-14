@@ -27,7 +27,7 @@ ruleset byu.hr.manage_apps {
     every {
       wrangler:createChannel(
         ["manage_apps"],
-        {"allow":[{"domain":meta:rid,"name":"*"}],"deny":[]},
+        {"allow":[{"domain":"byu_hr_manage_apps","name":"*"}],"deny":[]},
         {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
       )
     }
