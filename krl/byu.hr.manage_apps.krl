@@ -42,7 +42,7 @@ ruleset byu.hr.manage_apps {
 <tr>
 <th>Name</th>
 <th>Status</th>
-<tr>Ruleset</th>
+<th>Ruleset</th>
 </tr>
 #{ent:apps.map(display_app).values().join("")}
 </table>
