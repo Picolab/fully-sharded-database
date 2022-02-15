@@ -17,7 +17,8 @@ Assets are hosted by GitHub. See the `images` [folder](https://github.com/Picola
 ## server
 
 Assuming that you have a server running in the cloud,
-follow the step in issue #15 to securely host the application.
+follow the steps in [issue #15](https://github.com/Picolab/fully-sharded-database/issues/15) to securely host the application.
+
 Install the `index` and `credential` pages from the homepage folder,
 along with other assets.
 
