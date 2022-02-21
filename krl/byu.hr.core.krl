@@ -252,7 +252,7 @@ ruleset byu.hr.core {
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       head_stuff = styles + (read_only => scripts_ro() | scripts())
       display_name = displayName().klog("display_name")
-      html:header("person",head_stuff,url,null,_headers)
+      html:header("person",head_stuff,url,display_name,_headers)
       + <<<a class="button" href="#{listURL}">Back to list of names</a>
 <table>
 >>
