@@ -6,6 +6,12 @@ ruleset byu.hr.oit {
     shares index, logout, personExists
   }
   global {
+    getLoggedInECI = function(person_id){
+      wrangler:children()
+        .filter(function(c){
+          c.get("name")==person_id
+        }).head().get("eci")
+    }
     personExists = function(netid,list){
       desig_re = ("^[^|]+[|]"+netid+"[|]").as("RegExp")
       list.isnull() => wrangler:children().any(function(c){c{"name"}==netid})
@@ -202,7 +208,9 @@ Right to be forgotten
     index = function(_headers){
       netid = html:cookies(_headers).get("netid")
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      //display_name = (pds:getData("person","Preferred Name") || pds:getData("First Name")) + " " + pds:getData("person","Last Name")
+      loggedInECI = getLoggedInECI(netid)
+      display_name = loggedInECI => ctx:query(loggedInECI, "byu.hr.core", "displayName") | null
+testing = display_name.klog("display_name")
       html:header("BY NAME",styles,url,null,_headers)
       + <<<div id="chooser">
 >>
@@ -417,10 +425,7 @@ Right to be forgotten
       isExpected = function(refr){
         refr == meta:host+"/c/"+meta:eci+"/query/"+meta:rid+"/index.html"
       }
-      eci = wrangler:children()
-        .filter(function(c){
-          c.get("name")==person_id
-        }).head().get("eci")
+      eci = getLoggedInECI(person_id)
     }
     if referer.isExpected() &&  eci.klog("eci to delete") then noop()
     fired {

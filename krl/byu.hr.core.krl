@@ -8,6 +8,7 @@ ruleset byu.hr.core {
     use module html.byu alias html
     use module io.picolabs.wrangler alias wrangler
     shares index, child_desig, record_audio_eci, adminECI, audioURL
+      , displayName
   }
   global {
     event_types = [
@@ -56,6 +57,10 @@ ruleset byu.hr.core {
       "This will populate from position management data for those employees who have a position assigned to them.",
       "This identifies full-time, 3/4 part-time, and 1/2 part-time status of the employee.",
     ]
+    displayName = function(){
+      (pds:getData("person","Preferred Name") || pds:getData("First Name"))
+        + " " + pds:getData("person","Last Name")
+    }
     getData = function(){
       [element_names,element_descriptions].pairwise(function(name,desc){
         name + " is " + pds:getData("person",name) + " (" + desc + ")"})
@@ -246,7 +251,7 @@ ruleset byu.hr.core {
       redirectURL = listURL.replace((this_person+"$").as("RegExp"),netid)
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       head_stuff = styles + (read_only => scripts_ro() | scripts())
-      //display_name = (pds:getData("person","Preferred Name") || pds:getData("First Name")) + " " + pds:getData("person","Last Name")
+      display_name = displayName().klog("display_name")
       html:header("person",head_stuff,url,null,_headers)
       + <<<a class="button" href="#{listURL}">Back to list of names</a>
 <table>
