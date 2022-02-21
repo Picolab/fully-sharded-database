@@ -42,7 +42,7 @@ ruleset byu.hr.manage_apps {
     }
     manage = function(_headers){
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      display_name = (pds:getInfo("person","Preferred Name") || pds:getInfo("First Name")) + " " + pds:getInfo("person","Last Name")
+      display_name = (pds:getData("person","Preferred Name") || pds:getData("First Name")) + " " + pds:getData("person","Last Name")
       html:header("manage apps","",url,display_name,_headers)
       + <<
 <h1>Manage apps</h1>
