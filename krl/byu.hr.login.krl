@@ -54,9 +54,11 @@ ruleset byu.hr.login {
     pre {
       loggedInECI = getLoggedInECI(netid)
       display_name = loggedInECI => ctx:query(loggedInECI, "byu.hr.core", "displayName") | ""
+      wellKnown_Rx = loggedInECI => ctx:query(loggedInECI, "io.picolabs.subscription","wellKnown_Rx") | ""
     }
     every {
       send_directive("_cookie",{"cookie": <<displayname=#{display_name}; Path=/c>>})
+      send_directive("_cookie",{"cookie": <<wellKnown_Rx=#{wellKnown_Rx}; Path=/c>>})
       send_directive("_redirect",{"url":listURL(netid)})
     }
   }
@@ -68,6 +70,7 @@ ruleset byu.hr.login {
     every {
       send_directive("_cookie",{"cookie": <<netid=; Path=/c; Max-Age:-1>>})
       send_directive("_cookie",{"cookie": <<displayname=; Path=/c; Max-Age:-1>>})
+      send_directive("_cookie",{"cookie": <<wellKnown_Rx=; Path=/c; Max-Age:-1>>})
       send_directive("_redirect",{"url":domain_root})
     }
   }
