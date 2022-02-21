@@ -59,7 +59,7 @@ ruleset byu.hr.core {
     ]
     displayName = function(){
       pname = pds:getData("person","Preferred Name").klog("pname")
-      fname = pds:getData("First Name").klog("fname")
+      fname = pds:getData("person","First Name").klog("fname")
       lname = pds:getData("person","Last Name").klog("lname")
       return (pname || fname) + " " + lname
     }
