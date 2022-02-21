@@ -202,7 +202,8 @@ Right to be forgotten
     index = function(_headers){
       netid = html:cookies(_headers).get("netid")
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      html:header("BY NAME",styles,url,_headers)
+      display_name = (pds:getData("person","Preferred Name") || pds:getData("First Name")) + " " + pds:getData("person","Last Name")
+      html:header("BY NAME",styles,url,display_name,_headers)
       + <<<div id="chooser">
 >>
       + <<<div id="lookupdiv" title="click and start typing last name" onclick="document.getElementById('lookup').focus()">
