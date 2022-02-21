@@ -246,8 +246,8 @@ ruleset byu.hr.core {
       redirectURL = listURL.replace((this_person+"$").as("RegExp"),netid)
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       head_stuff = styles + (read_only => scripts_ro() | scripts())
-      display_name = (pds:getData("person","Preferred Name") || pds:getData("First Name")) + " " + pds:getData("person","Last Name")
-      html:header("person",head_stuff,url,display_name,_headers)
+      //display_name = (pds:getData("person","Preferred Name") || pds:getData("First Name")) + " " + pds:getData("person","Last Name")
+      html:header("person",head_stuff,url,null,_headers)
       + <<<a class="button" href="#{listURL}">Back to list of names</a>
 <table>
 >>
