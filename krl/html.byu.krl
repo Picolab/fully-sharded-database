@@ -16,6 +16,7 @@ ruleset html.byu {
     user_circle_svg = "https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/user-circle-o-white.svg"
     header = function(title,scripts,logout_url,display_name,_headers) {
       netid = cookies(_headers).get("netid")
+.klog("netid")
       <<<!DOCTYPE HTML>
 <html>
   <head>
@@ -72,7 +73,7 @@ body {
 <span class="title">Calling Me By Name</span>
 <span class="logout"><a href="#{logout_url}">Sign Out</a></span>
 <img class="user-circle" src="#{user_circle_svg}">
-<span class="username">#{display_name || netid}</span>
+<span class="username">#{display_name.klog("display_name") || netid}</span>
 </div>
 >>
    | <<<script type="text/javascript">location="#{logout_url}"</script>
