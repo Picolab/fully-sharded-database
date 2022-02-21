@@ -54,7 +54,7 @@ ruleset byu.hr.login {
     pre {
       loggedInECI = getLoggedInECI(netid)
       display_name = loggedInECI => ctx:query(loggedInECI, "byu.hr.core", "displayName") | ""
-      wellKnown_Rx = loggedInECI => ctx:query(loggedInECI, "io.picolabs.subscription","wellKnown_Rx") | ""
+      wellKnown_Rx = loggedInECI => ctx:query(loggedInECI, "io.picolabs.subscription","wellKnown_Rx").get("id") | ""
     }
     every {
       send_directive("_cookie",{"cookie": <<displayname=#{display_name}; Path=/c>>})
