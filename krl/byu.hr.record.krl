@@ -16,7 +16,6 @@ ruleset byu.hr.record {
     }
     test_audio = function(_headers){
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      //display_name = (pds:getData("person","Preferred Name") || pds:getData("First Name")) + " " + pds:getData("person","Last Name")
       html:header("test audio","",url,null,_headers)
       + <<<audio controls src="#{pds:getData("person","audio")}"></audio>
 >>
@@ -54,7 +53,6 @@ audio { vertical-align: middle; }
       netid = html:cookies(_headers).get("netid")
       saved_audio = pds:getData("person","audio")
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      //display_name = (pds:getData("person","Preferred Name") || pds:getData("First Name")) + " " + pds:getData("person","Last Name")
       html:header("record audio",styles+scripts(netid),url,null,_headers)
       + <<
 <h1>Record audio of your name</h1>
