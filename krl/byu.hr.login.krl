@@ -25,6 +25,12 @@ ruleset byu.hr.login {
                | ""
       theURL+fragment
     }
+    getLoggedInECI = function(person_id){
+      wrangler:children()
+        .filter(function(c){
+          c.get("name")==person_id
+        }).head().get("eci")
+    }
   }
   rule setCookie {
     select when byu_hr_login needed
@@ -45,7 +51,14 @@ ruleset byu.hr.login {
   rule redirectToOITindex {
     select when byu_hr_login cookie_set
       netid re#(.+)# setting(netid)
-    send_directive("_redirect",{"url":listURL(netid)})
+    pre {
+      loggedInECI = getLoggedInECI(netid)
+      display_name = loggedInECI => ctx:query(loggedInECI, "byu.hr.core", "displayName") | ""
+    }
+    every {
+      send_directive("_cookie",{"cookie": <<displayname=#{display_name}; Path=/c>>})
+      send_directive("_redirect",{"url":listURL(netid)})
+    }
   }
   rule logout {
     select when byu_hr_login logout_request
@@ -54,6 +67,7 @@ ruleset byu.hr.login {
     }
     every {
       send_directive("_cookie",{"cookie": <<netid=; Path=/c; Max-Age:-1>>})
+      send_directive("_cookie",{"cookie": <<displayname=; Path=/c; Max-Age:-1>>})
       send_directive("_redirect",{"url":domain_root})
     }
   }
