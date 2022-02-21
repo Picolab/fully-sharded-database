@@ -2,6 +2,7 @@ ruleset byu.hr.manage_apps {
   meta {
     use module html.byu alias html
     use module io.picolabs.wrangler alias wrangler
+    use module io.picolabs.pds alias pds
     shares manage
   }
   global {
@@ -41,7 +42,8 @@ ruleset byu.hr.manage_apps {
     }
     manage = function(_headers){
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      html:header("manage apps","",url,_headers)
+      display_name = (pds:getInfo("person","Preferred Name") || pds:getInfo("First Name")) + " " + pds:getInfo("person","Last Name")
+      html:header("manage apps","",url,display_name,_headers)
       + <<
 <h1>Manage apps</h1>
 >>
