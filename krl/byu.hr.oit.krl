@@ -210,7 +210,7 @@ Right to be forgotten
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       loggedInECI = getLoggedInECI(netid)
       display_name = loggedInECI => ctx:query(loggedInECI, "byu.hr.core", "displayName") | null
-      html:header("BY NAME",styles,url,display_name.klog("display_name"),_headers)
+      html:header("BY NAME",styles,url,display_name,_headers)
       + <<<div id="chooser">
 >>
       + <<<div id="lookupdiv" title="click and start typing last name" onclick="document.getElementById('lookup').focus()">

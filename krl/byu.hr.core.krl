@@ -58,9 +58,9 @@ ruleset byu.hr.core {
       "This identifies full-time, 3/4 part-time, and 1/2 part-time status of the employee.",
     ]
     displayName = function(){
-      pname = pds:getData("person","Preferred Name").klog("pname")
-      fname = pds:getData("person","First Name").klog("fname")
-      lname = pds:getData("person","Last Name").klog("lname")
+      pname = pds:getData("person","Preferred Name")
+      fname = pds:getData("person","First Name")
+      lname = pds:getData("person","Last Name")
       return (pname || fname) + " " + lname
     }
     getData = function(){
