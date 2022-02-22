@@ -3,9 +3,15 @@ ruleset byu.hr.manage_apps {
     use module html.byu alias html
     use module io.picolabs.wrangler alias wrangler
     use module io.picolabs.pds alias pds
-    shares manage
+    shares manage, apps, app
   }
   global {
+    apps = function(){
+      ent:apps.keys()
+    }
+    app = function(key){
+      ent:apps.get(key)
+    }
     logout = function(_headers){
       ctx:query(
         wrangler:parent_eci(),
@@ -17,9 +23,9 @@ ruleset byu.hr.manage_apps {
     built_ins = function(){
       {}
         .put("byu.hr.manage_apps",
-          {"name":"manage apps", "status":"active", "rid":meta:rid})
+          { "name":"manage apps", "status":"active", "rid":meta:rid})
         .put("byu.hr.record",
-          {"name":"record audio", "status":"built-in", "rid":"byu.hr.record"})
+          { "name":"record audio", "status":"built-in", "rid":"byu.hr.record"})
     }
     display_app = function(app){
       <<<tr>
@@ -40,9 +46,18 @@ ruleset byu.hr.manage_apps {
 </table>
 >>
     }
+    styles = <<<style type="text/css">
+table {
+  border-collapse: collapse;
+}
+td, th {
+  padding: 5px;
+}
+</style>
+>>
     manage = function(_headers){
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      html:header("manage apps","",url,null,_headers)
+      html:header("manage apps",styles,url,null,_headers)
       + <<
 <h1>Manage apps</h1>
 >>
@@ -59,6 +74,12 @@ ruleset byu.hr.manage_apps {
         {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
       )
     }
+    fired {
+      raise byu_hr_manage_apps event "factory_reset"
+    }
+  }
+  rule resetApps {
+    select when byu_hr_manage_apps factory_reset
     fired {
       ent:apps := built_ins()
     }
