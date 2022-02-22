@@ -48,9 +48,11 @@ ruleset byu.hr.manage_apps {
     }
     styles = <<<style type="text/css">
 table {
+  border: 1px solid black;
   border-collapse: collapse;
 }
 td, th {
+  border: 1px solid black;
   padding: 5px;
 }
 </style>
