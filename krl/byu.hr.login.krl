@@ -55,10 +55,14 @@ ruleset byu.hr.login {
       loggedInECI = getLoggedInECI(netid)
       display_name = loggedInECI => ctx:query(loggedInECI, "byu.hr.core", "displayName") | ""
       wellKnown_Rx = loggedInECI => ctx:query(loggedInECI, "io.picolabs.subscription","wellKnown_Rx").get("id") | ""
+      loggedInRIDs = loggedInECI => ctx:query(loggedInECI, "io.picolabs.wrangler","installedRIDs") | []
+      maRID = "byu.hr.manage_apps"
+      apps = loggedInRIDs >< maRID => ctx:query(loggedInECI, maRID, "apps").join(",") | ""
     }
     every {
       send_directive("_cookie",{"cookie": <<displayname=#{display_name}; Path=/c>>})
       send_directive("_cookie",{"cookie": <<wellKnown_Rx=#{wellKnown_Rx}; Path=/c>>})
+      send_directive("_cookie",{"cookie": <<apps=#{apps}; Path=/c>>})
       send_directive("_redirect",{"url":listURL(netid)})
     }
   }
