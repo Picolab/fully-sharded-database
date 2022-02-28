@@ -109,4 +109,25 @@ table input {
       ent:apps := built_ins()
     }
   }
+  rule installApp {
+    select when byu_hr_manage_apps new_app
+      url re#(.+)# setting(url)
+    fired {
+      raise wrangler event "install_ruleset_request"
+        attributes {"url":url,"tx":meta:txnId}
+    }
+  }
+  rule makeInstalledRulestAnApp {
+    select when wrangler ruleset_installed where event:attr("tx") == meta:txnId
+    foreach event:attr("rids") setting(rid)
+    pre {
+      rsMeta = wrangler:rulesetMeta(rid)
+      home = rsMeta.get("shares").head() + ".html"
+      button_name = rsMeta.get("name").klog("button_name")
+      spec = {"name":home,"status":"installed","rid":rid}
+    }
+    fired {
+      ent:apps{rid} := spec
+    }
+  }
 }
