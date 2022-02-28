@@ -53,6 +53,15 @@ ruleset byu.hr.manage_apps {
 <th>Delete</th>
 </tr>
 #{ent:apps.values().map(display_app).join("")}
+<tr>
+<td colspan="3">Add an app by URL:</td>
+<td colspan="2">
+<form method="POST">
+<input type="text" name="app_url" placeholder="app URL">
+<button type="submit" onclick="alert(this.form.app_url.value);return false">Add</button>
+</form>
+</td>
+</tr>
 </table>
 >>
     }
@@ -65,6 +74,9 @@ td, th {
   border: 1px solid black;
   padding: 5px;
 }
+table input {
+  width: 90%;
+}
 </style>
 >>
     manage = function(_headers){
@@ -74,13 +86,6 @@ td, th {
 <h1>Manage apps</h1>
 >>
       + display_apps()
-      + <<<form method="POST">
-<p>
-Add an app by URL:
-<input type="text" name="app_url" placeholder="app URL">
-<button type="submit" onclick="alert(this.form.app_url.value);return false">Add</button>
-</form>
->>
       + html:footer()
     }
   }
