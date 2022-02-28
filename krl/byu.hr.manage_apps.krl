@@ -31,10 +31,13 @@ ruleset byu.hr.manage_apps {
           { "name":"record audio", "status":"built-in", "rid":"byu.hr.record"})
     }
     display_app = function(app){
+      rid = app.get("rid")
+      url = ruleset(rid).get("url")
       <<<tr>
 <td>#{app.get("name")}</td>
 <td>#{app.get("status")}</td>
 <td>#{app.get("rid")}</td>
+<td>#{url}</td>
 </tr>
 >>
     }
@@ -43,7 +46,8 @@ ruleset byu.hr.manage_apps {
 <tr>
 <th>Name</th>
 <th>Status</th>
-<th>Ruleset</th>
+<th>Ruleset ID</th>
+<th>Ruleset URI</th>
 </tr>
 #{ent:apps.values().map(display_app).join("")}
 </table>
