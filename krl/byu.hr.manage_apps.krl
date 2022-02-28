@@ -3,9 +3,12 @@ ruleset byu.hr.manage_apps {
     use module html.byu alias html
     use module io.picolabs.wrangler alias wrangler
     use module io.picolabs.pds alias pds
-    shares manage, apps, app
+    shares manage, apps, app, ruleset
   }
   global {
+    ruleset = function(rid){
+      ctx:rulesets.filter(function(rs){rs{"rid"}==rid}).head()
+    }
     apps = function(){
       ent:apps.keys()
     }
