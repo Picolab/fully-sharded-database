@@ -75,7 +75,7 @@ td, th {
 <p>
 Add an app by URL:
 <input type="text" name="app_url" placeholder="app URL">
-<button type="submit" onclick="alert(this.form.app_url.val);return false">Add</button>
+<button type="submit" onclick="alert(this.form.app_url.value);return false">Add</button>
 </form>
 >>
       + html:footer()
