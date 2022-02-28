@@ -33,11 +33,13 @@ ruleset byu.hr.manage_apps {
     display_app = function(app){
       rid = app.get("rid")
       url = ruleset(rid).get("url")
+      link_to_delete = "del "+rid
       <<<tr>
 <td>#{app.get("name")}</td>
 <td>#{app.get("status")}</td>
 <td>#{app.get("rid")}</td>
 <td>#{url}</td>
+<td>#{built_ins().keys() >< rid => "N/A" | link_to_delete}</td>
 </tr>
 >>
     }
@@ -48,6 +50,7 @@ ruleset byu.hr.manage_apps {
 <th>Status</th>
 <th>Ruleset ID</th>
 <th>Ruleset URI</th>
+<th>Delete</th>
 </tr>
 #{ent:apps.values().map(display_app).join("")}
 </table>
