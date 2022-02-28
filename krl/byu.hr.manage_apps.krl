@@ -117,7 +117,7 @@ table input {
         attributes {"url":url,"tx":meta:txnId}
     }
   }
-  rule makeInstalledRulestAnApp {
+  rule makeInstalledRulesetAnApp {
     select when wrangler ruleset_installed where event:attr("tx") == meta:txnId
     foreach event:attr("rids") setting(rid)
     pre {
