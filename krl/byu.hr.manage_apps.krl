@@ -26,18 +26,18 @@ ruleset byu.hr.manage_apps {
     built_ins = function(){
       {}
         .put("byu.hr.manage_apps",
-          { "name":"manage apps", "status":"active", "rid":meta:rid})
+          { "name":"manage.html", "status":"active", "rid":meta:rid})
         .put("byu.hr.record",
-          { "name":"record audio", "status":"built-in", "rid":"byu.hr.record"})
+          { "name":"record.html", "status":"built-in", "rid":"byu.hr.record"})
     }
     display_app = function(app){
       rid = app.get("rid")
       url = ruleset(rid).get("url")
       link_to_delete = "del "+rid
       <<<tr>
-<td>#{app.get("name")}</td>
 <td>#{app.get("status")}</td>
 <td>#{app.get("rid")}</td>
+<td>#{app.get("name")}</td>
 <td>#{url}</td>
 <td>#{built_ins().keys() >< rid => "N/A" | link_to_delete}</td>
 </tr>
@@ -46,9 +46,9 @@ ruleset byu.hr.manage_apps {
     display_apps = function(){
       <<<table>
 <tr>
-<th>Name</th>
 <th>Status</th>
 <th>Ruleset ID</th>
+<th>Home page</th>
 <th>Ruleset URI</th>
 <th>Delete</th>
 </tr>
