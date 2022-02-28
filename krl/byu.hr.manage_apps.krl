@@ -1,5 +1,6 @@
 ruleset byu.hr.manage_apps {
   meta {
+    name "apps"
     use module html.byu alias html
     use module io.picolabs.wrangler alias wrangler
     use module io.picolabs.pds alias pds

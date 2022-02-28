@@ -1,5 +1,6 @@
 ruleset byu.hr.record {
   meta {
+    name "audio"
     use module html.byu alias html
     use module io.picolabs.pds alias pds
     use module io.picolabs.wrangler alias wrangler
