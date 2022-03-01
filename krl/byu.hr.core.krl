@@ -297,7 +297,11 @@ their role: <input name="Tx_role">
 >> | ""}
 >> | "")
       + (subs:inbound() => <<<p>
-Inbound subscriptions: #{subs:inbound().encode()}
+#{displayName()} has a request
+from #{html:cookies(_headers).get("displayname") || netid}
+to acknowledge a relationship as
+#{subs:inbound("Id",subs_id).head().get("Rx_role")} to
+#{subs:inbound("Id",subs_id).head().get("Tx_role")}, respectively.
 </p>
 >> | "")
       + exports()
