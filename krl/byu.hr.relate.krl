@@ -36,4 +36,11 @@ ruleset byu.hr.relate {
       raise byu_hr_relate event "factory_reset"
     }
   }
+  rule redirectBack {
+    select when wrangler outbound_pending_subscription_added
+    pre {
+      url = event:attr("_header").get("referer")
+    }
+    if url then send_directive("_redirect",{"url":url})
+  }
 }
