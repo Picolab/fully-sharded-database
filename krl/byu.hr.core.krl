@@ -298,7 +298,7 @@ their role: <input name="Tx_role">
 >> | "")
       + (subs:inbound() => <<<p>
 #{displayName()} has a request
-from #{html:cookies(_headers).get("displayname") || netid}
+from #{wrangle:channels(subs:inbound().head().get("Rx")).head().get("tags")}
 to acknowledge a relationship as
 #{subs:inbound().head().get("Rx_role")} to
 #{subs:inbound().head().get("Tx_role")}, respectively.
