@@ -292,7 +292,9 @@ their role: <input name="Tx_role">
 <input type="hidden" name="channel_type" value="relationship">
 <button type="submit">Submit</button>
 </form>
-</div>
+</div>#{subs_id => <<
+<p>Your invitation has been sent</p>
+>> | ""}
 >> | "")
       + (subs:inbound() => <<<p>
 Inbound subscriptions: #{subs:inbound().encode()}
