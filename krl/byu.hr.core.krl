@@ -300,8 +300,8 @@ their role: <input name="Tx_role">
 #{displayName()} has a request
 from #{html:cookies(_headers).get("displayname") || netid}
 to acknowledge a relationship as
-#{subs:inbound("Id",subs_id).head().get("Rx_role")} to
-#{subs:inbound("Id",subs_id).head().get("Tx_role")}, respectively.
+#{subs:inbound().head().get("Rx_role")} to
+#{subs:inbound().head().get("Tx_role")}, respectively.
 </p>
 >> | "")
       + exports()
