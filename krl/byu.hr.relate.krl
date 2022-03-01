@@ -16,7 +16,7 @@ ruleset byu.hr.relate {
     }
     relate = function(_headers){
       url = logout(_headers).extract(re#location='([^']*)'#).head()
-      html:header("manage apps","",url,null,_headers)
+      html:header("manage relationships","",url,null,_headers)
       + <<
 <h1>Manage relationships</h1>
 >>
