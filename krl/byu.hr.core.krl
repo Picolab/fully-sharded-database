@@ -294,6 +294,10 @@ their role: <input name="Tx_role">
 </form>
 </div>
 >> | "")
+      + (subs:inbound() => <<<p>
+Inbound subscriptions: #{subs:inbound().encode()}
+</p>
+>> | "")
       + exports()
       + html:footer()
     }
