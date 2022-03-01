@@ -40,7 +40,8 @@ ruleset byu.hr.relate {
     select when wrangler outbound_pending_subscription_added
     pre {
       url = event:attr("_header").get("referer")
+      id = event:attr("Id")
     }
-    if url then send_directive("_redirect",{"url":url})
+    if url then send_directive("_redirect",{"url":url+"&id="+id})
   }
 }

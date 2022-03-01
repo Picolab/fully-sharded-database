@@ -290,7 +290,7 @@ your role: <input name="Rx_role">
 their role: <input name="Tx_role">
 <input type="hidden" name="name" value="#{netid}-#{this_person}">
 <input type="hidden" name="channel_type" value="relationship">
-<button type="submit" onclick="alert('#{wellKnown_Rx}');return false">Submit</button>
+<button type="submit">Submit</button>
 </form>
 </div>
 >> | "")
