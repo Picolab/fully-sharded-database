@@ -283,7 +283,7 @@ Esc to undo a change.
 </p>
 >> | "")
       + ((netid != this_person && wellKnown_Rx) => <<<form>
-<input type="hidden" name="wellKnown_Tx" value="#{subs:wellKnown_Rx()}">
+<input type="hidden" name="wellKnown_Tx" value="#{subs:wellKnown_Rx().get("id")}">
 Propose relationship:
 your role: <input name="Rx_role">
 their role: <input name="Tx_role">
