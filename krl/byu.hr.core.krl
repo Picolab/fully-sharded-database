@@ -7,6 +7,7 @@ ruleset byu.hr.core {
     use module io.picolabs.pds alias pds
     use module html.byu alias html
     use module io.picolabs.wrangler alias wrangler
+    use module io.picolabs.subscription alias subs
     shares index, child_desig, record_audio_eci, adminECI, audioURL
       , displayName
   }
@@ -203,6 +204,11 @@ ruleset byu.hr.core {
         {"_headers":_headers}
       )
     }
+    canRelate  = function(_headers){
+      hcs = html:cookies(_headers)
+      hcs.get("apps").split(",") >< "byu.hr.relate"
+        => hcs.get("wellKnown_Rx") | null
+    }
     canManageApps = function(){
       wrangler:installedRIDs() >< "byu.hr.manage_apps"
     }
@@ -245,6 +251,7 @@ ruleset byu.hr.core {
       netid = html:cookies(_headers).get("netid")
       unlisted = personExists == "false"
       this_person = wrangler:name()
+      wellKnown_Rx = this_person == netid => null | canRelate(_headers)
       audio_eci = record_audio_eci()
       listURL = linkToList(netid,this_person)
       baseECI = listURL.extract(re#/c/([^/]+)/query/#).head()
@@ -274,6 +281,16 @@ Esc to undo a change.
       + ((this_person.match(re#^n\d{5}$#) && unlisted) => <<<p>
 <button onclick="claim_pico('#{full_name}','#{claimURL}','#{redirectURL}')">This is me!</button>
 </p>
+>> | "")
+      + ((netid != this_person && wellKnown_Rx) => <<<form>
+<input type="hidden" name="wellKnown_Tx" value="#{subs:wellKnown_Rx()}">
+Propose relationship:
+your role: <input name="Rx_role">
+their role: <input name="Tx_role">
+<input type="hidden" name="name" value="#{netid}-#{this_person}">
+<input type="hidden" name="channel_type">
+<button type="submit" onclick="alert(wellKnown_Rx);return false">Submit</button>
+</form>
 >> | "")
       + exports()
       + html:footer()
