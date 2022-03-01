@@ -242,7 +242,7 @@ ruleset byu.hr.core {
         {"netid":netid,"position":position}
       )
     }
-    index = function(_headers,personExists){
+    index = function(_headers,personExists,subs_id){
       full_name = pds:getData("person",element_names.head())
       read_only = wrangler:channels()
         .filter(function(c){c.get("id")==meta:eci})
