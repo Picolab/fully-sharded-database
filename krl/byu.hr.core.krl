@@ -282,8 +282,8 @@ Esc to undo a change.
 <button onclick="claim_pico('#{full_name}','#{claimURL}','#{redirectURL}')">This is me!</button>
 </p>
 >> | "")
-      + ((netid != this_person && wellKnown_Rx) => <<<p>
-<form>
+      + ((netid != this_person && wellKnown_Rx) => <<<div>
+<form action="#{meta:host}/sky/event/#{wellKnown_Rx}/none/wrangler/subscription">
 <input type="hidden" name="wellKnown_Tx" value="#{subs:wellKnown_Rx().get("id")}">
 Propose relationship:
 your role: <input name="Rx_role">
@@ -292,7 +292,7 @@ their role: <input name="Tx_role">
 <input type="hidden" name="channel_type" value="relationship">
 <button type="submit" onclick="alert('#{wellKnown_Rx}');return false">Submit</button>
 </form>
-</p>
+</div>
 >> | "")
       + exports()
       + html:footer()
