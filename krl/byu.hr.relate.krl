@@ -17,8 +17,15 @@ ruleset byu.hr.relate {
     relate = function(_headers){
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       html:header("manage relationships","",url,null,_headers)
-      + <<
-<h1>Manage relationships</h1>
+      + <<<h1>Manage relationships</h1>
+>>
+      + <<<h1>Manage relationships</h1>
+>>
+      + <<<h2>Relationships that are fully established</h2>
+>>
+      + <<<h2>Relationships that you have proposed</h2>
+>>
+      + <<<h2>Relationships that others have proposed</h2>
 >>
       + html:footer()
     }
