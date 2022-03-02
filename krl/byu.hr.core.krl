@@ -297,7 +297,7 @@ their role: <input name="Tx_role">
 >> | ""}
 >> | "")
       + (netid == this_person && subs:inbound() => <<<p>
-#{displayName()} has a request
+You have a request
 from #{wrangler:picoQuery(subs:inbound().head().get("Tx"),meta:rid,"displayName")}
 to acknowledge a relationship as
 #{subs:inbound().head().get("Rx_role")} to
