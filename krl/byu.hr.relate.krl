@@ -15,17 +15,17 @@ ruleset byu.hr.relate {
         {"_headers":_headers}
       )
     }
-    displayName = function(displayname,eci){
-      thisPico = ctx:channels.any(function(c){c{"id"}==eci})
-      eci.isnull() => "unknown" |
-      thisPico     => displayname |
-                      wrangler:picoQuery(eci,"byu.hr.core","displayName")
-    }
-    render = function(list,displayname,canDelete=false,canAccept=false){
+    render = function(list,dn,canDelete=false,canAccept=false){
+      displayName = function(eci){
+        thisPico = ctx:channels.any(function(c){c{"id"}==eci})
+        eci.isnull() => "unknown" |
+        thisPico     => dn |
+                        wrangler:picoQuery(eci,"byu.hr.core","displayName")
+      }
       renderRel = function(rel){
         <<<li>#{rel.encode()}
-#{displayName(displayname,rel.get("Rx").klog("Rx")).capitalize()} as #{rel.get("Rx_role")} and
-#{displayName(displayname,rel.get("Tx").klog("Tx"))} as #{rel.get("Tx_role")}
+#{displayName(rel.get("Rx")).capitalize()} as #{rel.get("Rx_role")} and
+#{displayName(rel.get("Tx")||rel.get("wellKnown_Tx"))} as #{rel.get("Tx_role")}
 #{canDelete => " del" | ""}
 #{canAccept => " accept" | ""}
 </li>
@@ -38,20 +38,20 @@ ruleset byu.hr.relate {
 >>
     }
     relate = function(_headers){
-      displayname = html:cookies(_headers).get("displayname")
+      dn = html:cookies(_headers).get("displayname")
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       html:header("manage relationships","",url,null,_headers)
       + <<<h1>Manage relationships</h1>
 >>
       + <<<h2>Relationships that are fully established</h2>
 >>
-      + render(subs:established(),displayname,canDelete=true)
+      + render(subs:established(),dn,canDelete=true)
       + <<<h2>Relationships that you have proposed</h2>
 >>
-      + render(subs:outbound(),displayname,canDelete=true)
+      + render(subs:outbound(),dn,canDelete=true)
       + <<<h2>Relationships that others have proposed</h2>
 >>
-      + render(subs:inbound(),displayname,canAccept=true)
+      + render(subs:inbound(),dn,canAccept=true)
       + html:footer()
     }
   }
