@@ -15,17 +15,17 @@ ruleset byu.hr.relate {
         {"_headers":_headers}
       )
     }
-    displayName = function(eci){
+    displayName = function(displayname,eci){
       thisPico = ctx:channels.any(function(c){c{"id"}==eci})
       eci.isnull() => "unknown" |
-      thisPico     => html:cookies.get("displayname") |
+      thisPico     => displayname |
                       wrangler:picoQuery(eci,"byu.hr.core","displayName")
     }
-    render = function(list,canDelete=false,canAccept=false){
+    render = function(list,displayname,canDelete=false,canAccept=false){
       renderRel = function(rel){
-        <<<li>
-#{displayName(rel.get("Rx").klog("Rx")).capitalize()} as #{rel.get("Rx_role")} and
-#{displayName(rel.get("Tx").klog("Tx"))} as #{rel.get("Tx_role")}
+        <<<li>#{rel.encode()}
+#{displayName(displayname,rel.get("Rx").klog("Rx")).capitalize()} as #{rel.get("Rx_role")} and
+#{displayName(displayname,rel.get("Tx").klog("Tx"))} as #{rel.get("Tx_role")}
 #{canDelete => " del" | ""}
 #{canAccept => " accept" | ""}
 </li>
@@ -38,19 +38,20 @@ ruleset byu.hr.relate {
 >>
     }
     relate = function(_headers){
+      displayname = html:cookies(_headers).get("displayname")
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       html:header("manage relationships","",url,null,_headers)
       + <<<h1>Manage relationships</h1>
 >>
       + <<<h2>Relationships that are fully established</h2>
 >>
-      + render(subs:established(),canDelete=true)
+      + render(subs:established(),displayname,canDelete=true)
       + <<<h2>Relationships that you have proposed</h2>
 >>
-      + render(subs:outbound(),canDelete=true)
+      + render(subs:outbound(),displayname,canDelete=true)
       + <<<h2>Relationships that others have proposed</h2>
 >>
-      + render(subs:inbound(),canAccept=true)
+      + render(subs:inbound(),displayname,canAccept=true)
       + html:footer()
     }
   }
