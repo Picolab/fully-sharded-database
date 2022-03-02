@@ -22,7 +22,7 @@ ruleset byu.hr.relate {
       }
       <<<ul>
 >>
-      + list.length() => list.map(renderRel).join("") | "none"
+      + (list.length() => list.map(renderRel).join("") | "none")
       + <<</ul>
 >>
     }
