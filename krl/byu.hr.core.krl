@@ -298,7 +298,7 @@ their role: <input name="Tx_role">
 >> | "")
       + (subs:inbound() => <<<p>
 #{displayName()} has a request
-from #{wrangler:channels().filter(function(c){c.get("id")==subs:inbound().head().get("Rx")}).head().get("tags").filter(function(t){t!="relationship"}).head().split("-").filter(function(n){n!=this_person}).head()}
+from #{wrangler:channels().filter(function(c){c.get("id")==subs:inbound().head().get("Tx")}).head().wrangler:picoQuery(meta:rid,"displayName")}
 to acknowledge a relationship as
 #{subs:inbound().head().get("Rx_role")} to
 #{subs:inbound().head().get("Tx_role")}, respectively.
