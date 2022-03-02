@@ -29,7 +29,7 @@ ruleset byu.hr.manage_apps {
         .put("byu.hr.manage_apps",
           { "name":"manage.html", "status":"active", "rid":meta:rid})
         .put("byu.hr.record",
-          { "name":"record.html", "status":"built-in", "rid":"byu.hr.record"})
+          { "name":"audio.html", "status":"built-in", "rid":"byu.hr.record"})
     }
     linkToAppHome = function(app){
       rid = app.get("rid")
