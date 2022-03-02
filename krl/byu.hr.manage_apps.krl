@@ -67,9 +67,9 @@ ruleset byu.hr.manage_apps {
 <tr>
 <td colspan="3">Add an app by URL:</td>
 <td colspan="2">
-<form method="POST">
+<form method="POST" action="#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_manage_apps/new_app">
 <input type="text" name="app_url" placeholder="app URL">
-<button type="submit" onclick="alert(this.form.app_url.value);return false">Add</button>
+<button type="submit">Add</button>
 </form>
 </td>
 </tr>
@@ -122,6 +122,10 @@ table input {
   rule installApp {
     select when byu_hr_manage_apps new_app
       url re#(.+)# setting(url)
+    pre {
+      url = event:attr("_headers").get("referer")
+    }
+    if url then send_directive("_redirect",{"url":url})
     fired {
       raise wrangler event "install_ruleset_request"
         attributes {"url":url,"tx":meta:txnId}
