@@ -31,6 +31,15 @@ ruleset byu.hr.manage_apps {
         .put("byu.hr.record",
           { "name":"record.html", "status":"built-in", "rid":"byu.hr.record"})
     }
+    linkToAppHome = function(app){
+      rid = app.get("rid")
+      rsMeta = wrangler:rulesetMeta(rid)
+      button_label = rsMeta.get("name")
+      home = app.get("name")
+      eci = wrangler:channels(button_label) || null
+      rid == meta:rid || eci.isnull() => home |
+      <<<a href="#{meta:host}/c/#{eci}/query/#{rid}/#{home}">home</a> >>
+    }
     display_app = function(app){
       rid = app.get("rid")
       url = ruleset(rid).get("url")
@@ -38,7 +47,7 @@ ruleset byu.hr.manage_apps {
       <<<tr>
 <td>#{app.get("status")}</td>
 <td>#{app.get("rid")}</td>
-<td>#{app.get("name")}</td>
+<td>#{linkToAppHome(app)}</td>
 <td>#{url}</td>
 <td>#{built_ins().keys() >< rid => "N/A" | link_to_delete}</td>
 </tr>
@@ -123,7 +132,6 @@ table input {
     pre {
       rsMeta = wrangler:rulesetMeta(rid)
       home = rsMeta.get("shares").head() + ".html"
-      button_name = rsMeta.get("name").klog("button_name")
       spec = {"name":home,"status":"installed","rid":rid}
     }
     fired {
