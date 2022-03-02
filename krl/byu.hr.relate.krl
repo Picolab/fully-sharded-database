@@ -15,7 +15,7 @@ ruleset byu.hr.relate {
         {"_headers":_headers}
       )
     }
-    render = function(list,dn,canDelete=false,canAccept=false){
+    render = function(list,canDelete=false,canAccept=false){
       renderRel = function(rel){
         Rx = rel.get("Rx")
         myNetid = wrangler:name()
@@ -33,10 +33,10 @@ ruleset byu.hr.relate {
         displayName = function(eci){
           thisPico = ctx:channels.any(function(c){c{"id"}==eci})
           eci.isnull() => (Rx.isnull() =>"unknown" | findNetid()) |
-          thisPico     => dn |
+          thisPico     => "you" |
                           wrangler:picoQuery(eci,"byu.hr.core","displayName")
         }
-        <<<li>#{rel.encode()}
+        <<<li><span style="display:none">#{rel.encode()}</span>
 #{displayName(Rx).capitalize()} as #{rel.get("Rx_role")} and
 #{displayName(rel.get("Tx"))} as #{rel.get("Tx_role")}
 #{canDelete => " del" | ""}
@@ -51,20 +51,19 @@ ruleset byu.hr.relate {
 >>
     }
     relate = function(_headers){
-      dn = html:cookies(_headers).get("displayname")
       url = logout(_headers).extract(re#location='([^']*)'#).head()
       html:header("manage relationships","",url,null,_headers)
       + <<<h1>Manage relationships</h1>
 >>
       + <<<h2>Relationships that are fully established</h2>
 >>
-      + render(subs:established(),dn,canDelete=true)
+      + render(subs:established(),canDelete=true)
       + <<<h2>Relationships that you have proposed</h2>
 >>
-      + render(subs:outbound(),dn,canDelete=true)
+      + render(subs:outbound(),canDelete=true)
       + <<<h2>Relationships that others have proposed</h2>
 >>
-      + render(subs:inbound(),dn,canAccept=true)
+      + render(subs:inbound(),canAccept=true)
       + html:footer()
     }
   }
