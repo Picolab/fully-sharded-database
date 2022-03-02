@@ -16,11 +16,10 @@ ruleset byu.hr.relate {
       )
     }
     displayName = function(eci){
-      test_eci = eci.klog("eci")
       thisPico = ctx:channels.any(function(c){c{"id"}==eci})
-      thisPico
-        => html:cookies.get("displayname")
-         | wrangler:picoQuery(eci,"byu.hr.core","displayName")
+      eci.isnull() => "unknown" |
+      thisPico     => html:cookies.get("displayname") |
+                      wrangler:picoQuery(eci,"byu.hr.core","displayName")
     }
     render = function(list,canDelete=false,canAccept=false){
       renderRel = function(rel){
