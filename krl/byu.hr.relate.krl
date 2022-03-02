@@ -1,6 +1,7 @@
 ruleset byu.hr.relate {
   meta {
     name "relationships"
+    use module io.picolabs.subscription alias subs
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
     shares relate
