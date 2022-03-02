@@ -68,7 +68,7 @@ ruleset byu.hr.manage_apps {
 <td colspan="3">Add an app by URL:</td>
 <td colspan="2">
 <form method="POST" action="#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_manage_apps/new_app">
-<input type="text" name="app_url" placeholder="app URL">
+<input type="text" name="url" placeholder="app URL">
 <button type="submit">Add</button>
 </form>
 </td>
