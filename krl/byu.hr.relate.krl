@@ -15,9 +15,20 @@ ruleset byu.hr.relate {
         {"_headers":_headers}
       )
     }
+    displayName = function(eci){
+      thisPico = ctx:channels.any(function(c){c{"id"}==eci})
+      thisPico
+        => html:cookies.get("displayname")
+         | wrangler:picoQuery(eci,"byu.hr.core","displayName")
+    }
     render = function(list,canDelete=false,canAccept=false){
       renderRel = function(rel){
-        <<<li>#{rel.encode()}#{canDelete => "del" | ""}#{canAccept => "accept" | ""}</li>
+        <<<li>
+#{displayName(rel.get("Rx")).capitalize()} as #{rel.get("Rx_role")} and
+#{displayName(rel.get("Tx"))} as #{rel.get("Tx_role")}
+#{canDelete => " del" | ""}
+#{canAccept => " accept" | ""}
+</li>
 >>
       }
       <<<ul>
