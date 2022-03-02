@@ -39,8 +39,8 @@ ruleset byu.hr.relate {
         <<<li><span style="display:none">#{rel.encode()}</span>
 #{displayName(Rx).capitalize()} as #{rel.get("Rx_role")} and
 #{displayName(rel.get("Tx"))} as #{rel.get("Tx_role")}
-#{canDelete => " del" | ""}
-#{canAccept => " accept" | ""}
+#{canDelete => <<<a href="" onclick="alert('not yet available');return false">delete</a> >> | ""}
+#{canAccept => <<<a href="" onclick="alert('not yet available');return false">accept</a> >> | ""}
 </li>
 >>
       }
