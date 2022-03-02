@@ -296,7 +296,7 @@ their role: <input name="Tx_role">
 <p>Your invitation has been sent</p>
 >> | ""}
 >> | "")
-      + (subs:inbound() => <<<p>
+      + (netid == this_person && subs:inbound() => <<<p>
 #{displayName()} has a request
 from #{wrangler:picoQuery(subs:inbound().head().get("Tx"),meta:rid,"displayName")}
 to acknowledge a relationship as
