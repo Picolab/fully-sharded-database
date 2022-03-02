@@ -16,9 +16,15 @@ ruleset byu.hr.relate {
       )
     }
     render = function(list,canDelete=false,canAccept=false){
-      list.encode()
-      + canDelete
-      + canAccept
+      renderRel = function(rel){
+        <<<li>#{rel.encode()}#{canDelete => "del" | ""}#{canAccept => "accept" | ""}</li>
+>>
+      }
+      <<<ul>
+>>
+      + list.length() => list.map(renderRel).join("") | "none"
+      + <<</ul>
+>>
     }
     relate = function(_headers){
       url = logout(_headers).extract(re#location='([^']*)'#).head()
