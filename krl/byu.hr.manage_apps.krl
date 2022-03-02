@@ -36,9 +36,9 @@ ruleset byu.hr.manage_apps {
       rsMeta = wrangler:rulesetMeta(rid)
       button_label = rsMeta.get("name")
       home = app.get("name")
-      eci = wrangler:channels(button_label) || null
+      eci = wrangler:channels(button_label).head().get("id") || null
       rid == meta:rid || eci.isnull() => home |
-      <<<a href="#{meta:host}/c/#{eci}/query/#{rid}/#{home}">home</a> >>
+      <<<a href="#{meta:host}/c/#{eci}/query/#{rid}/#{home}">#{home}</a> >>
     }
     display_app = function(app){
       rid = app.get("rid")
