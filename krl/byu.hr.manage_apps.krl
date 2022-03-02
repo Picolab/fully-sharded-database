@@ -123,9 +123,9 @@ table input {
     select when byu_hr_manage_apps new_app
       url re#(.+)# setting(url)
     pre {
-      url = event:attr("_headers").get("referer")
+      referer = event:attr("_headers").get("referer")
     }
-    if url then send_directive("_redirect",{"url":url})
+    if referer then send_directive("_redirect",{"url":referer})
     fired {
       raise wrangler event "install_ruleset_request"
         attributes {"url":url,"tx":meta:txnId}
