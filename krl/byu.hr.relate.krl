@@ -19,13 +19,13 @@ ruleset byu.hr.relate {
       thisPico = ctx:channels.any(function(c){c{"id"}==eci})
       thisPico
         => html:cookies.get("displayname")
-         | wrangler:picoQuery(eci,"byu.hr.core","displayName")
+         | wrangler:picoQuery(eci.klog("eci"),"byu.hr.core","displayName")
     }
     render = function(list,canDelete=false,canAccept=false){
       renderRel = function(rel){
         <<<li>
-#{displayName(rel.get("Rx")).capitalize()} as #{rel.get("Rx_role")} and
-#{displayName(rel.get("Tx"))} as #{rel.get("Tx_role")}
+#{displayName(rel.get("Rx").klog("Rx")).capitalize()} as #{rel.get("Rx_role")} and
+#{displayName(rel.get("Tx").klog("Tx"))} as #{rel.get("Tx_role")}
 #{canDelete => " del" | ""}
 #{canAccept => " accept" | ""}
 </li>
