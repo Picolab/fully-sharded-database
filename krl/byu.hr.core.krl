@@ -302,7 +302,7 @@ their role: <input name="Tx_role">
 >> | ""}
 >> | "")
 + "".klog("after form")
-      + (netid == this_person && subs:inbound().klog("inbound") => <<<p>
+      + (netid == this_person && subs:inbound().length() => <<<p>
 You have a request
 from #{wrangler:picoQuery(subs:inbound().head().get("Tx"),meta:rid,"displayName")}
 to acknowledge a relationship as
