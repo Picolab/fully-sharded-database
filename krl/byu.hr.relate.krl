@@ -18,14 +18,14 @@ ruleset byu.hr.relate {
     render = function(list,dn,canDelete=false,canAccept=false){
       displayName = function(eci){
         thisPico = ctx:channels.any(function(c){c{"id"}==eci})
-        eci.isnull() => "unknown" |
+        eci.isnull() => "Unknown" |
         thisPico     => dn |
                         wrangler:picoQuery(eci,"byu.hr.core","displayName")
       }
       renderRel = function(rel){
         <<<li>#{rel.encode()}
 #{displayName(rel.get("Rx")).capitalize()} as #{rel.get("Rx_role")} and
-#{displayName(rel.get("Tx")||rel.get("wellKnown_Tx"))} as #{rel.get("Tx_role")}
+#{displayName(rel.get("Tx"))} as #{rel.get("Tx_role")}
 #{canDelete => " del" | ""}
 #{canAccept => " accept" | ""}
 </li>
