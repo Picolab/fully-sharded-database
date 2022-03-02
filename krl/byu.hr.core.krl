@@ -265,23 +265,28 @@ ruleset byu.hr.core {
 <table>
 >>
       + getData().map(function(s){s.entry(read_only)}).join("")
++ "".klog("after getData")
       + <<</table>
 >>
       + (audio_eci => audio_widgets(netid,audio_eci) | "")
++ "".klog("after audio_widgets")
       + (netid == this_person && not read_only => <<<p>
 You may edit your information:
 click in it, change, and press Enter key.
 Esc to undo a change.
 </p>
 >> | "")
++ "".klog("after you may edit")
       + (netid == this_person && canManageApps() => <<<p>
 <a class="button" href="#{meta:host}/c/#{manage_eci()}/query/byu.hr.manage_apps/manage.html">Manage your apps</a>
 </p>
 >> | "")
++ "".klog("after manage apps")
       + ((this_person.match(re#^n\d{5}$#) && unlisted) => <<<p>
 <button onclick="claim_pico('#{full_name}','#{claimURL}','#{redirectURL}')">This is me!</button>
 </p>
 >> | "")
++ "".klog("after this is me")
       + ((netid != this_person && wellKnown_Rx) => <<<div>
 <form action="#{meta:host}/sky/event/#{wellKnown_Rx}/none/wrangler/subscription">
 <input type="hidden" name="wellKnown_Tx" value="#{subs:wellKnown_Rx().get("id")}">
@@ -296,7 +301,8 @@ their role: <input name="Tx_role">
 <p>Your invitation has been sent</p>
 >> | ""}
 >> | "")
-      + (netid == this_person && subs:inbound() => <<<p>
++ "".klog("after form")
+      + (netid == this_person && subs:inbound().klog("inbound") => <<<p>
 You have a request
 from #{wrangler:picoQuery(subs:inbound().head().get("Tx"),meta:rid,"displayName")}
 to acknowledge a relationship as
@@ -304,7 +310,9 @@ to acknowledge a relationship as
 #{subs:inbound().head().get("Tx_role")}, respectively.
 </p>
 >> | "")
++ "".klog("after acknowledge")
       + exports()
++ "".klog("after exports")
       + html:footer()
     }
     adminECI = function(){
