@@ -16,15 +16,28 @@ ruleset byu.hr.relate {
       )
     }
     render = function(list,dn,canDelete=false,canAccept=false){
-      displayName = function(eci){
-        thisPico = ctx:channels.any(function(c){c{"id"}==eci})
-        eci.isnull() => "Unknown" |
-        thisPico     => dn |
-                        wrangler:picoQuery(eci,"byu.hr.core","displayName")
-      }
       renderRel = function(rel){
+        Rx = rel.get("Rx")
+        myNetid = wrangler:name()
+        findNetid = function(){
+          wrangler:channels()
+            .filter(function(c){c.get("id")==Rx})
+            .head()
+            .get("tags")
+            .filter(function(t){t!="relationship"})
+            .head()
+            .split("-")
+            .filter(function(n){n!=myNetid})
+            .head()
+        }
+        displayName = function(eci){
+          thisPico = ctx:channels.any(function(c){c{"id"}==eci})
+          eci.isnull() => (Rx.isnull() =>"unknown" | findNetid()) |
+          thisPico     => dn |
+                          wrangler:picoQuery(eci,"byu.hr.core","displayName")
+        }
         <<<li>#{rel.encode()}
-#{displayName(rel.get("Rx")).capitalize()} as #{rel.get("Rx_role")} and
+#{displayName(Rx).capitalize()} as #{rel.get("Rx_role")} and
 #{displayName(rel.get("Tx"))} as #{rel.get("Tx_role")}
 #{canDelete => " del" | ""}
 #{canAccept => " accept" | ""}
