@@ -37,12 +37,12 @@ ruleset byu.hr.relate {
                           wrangler:picoQuery(eci,"byu.hr.core","displayName")
         }
         del_link =
-          type == "outb" => <<<a href="#{meta:host}/sky/event/#{Rx}/cancel-outbound/wrangler/outbound_cancellation?Id=#{rel.get("Id")}" onclick="alert(this.href+' not yet available');return false">delete</a> >> |
+          type.klog("type") == "outb" => <<<a href="#{meta:host}/sky/event/#{Rx}/cancel-outbound/wrangler/outbound_cancellation?Id=#{rel.get("Id")}" onclick="alert(this.href+' not yet available');return false">delete</a> >> |
                             <<<a href="" onclick="alert('not yet available');return false">delete</a> >>
         <<<li><span style="display:none">#{rel.encode()}</span>
 #{displayName(Rx).capitalize()} as #{rel.get("Rx_role")} and
 #{displayName(rel.get("Tx"))} as #{rel.get("Tx_role")}
-#{canDelete => del_link | ""}
+#{canDelete => del_link.klog("del_link") | ""}
 #{canAccept => <<<a href="" onclick="alert('not yet available');return false">accept</a> >> | ""}
 </li>
 >>
