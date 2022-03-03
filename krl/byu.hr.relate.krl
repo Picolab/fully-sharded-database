@@ -38,6 +38,7 @@ ruleset byu.hr.relate {
         }
         del_link =
           type == "outb" => <<<a href="#{meta:host}/sky/event/#{Rx}/cancel-outbound/wrangler/outbound_cancellation?Id=#{rel.get("Id")}">delete</a> >> |
+          type == "estb" => <<<a href="#{meta:host}/sky/event/#{Rx}/delete-subscription/wrangler/subscription_cancellation?Id=#{rel.get("Id")}">delete</a> >> |
                             <<<a href="" onclick="alert('not yet available');return false">delete</a> >>
         <<<li><span style="display:none">#{rel.encode()}</span>
 #{displayName(Rx).capitalize()} as #{rel.get("Rx_role")} and
