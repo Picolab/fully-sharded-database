@@ -291,8 +291,8 @@ Esc to undo a change.
 <form action="#{meta:host}/sky/event/#{wellKnown_Rx}/none/wrangler/subscription">
 <input type="hidden" name="wellKnown_Tx" value="#{subs:wellKnown_Rx().get("id")}">
 Propose a relationship with #{displayName()}:<br>
-Your role: <input name="Rx_role"><br>
-Their role: <input name="Tx_role"><br>
+Your role: <input name="Rx_role"> (e.x. team member)<br>
+Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
 <input type="hidden" name="name" value="#{netid}-#{this_person}">
 <input type="hidden" name="channel_type" value="relationship">
 <button type="submit">Submit</button>
