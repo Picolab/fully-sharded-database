@@ -290,9 +290,9 @@ Esc to undo a change.
       + ((netid != this_person && wellKnown_Rx) => <<<div>
 <form action="#{meta:host}/sky/event/#{wellKnown_Rx}/none/wrangler/subscription">
 <input type="hidden" name="wellKnown_Tx" value="#{subs:wellKnown_Rx().get("id")}">
-Propose relationship:
-your role: <input name="Rx_role">
-their role: <input name="Tx_role">
+Propose a relationship with #{displayName()}:<br>
+Your role: <input name="Rx_role"><br>
+Their role: <input name="Tx_role"><br>
 <input type="hidden" name="name" value="#{netid}-#{this_person}">
 <input type="hidden" name="channel_type" value="relationship">
 <button type="submit">Submit</button>
