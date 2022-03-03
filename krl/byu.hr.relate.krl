@@ -15,7 +15,7 @@ ruleset byu.hr.relate {
         {"_headers":_headers}
       )
     }
-    render = function(list,type,canDelete=false,canAccept=false){
+    render = function(list,type,canDelete=true,canAccept=false){
       renderRel = function(rel){
         Rx = rel.get("Rx")
         myNetid = wrangler:name()
@@ -39,12 +39,13 @@ ruleset byu.hr.relate {
         del_link =
           type == "outb" => <<<a href="#{meta:host}/sky/event/#{Rx}/cancel-outbound/wrangler/outbound_cancellation?Id=#{rel.get("Id")}">delete</a> >> |
           type == "estb" => <<<a href="#{meta:host}/sky/event/#{Rx}/delete-subscription/wrangler/subscription_cancellation?Id=#{rel.get("Id")}">delete</a> >> |
+          type == "inbd" => <<<a href="#{meta:host}/sky/event/#{Rx}/reject-inbound/wrangler/inbound_rejection?Id=#{rel.get("Id")}">deny</a> >> |
                             <<<a href="" onclick="alert('not yet available');return false">delete</a> >>
         <<<li><span style="display:none">#{rel.encode()}</span>
 #{displayName(Rx).capitalize()} as #{rel.get("Rx_role")} and
 #{displayName(rel.get("Tx"))} as #{rel.get("Tx_role")}
+#{canAccept => <<<a href="#{meta:host}/sky/event/event/#{Rx}/accept-inbound/wrangler/pending_subscription_approval?Id=#{rel.get("Id")}" onclick="alert(this.href+' not yet available');return false">accept</a> >> | ""}
 #{canDelete => del_link.klog("del_link") | ""}
-#{canAccept => <<<a href="" onclick="alert('not yet available');return false">accept</a> >> | ""}
 </li>
 >>
       }
@@ -61,10 +62,10 @@ ruleset byu.hr.relate {
 >>
       + <<<h2>Relationships that are fully established</h2>
 >>
-      + render(subs:established(),"estb",canDelete=true)
+      + render(subs:established(),"estb")
       + <<<h2>Relationships that you have proposed</h2>
 >>
-      + render(subs:outbound(),"outb",canDelete=true)
+      + render(subs:outbound(),"outb")
       + <<<h2>Relationships that others have proposed</h2>
 >>
       + render(subs:inbound(),"inbd",canAccept=true)
