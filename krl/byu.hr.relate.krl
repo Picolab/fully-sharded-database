@@ -87,9 +87,11 @@ ruleset byu.hr.relate {
     select when wrangler outbound_pending_subscription_added
              or wrangler outbound_subscription_cancelled
     pre {
-      url = event:attr("_headers").get("referer")
-      id = event:attr("Id")
+      referer = event:attr("_headers").get("referer")
+      added_arg = "subs_id="+event:attr("Id")
+      arg_intro = referer.match(re#[?]#) => "&" | "?"
+      url = referer + arg_intro + added_arg
     }
-    if url then send_directive("_redirect",{"url":url+"&subs_id="+id})
+    if url then send_directive("_redirect",{"url":url})
   }
 }
