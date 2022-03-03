@@ -87,6 +87,7 @@ ruleset byu.hr.relate {
   rule redirectBack {
     select when wrangler outbound_pending_subscription_added
              or wrangler outbound_subscription_cancelled
+             or wrangler subscription_removed
     pre {
       referer = event:attr("_headers").get("referer")
       added_arg = "subs_id="+event:attr("Id")
