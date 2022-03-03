@@ -15,7 +15,7 @@ ruleset byu.hr.relate {
         {"_headers":_headers}
       )
     }
-    render = function(list,canDelete=false,canAccept=false){
+    render = function(list,type,canDelete=false,canAccept=false){
       renderRel = function(rel){
         Rx = rel.get("Rx")
         myNetid = wrangler:name()
@@ -36,10 +36,13 @@ ruleset byu.hr.relate {
           thisPico     => "you" |
                           wrangler:picoQuery(eci,"byu.hr.core","displayName")
         }
+        del_link =
+          type == "outb" => <<<a href="#{meta:host}/sky/event/#{Rx}/cancel-outbound/wrangler/outbound_cancellation?Id=#{rel.get("Id")}" onclick="alert(this.href+' not yet available');return false">delete</a> >> |
+                            <<<a href="" onclick="alert('not yet available');return false">delete</a> >>
         <<<li><span style="display:none">#{rel.encode()}</span>
 #{displayName(Rx).capitalize()} as #{rel.get("Rx_role")} and
 #{displayName(rel.get("Tx"))} as #{rel.get("Tx_role")}
-#{canDelete => <<<a href="" onclick="alert('not yet available');return false">delete</a> >> | ""}
+#{canDelete => del_link | ""}
 #{canAccept => <<<a href="" onclick="alert('not yet available');return false">accept</a> >> | ""}
 </li>
 >>
@@ -57,13 +60,13 @@ ruleset byu.hr.relate {
 >>
       + <<<h2>Relationships that are fully established</h2>
 >>
-      + render(subs:established(),canDelete=true)
+      + render(subs:established(),"estb",canDelete=true)
       + <<<h2>Relationships that you have proposed</h2>
 >>
-      + render(subs:outbound(),canDelete=true)
+      + render(subs:outbound(),"outb",canDelete=true)
       + <<<h2>Relationships that others have proposed</h2>
 >>
-      + render(subs:inbound(),canAccept=true)
+      + render(subs:inbound(),"inbd",canAccept=true)
       + html:footer()
     }
   }
