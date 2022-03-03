@@ -37,7 +37,7 @@ ruleset byu.hr.relate {
                           wrangler:picoQuery(eci,"byu.hr.core","displayName")
         }
         del_link =
-          type.klog("type") == "outb" => <<<a href="#{meta:host}/sky/event/#{Rx}/cancel-outbound/wrangler/outbound_cancellation?Id=#{rel.get("Id")}" onclick="alert(this.href+' not yet available');return false">delete</a> >> |
+          type == "outb" => <<<a href="#{meta:host}/sky/event/#{Rx}/cancel-outbound/wrangler/outbound_cancellation?Id=#{rel.get("Id")}">delete</a> >> |
                             <<<a href="" onclick="alert('not yet available');return false">delete</a> >>
         <<<li><span style="display:none">#{rel.encode()}</span>
 #{displayName(Rx).capitalize()} as #{rel.get("Rx_role")} and
@@ -85,10 +85,10 @@ ruleset byu.hr.relate {
   }
   rule redirectBack {
     select when wrangler outbound_pending_subscription_added
+             or wrangler outbound_subscription_cancelled
     pre {
       url = event:attr("_headers").get("referer")
       id = event:attr("Id")
-      name = event:attr("channel_name")
     }
     if url then send_directive("_redirect",{"url":url+"&subs_id="+id})
   }
