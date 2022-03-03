@@ -44,7 +44,7 @@ ruleset byu.hr.relate {
         <<<li><span style="display:none">#{rel.encode()}</span>
 #{displayName(Rx).capitalize()} as #{rel.get("Rx_role")} and
 #{displayName(rel.get("Tx"))} as #{rel.get("Tx_role")}
-#{canAccept => <<<a href="#{meta:host}/sky/event/#{Rx}/accept-inbound/wrangler/pending_subscription_approval?Id=#{rel.get("Id")}" onclick="alert(this.href+' not yet available');return false">accept</a> >> | ""}
+#{canAccept => <<<a href="#{meta:host}/sky/event/#{Rx}/accept-inbound/wrangler/pending_subscription_approval?Id=#{rel.get("Id")}">accept</a> >> | ""}
 #{canDelete => del_link.klog("del_link") | ""}
 </li>
 >>
