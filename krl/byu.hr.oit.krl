@@ -426,6 +426,7 @@ Right to be forgotten
     }
     if referer.isExpected() &&  eci.klog("eci to delete") then noop()
     fired {
+      raise wrangler event "rulesets_need_to_cleanup"
       raise wrangler event "child_deletion_request" attributes {"eci":eci}
     }
   }
