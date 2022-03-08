@@ -148,7 +148,7 @@ table input {
     if referer then send_directive("_redirect",{"url":referer})
   }
   rule deleteApp {
-    select when byu_hr_manage app_unwanted
+    select when byu_hr_manage_apps app_unwanted
       rid re#(.+)# setting(rid)
     pre {
       permanent = built_ins().keys() >< rid
