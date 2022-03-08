@@ -166,7 +166,7 @@ table input {
     if rid then noop()
     fired {
       clear ent:apps{rid}
-      raise byu_hr_manage_apps event "refresh_needed"
+      raise byu_hr_manage_apps event "refresh_needed" attributes event:attrs
     }
   }
 }
