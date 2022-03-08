@@ -44,7 +44,7 @@ ruleset byu.hr.manage_apps {
     display_app = function(app){
       rid = app.get("rid")
       url = ruleset(rid).get("url")
-      link_to_delete = "del "+rid
+      link_to_delete = <<<a href="#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_manage_apps/app_unwanted?rid=#{rid}">del</a> >>
       <<<tr>
 <td>#{app.get("status")}</td>
 <td>#{app.get("rid")}</td>
@@ -122,10 +122,6 @@ table input {
   rule installApp {
     select when byu_hr_manage_apps new_app
       url re#(.+)# setting(url)
-    pre {
-      referer = event:attr("_headers").get("referer")
-    }
-    if referer then send_directive("_redirect",{"url":referer})
     fired {
       raise wrangler event "install_ruleset_request"
         attributes {"url":url,"tx":meta:txnId}
@@ -141,6 +137,36 @@ table input {
     }
     fired {
       ent:apps{rid} := spec
+      raise byu_hr_manage_apps event "refresh_needed"
+    }
+  }
+  rule redirectBack {
+    select when byu_hr_manange_apps refresh_needed
+    pre {
+      referer = event:attr("_headers").get("referer")
+    }
+    if referer then send_directive("_redirect",{"url":referer})
+  }
+  rule deleteApp {
+    select when byu_hr_manage app_unwanted
+      rid re#(.+)# setting rid
+    pre {
+      permanent = built_ins().keys() >< rid
+    }
+    if not permanent then noop()
+    fired {
+      raise wrangler event "uninstall_ruleset_request" attributes event:attrs.put("tx",meta:txnId)
+    }
+  }
+  rule updateApps {
+    select when wrangler:ruleset_uninstalled where event:attr("tx") == meta:txnId
+    pre {
+      rid = event:attr("rid").klog("rid")
+    }
+    if rid then noop()
+    fired {
+      clear ent:apps{rid}
+      raise byu_hr_manage_apps event "refresh_needed"
     }
   }
 }
