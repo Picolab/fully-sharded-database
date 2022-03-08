@@ -424,10 +424,10 @@ Right to be forgotten
       }
       eci = getLoggedInECI(person_id)
     }
-    if referer.isExpected() &&  eci.klog("eci to delete") then noop()
-    fired {
-      raise wrangler event "rulesets_need_to_cleanup"
-      raise wrangler event "child_deletion_request" attributes {"eci":eci}
+    if referer.isExpected() &&  eci.klog("eci to delete") then
+    every {
+      event:send({"eci":eci,"domain":"wrangler","type":"rulesets_need_to_cleanup"})
+      event:send({"eci":eci,"domain":"wrangler","type":"ready_for_deletion"})
     }
   }
   rule createIndexes {
