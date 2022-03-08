@@ -124,7 +124,7 @@ table input {
       url re#(.+)# setting(url)
     fired {
       raise wrangler event "install_ruleset_request"
-        attributes {"url":url,"tx":meta:txnId}
+        attributes event:attrs.put({"url":url,"tx":meta:txnId})
     }
   }
   rule makeInstalledRulesetAnApp {
