@@ -43,7 +43,7 @@ ruleset byu.hr.login {
       alt_re = "^https://byname.byu.edu/".as("RegExp")
     }
     if referer && (referer.match(expected_re) || referer.match(alt_re)) then
-      send_directive("_cookie",{"cookie": <<netid=#{netid}; Path=/c>>})
+      send_directive("_cookie",{"cookie": <<netid=#{netid}; Path=/>})
     fired {
       raise byu_hr_login event "cookie_set" attributes event:attrs
     }
@@ -52,6 +52,8 @@ ruleset byu.hr.login {
     select when byu_hr_login cookie_set
       netid re#(.+)# setting(netid)
     pre {
+      eci = wrangler:channels("byu-hr-login").head().get("id")
+      logoutpath = <</sky/event/#{eci}/none/byu_hr_login/logout_request>>
       loggedInECI = getLoggedInECI(netid)
       display_name = loggedInECI => ctx:query(loggedInECI, "byu.hr.core", "displayName") | ""
       wellKnown_Rx = loggedInECI => ctx:query(loggedInECI, "io.picolabs.subscription","wellKnown_Rx").get("id") | ""
@@ -60,9 +62,10 @@ ruleset byu.hr.login {
       apps = loggedInRIDs >< maRID => ctx:query(loggedInECI, maRID, "apps").join(",") | ""
     }
     every {
-      send_directive("_cookie",{"cookie": <<displayname=#{display_name}; Path=/c>>})
-      send_directive("_cookie",{"cookie": <<wellKnown_Rx=#{wellKnown_Rx}; Path=/c>>})
-      send_directive("_cookie",{"cookie": <<apps=#{apps}; Path=/c>>})
+      send_directive("_cookie",{"cookie": <<logoutpath=#{logoutpath}; Path=/>>})
+      send_directive("_cookie",{"cookie": <<displayname=#{display_name}; Path=/>>})
+      send_directive("_cookie",{"cookie": <<wellKnown_Rx=#{wellKnown_Rx}; Path=/>>})
+      send_directive("_cookie",{"cookie": <<apps=#{apps}; Path=/>>})
       send_directive("_redirect",{"url":listURL(netid)})
     }
   }
@@ -72,9 +75,9 @@ ruleset byu.hr.login {
       domain_root = meta:host.extract(re#(http.*):\d+$#).head()
     }
     every {
-      send_directive("_cookie",{"cookie": <<netid=; Path=/c; Max-Age:-1>>})
-      send_directive("_cookie",{"cookie": <<displayname=; Path=/c; Max-Age:-1>>})
-      send_directive("_cookie",{"cookie": <<wellKnown_Rx=; Path=/c; Max-Age:-1>>})
+      send_directive("_cookie",{"cookie": <<netid=; Path=/; Max-Age:-1>>})
+      send_directive("_cookie",{"cookie": <<displayname=; Path=/; Max-Age:-1>>})
+      send_directive("_cookie",{"cookie": <<wellKnown_Rx=; Path=/; Max-Age:-1>>})
       send_directive("_redirect",{"url":domain_root})
     }
   }
