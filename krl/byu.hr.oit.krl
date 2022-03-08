@@ -3,7 +3,7 @@ ruleset byu.hr.oit {
     name "list of persons"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    shares index, logout, personExists
+    shares index, personExists
   }
   global {
     getLoggedInECI = function(person_id){
@@ -189,25 +189,9 @@ Right to be forgotten
 </div>
 >>
     }
-    logout = function(_headers){
-      netid = html:cookies(_headers).get("netid")
-      eci = wrangler:channels("byu-hr-login").head().get("id")
-      url = <<#{meta:host}/sky/event/#{eci}/none/byu_hr_login/logout_request>>
-      css = [
-        "float:right",
-        "margin-top:0",
-      ]
-      netid => <<<p id="whoami" style="#{css.join(";")}">
-#{netid}
-<button onclick="location='#{url}'">Logout</button>
-</p>
->>
-        | <<<script type="text/javascript">location='#{url}'</script>
->>
-    }
     index = function(_headers){
       netid = html:cookies(_headers).get("netid")
-      url = logout(_headers).extract(re#location='([^']*)'#).head()
+      url = meta:host.extract(re#(.+):\d+#).head()
       html:header("BY NAME",styles,url,null,_headers)
       + <<<div id="chooser">
 >>

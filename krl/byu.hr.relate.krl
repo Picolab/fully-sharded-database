@@ -7,14 +7,6 @@ ruleset byu.hr.relate {
     shares relate
   }
   global {
-    logout = function(_headers){
-      ctx:query(
-        wrangler:parent_eci(),
-        "byu.hr.oit",
-        "logout",
-        {"_headers":_headers}
-      )
-    }
     render = function(list,type,canDelete=true,canAccept=false){
       renderRel = function(rel){
         Rx = rel.get("Rx")
@@ -56,7 +48,7 @@ ruleset byu.hr.relate {
 >>
     }
     relate = function(_headers){
-      url = logout(_headers).extract(re#location='([^']*)'#).head()
+      url = meta:host.extract(re#(.+):\d+#).head()
       html:header("manage relationships","",url,null,_headers)
       + <<<h1>Manage relationships</h1>
 >>

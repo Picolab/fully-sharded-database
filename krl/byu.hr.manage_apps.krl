@@ -16,14 +16,6 @@ ruleset byu.hr.manage_apps {
     app = function(key){
       ent:apps.get(key)
     }
-    logout = function(_headers){
-      ctx:query(
-        wrangler:parent_eci(),
-        "byu.hr.oit",
-        "logout",
-        {"_headers":_headers}
-      )
-    }
     built_ins = function(){
       {}
         .put("byu.hr.manage_apps",
@@ -91,7 +83,7 @@ table input {
 </style>
 >>
     manage = function(_headers){
-      url = logout(_headers).extract(re#location='([^']*)'#).head()
+      url = meta:host.extract(re#(.+):\d+#).head()
       html:header("manage apps",styles,url,null,_headers)
       + <<
 <h1>Manage apps</h1>

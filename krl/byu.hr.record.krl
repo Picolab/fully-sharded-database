@@ -7,16 +7,8 @@ ruleset byu.hr.record {
     shares audio, test_audio
   }
   global {
-    logout = function(_headers){
-      ctx:query(
-        wrangler:parent_eci(),
-        "byu.hr.oit",
-        "logout",
-        {"_headers":_headers}
-      )
-    }
     test_audio = function(_headers){
-      url = logout(_headers).extract(re#location='([^']*)'#).head()
+      url = meta:host.extract(re#(.+):\d+#).head()
       html:header("test audio","",url,null,_headers)
       + <<<audio controls src="#{pds:getData("person","audio")}"></audio>
 >>
@@ -53,7 +45,7 @@ audio { vertical-align: middle; }
     audio = function(_headers){
       netid = html:cookies(_headers).get("netid")
       saved_audio = pds:getData("person","audio")
-      url = logout(_headers).extract(re#location='([^']*)'#).head()
+      url = meta:host.extract(re#(.+):\d+#).head()
       html:header("record audio",styles+scripts(netid),url,null,_headers)
       + <<
 <h1>Record audio of your name</h1>
