@@ -149,7 +149,7 @@ table input {
   }
   rule deleteApp {
     select when byu_hr_manage app_unwanted
-      rid re#(.+)# setting rid
+      rid re#(.+)# setting(rid)
     pre {
       permanent = built_ins().keys() >< rid
     }
