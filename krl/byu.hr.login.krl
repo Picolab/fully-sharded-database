@@ -43,7 +43,7 @@ ruleset byu.hr.login {
       alt_re = "^https://byname.byu.edu/".as("RegExp")
     }
     if referer && (referer.match(expected_re) || referer.match(alt_re)) then
-      send_directive("_cookie",{"cookie": <<netid=#{netid}; Path=/>})
+      send_directive("_cookie",{"cookie": <<netid=#{netid}; Path=/>>})
     fired {
       raise byu_hr_login event "cookie_set" attributes event:attrs
     }
