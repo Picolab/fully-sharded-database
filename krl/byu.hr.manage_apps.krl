@@ -141,7 +141,7 @@ table input {
     }
   }
   rule redirectBack {
-    select when byu_hr_manange_apps refresh_needed
+    select when byu_hr_manage_apps refresh_needed
     pre {
       referer = event:attr("_headers").get("referer")
     }
