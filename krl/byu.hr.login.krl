@@ -75,9 +75,11 @@ ruleset byu.hr.login {
       domain_root = meta:host.extract(re#(http.*):\d+$#).head()
     }
     every {
+      send_directive("_cookie",{"cookie": <<logoutpath=; Path=/; Max-Age:-1>>})
       send_directive("_cookie",{"cookie": <<netid=; Path=/; Max-Age:-1>>})
       send_directive("_cookie",{"cookie": <<displayname=; Path=/; Max-Age:-1>>})
       send_directive("_cookie",{"cookie": <<wellKnown_Rx=; Path=/; Max-Age:-1>>})
+      send_directive("_cookie",{"cookie": <<apps=; Path=/; Max-Age:-1>>})
       send_directive("_redirect",{"url":domain_root})
     }
   }
