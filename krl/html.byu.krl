@@ -75,6 +75,10 @@ body {
   vertical-align: middle;
   margin: 23px 0 0 0;
 }
+#byu_bar .username a {
+  color: inherit;
+  text-decoration: none;
+}
 </style>
   </head>
   <body>#{netid

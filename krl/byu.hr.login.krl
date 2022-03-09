@@ -58,7 +58,7 @@ ruleset byu.hr.login {
       display_name = loggedInECI => ctx:query(loggedInECI, "byu.hr.core", "displayName") | ""
       wellKnown_Rx = loggedInECI => ctx:query(loggedInECI, "io.picolabs.subscription","wellKnown_Rx").get("id") | ""
       homeECI = loggedInECI => ctx:query(loggedInECI, "byu.hr.core", "adminECI") | ""
-      homepath = meta:host+"/c/"+homeECI+"/query/byu.hr.core/index.html?personExists=true"
+      homepath = "/c/"+homeECI+"/query/byu.hr.core/index.html?personExists=true"
       loggedInRIDs = loggedInECI => ctx:query(loggedInECI, "io.picolabs.wrangler","installedRIDs") | []
       maRID = "byu.hr.manage_apps"
       apps = loggedInRIDs >< maRID => ctx:query(loggedInECI, maRID, "apps").join(",") | ""
