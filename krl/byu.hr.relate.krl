@@ -28,16 +28,34 @@ ruleset byu.hr.relate {
           thisPico     => "you" |
                           wrangler:picoQuery(eci,"byu.hr.core","displayName")
         }
-        del_link =
-          type == "outb" => <<<a href="#{meta:host}/sky/event/#{Rx}/cancel-outbound/wrangler/outbound_cancellation?Id=#{rel.get("Id")}">delete</a> >> |
-          type == "estb" => <<<a href="#{meta:host}/sky/event/#{Rx}/delete-subscription/wrangler/subscription_cancellation?Id=#{rel.get("Id")}">delete</a> >> |
-          type == "inbd" => <<<a href="#{meta:host}/sky/event/#{Rx}/reject-inbound/wrangler/inbound_rejection?Id=#{rel.get("Id")}">deny</a> >> |
-                            <<<a href="" onclick="alert('not yet available');return false">delete</a> >>
+        dmap = {
+          "outb":{"eid":"cancel-outbound",
+                  "type":"outbound_cancellation",
+                  "text":"delete",
+                  "msg":"that you have proposed"}
+          "estb":{"eid":"delete-subscription",
+                  "type":"subscription_cancellation",
+                  "text":"delete",
+                  "msg":"that you have established"}
+          "inbd":{"eid":"reject-inbound",
+                  "type":"inbound_rejection",
+                  "text":"decline",
+                  "msg":"that was proposed by another participant"}
+        }
+        del_link = <<<a href="#{
+          meta:host}/sky/event/#{
+          Rx}/#{
+          dmap{[type,"eid"]}}/wrangler/#{
+          dmap{[type,"type"]}}?Id=#{
+          rel.get("Id")}" onclick="return confirm('If you proceed you will #{
+          dmap{[type,"text"]}} this relationship #{
+          dmap{[type,"msg"]}}. This cannot be undone.')">#{
+          dmap{[type,"text"]}}</a> >>
         <<<li><span style="display:none">#{rel.encode()}</span>
 #{displayName(Rx).capitalize()} as #{rel.get("Rx_role")} and
 #{displayName(rel.get("Tx"))} as #{rel.get("Tx_role")}
 #{canAccept => <<<a href="#{meta:host}/sky/event/#{Rx}/accept-inbound/wrangler/pending_subscription_approval?Id=#{rel.get("Id")}">accept</a> >> | ""}
-#{canDelete => del_link.klog("del_link") | ""}
+#{canDelete => del_link | ""}
 </li>
 >>
       }
