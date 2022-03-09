@@ -36,7 +36,7 @@ ruleset byu.hr.manage_apps {
     display_app = function(app){
       rid = app.get("rid")
       url = ruleset(rid).get("url")
-      link_to_delete = <<<a href="#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_manage_apps/app_unwanted?rid=#{rid}" onclick="return confirm('This cannot be undone, and connections will be lost if you proceed.')">del</a> >>
+      link_to_delete = <<<a href="#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_manage_apps/app_unwanted?rid=#{rid}" onclick="return confirm('This cannot be undone, and data will be lost if you proceed.')">del</a> >>
       <<<tr>
 <td>#{app.get("status")}</td>
 <td>#{app.get("rid")}</td>
