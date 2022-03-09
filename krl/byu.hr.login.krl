@@ -57,6 +57,8 @@ ruleset byu.hr.login {
       loggedInECI = getLoggedInECI(netid)
       display_name = loggedInECI => ctx:query(loggedInECI, "byu.hr.core", "displayName") | ""
       wellKnown_Rx = loggedInECI => ctx:query(loggedInECI, "io.picolabs.subscription","wellKnown_Rx").get("id") | ""
+      homeECI = loggedInECI => ctx:query(loggedInECI, "byu.hr.core", "adminECI") | ""
+      homepath = meta:host+"/c/"+homeECI+"/query/byu.hr.core/index.html?personExists=true"
       loggedInRIDs = loggedInECI => ctx:query(loggedInECI, "io.picolabs.wrangler","installedRIDs") | []
       maRID = "byu.hr.manage_apps"
       apps = loggedInRIDs >< maRID => ctx:query(loggedInECI, maRID, "apps").join(",") | ""
@@ -65,6 +67,7 @@ ruleset byu.hr.login {
       send_directive("_cookie",{"cookie": <<logoutpath=#{logoutpath}; Path=/>>})
       send_directive("_cookie",{"cookie": <<displayname=#{display_name}; Path=/>>})
       send_directive("_cookie",{"cookie": <<wellKnown_Rx=#{wellKnown_Rx}; Path=/>>})
+      send_directive("_cookie",{"cookie": <<homepath=#{homepath}; Path=/>>})
       send_directive("_cookie",{"cookie": <<apps=#{apps}; Path=/>>})
       send_directive("_redirect",{"url":listURL(netid)})
     }
@@ -79,6 +82,7 @@ ruleset byu.hr.login {
       send_directive("_cookie",{"cookie": <<netid=; Path=/; Max-Age:-1>>})
       send_directive("_cookie",{"cookie": <<displayname=; Path=/; Max-Age:-1>>})
       send_directive("_cookie",{"cookie": <<wellKnown_Rx=; Path=/; Max-Age:-1>>})
+      send_directive("_cookie",{"cookie": <<homepath=; Path=/; Max-Age:-1>>})
       send_directive("_cookie",{"cookie": <<apps=; Path=/; Max-Age:-1>>})
       send_directive("_redirect",{"url":domain_root})
     }

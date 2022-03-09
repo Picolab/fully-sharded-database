@@ -23,6 +23,10 @@ ruleset html.byu {
 .klog("display_name")
       logout_path = the_cookies.get("logoutpath")
       logoutURL = logout_path => meta:host+logout_path | logout_url+"?old"
+      home_path = the_cookies.get("homepath")
+      homeURL = home_path => meta:host+home_path | null
+      displayLink = homeURL => <<<a href="#{homeURL}">#{display_name}</a> >>
+                             | null
       <<<!DOCTYPE HTML>
 <html>
   <head>
@@ -79,7 +83,7 @@ body {
 <span class="title">Calling Me By Name</span>
 <span class="logout"><a href="#{logoutURL}">Sign Out</a></span>
 <img class="user-circle" src="#{user_circle_svg}">
-<span class="username">#{display_name || netid}</span>
+<span class="username">#{displayLink || display_name || netid}</span>
 </div>
 >>
    | <<<script type="text/javascript">location="#{logoutURL}"</script>
