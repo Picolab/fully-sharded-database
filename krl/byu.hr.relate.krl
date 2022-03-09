@@ -32,15 +32,15 @@ ruleset byu.hr.relate {
           "outb":{"eid":"cancel-outbound",
                   "type":"outbound_cancellation",
                   "text":"delete",
-                  "msg":"that you have proposed"}
+                  "msg":"that you have proposed"},
           "estb":{"eid":"delete-subscription",
                   "type":"subscription_cancellation",
                   "text":"delete",
-                  "msg":"that you have established"}
+                  "msg":"that you have established"},
           "inbd":{"eid":"reject-inbound",
                   "type":"inbound_rejection",
                   "text":"decline",
-                  "msg":"that was proposed by another participant"}
+                  "msg":"that was proposed by another participant"},
         }
         del_link = <<<a href="#{
           meta:host}/sky/event/#{
