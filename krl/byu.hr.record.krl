@@ -8,8 +8,7 @@ ruleset byu.hr.record {
   }
   global {
     test_audio = function(_headers){
-      url = meta:host.extract(re#(.+):\d+#).head()
-      html:header("test audio","",url,null,_headers)
+      html:header("test audio","",null,null,_headers)
       + <<<audio controls src="#{pds:getData("person","audio")}"></audio>
 >>
       + html:footer()
@@ -46,7 +45,7 @@ audio { vertical-align: middle; }
       netid = html:cookies(_headers).get("netid")
       saved_audio = pds:getData("person","audio")
       url = meta:host.extract(re#(.+):\d+#).head()
-      html:header("record audio",styles+scripts(netid),url,null,_headers)
+      html:header("record audio",styles+scripts(netid),null,null,_headers)
       + <<
 <h1>Record audio of your name</h1>
 <h2>Instructions</h2>

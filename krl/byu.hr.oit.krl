@@ -191,8 +191,7 @@ Right to be forgotten
     }
     index = function(_headers){
       netid = html:cookies(_headers).get("netid")
-      url = meta:host.extract(re#(.+):\d+#).head()
-      html:header("BY NAME",styles,url,null,_headers)
+      html:header("BY NAME",styles,null,null,_headers)
       + <<<div id="chooser">
 >>
       + <<<div id="lookupdiv" title="click and start typing last name" onclick="document.getElementById('lookup').focus()">

@@ -250,9 +250,8 @@ ruleset byu.hr.core {
       claimECI = wrangler:channels(["system","child"]).head().get("id")
       claimURL = meta:host+"/sky/event/"+baseECI+"/claim/byu_hr_oit/pico_claimed?eci="+claimECI+"&good_name="+netid
       redirectURL = listURL.replace((this_person+"$").as("RegExp"),netid)
-      url = meta:host.extract(re#(.+):\d+#).head()
       head_stuff = styles + (read_only => scripts_ro() | scripts())
-      html:header("person",head_stuff,url,null,_headers)
+      html:header("person",head_stuff,null,null,_headers)
       + <<<a class="button" href="#{listURL}">Back to list of names</a>
 <table>
 >>

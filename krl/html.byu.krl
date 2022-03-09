@@ -14,7 +14,8 @@ ruleset html.byu {
     }
     byu_logo_svg = "https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/BYU%20logo.svg"
     user_circle_svg = "https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/user-circle-o-white.svg"
-    header = function(title,scripts,logout_url,notused,_headers) {
+    header = function(title,scripts,unused,notused,_headers) {
+      logout_url = meta:host.extract(re#(.+):\d+#).head()
       the_cookies = cookies(_headers)
       netid = the_cookies.get("netid")
 .klog("netid")

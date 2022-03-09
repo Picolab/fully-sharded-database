@@ -83,8 +83,7 @@ table input {
 </style>
 >>
     manage = function(_headers){
-      url = meta:host.extract(re#(.+):\d+#).head()
-      html:header("manage apps",styles,url,null,_headers)
+      html:header("manage apps",styles,null,null,_headers)
       + <<
 <h1>Manage apps</h1>
 >>

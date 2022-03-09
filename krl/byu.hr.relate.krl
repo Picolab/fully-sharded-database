@@ -48,8 +48,7 @@ ruleset byu.hr.relate {
 >>
     }
     relate = function(_headers){
-      url = meta:host.extract(re#(.+):\d+#).head()
-      html:header("manage relationships","",url,null,_headers)
+      html:header("manage relationships","",null,null,_headers)
       + <<<h1>Manage relationships</h1>
 >>
       + <<<h2>Relationships that are fully established</h2>
