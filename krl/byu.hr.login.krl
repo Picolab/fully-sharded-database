@@ -32,6 +32,13 @@ ruleset byu.hr.login {
         }).head().get("eci")
     }
   }
+  rule doxReferer {
+    select when byu_hr_login needed
+    pre {
+      referer = event:attrs{["_headers","referer"]}
+    }
+    send_directive("referer",{"referer":referer})
+  }
   rule setCookie {
     select when byu_hr_login needed
       netid re#(.+)# setting(netid)
@@ -40,7 +47,7 @@ ruleset byu.hr.login {
       prefix = meta:host + "/c/" + meta:eci + "/query/" + meta:rid + "/"
       pages = "(credential|password).html"
       expected_re = ("^" + prefix + pages).replace(re#[.]#g,"[.]").as("RegExp")
-      alt_re = "^https://byname.byu.edu/".as("RegExp")
+      alt_re = "^https://byname.byu.edu".as("RegExp")
     }
     if referer && (referer.match(expected_re) || referer.match(alt_re)) then
       send_directive("_cookie",{"cookie": <<netid=#{netid}; Path=/>>})
