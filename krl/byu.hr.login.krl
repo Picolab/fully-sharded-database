@@ -35,7 +35,7 @@ ruleset byu.hr.login {
   rule doxReferer {
     select when byu_hr_login needed
     pre {
-      referer = event:attrs{["_headers","referer"]}
+      referer = event:attrs{["_headers","referer"]}.klog("referer")
     }
     send_directive("referer",{"referer":referer})
   }
