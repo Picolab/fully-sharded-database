@@ -248,7 +248,7 @@ ruleset byu.hr.core {
       ack = function(){
         installEVENT = "byu_hr_core/manage_relationships_needed"
         installURL = <<#{meta:host}/c/#{meta:eci}/event/installEVENT>>
-        linkURL = wellKnown_Rx => relateURL() | installURL
+        linkURL = canRelate(_headers) => relateURL() | installURL
         subs:inbound().map(function(s){
           eci = s.get("Tx")
           thisPico = ctx:channels.any(function(c){c{"id"}==eci})
