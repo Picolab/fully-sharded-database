@@ -91,8 +91,13 @@ ruleset byu.hr.relate {
       )
     }
     fired {
-      raise byu_hr_relate event "factory_reset"
+      raise byu_hr_relate event "channel_created"
     }
+  }
+  rule keepChannelsClean {
+    select when byu_hr_relate channel_created
+    foreach wrangler:channels(["relationships"]).reverse().tail() setting(chan)
+    wrangler:deleteChannel(chan.get("id"))
   }
   rule redirectBack {
     select when wrangler outbound_pending_subscription_added
