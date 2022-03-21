@@ -251,7 +251,10 @@ ruleset byu.hr.core {
       ack = function(){
         installEVENT = "byu_hr_core/manage_relationships_needed"
         installURL = <<#{meta:host}/c/#{meta:eci}/event/#{installEVENT}>>
-        linkURL = canRelate() => relateURL() | installURL
+        hasRelateRS = canRelate()
+        linkURL = hasRelateRS => relateURL() | installURL
+        linkText = hasRelateRS => "Manage your relationships"
+                                | "Install app to manage your relationships" 
         subs:inbound().map(function(s){
           eci = s.get("Tx")
           thisPico = ctx:channels.any(function(c){c{"id"}==eci})
@@ -265,7 +268,7 @@ to acknowledge a relationship as
 >>
         }).join("")
         + <<<p>
-<a class="button" href="#{linkURL}">Manage your relationships</a>
+<a class="button" href="#{linkURL}">#{linkText}</a>
 </p>
 >>
       }
@@ -466,9 +469,11 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
         "url":relateAppURL})
     }
   }
+/* try letting byu_hr_manage_apps refresh the core page
   rule redirectToRelateHome {
     select when byu_hr_relate channel_created
       where event:attr("tx") == meta:txnId
     send_directive("_redirect",{"url":relateURL().klog("relateURL")})
   }
+*/
 }
