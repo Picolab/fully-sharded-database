@@ -12,8 +12,9 @@ ruleset byu.hr.core {
       , displayName
   }
   global {
-    tags = [meta:rid]
-    tagsRO = [meta:rid,"read-only"]
+    ridAsTag = meta:rid.replace(re#[.]#g,"-")
+    tags = [ridAsTag]
+    tagsRO = [ridAsTag,"read-only"]
     event_types = [
       "tsv_import_available",
       "json_import_available",
