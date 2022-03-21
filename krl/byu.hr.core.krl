@@ -201,10 +201,12 @@ ruleset byu.hr.core {
     }
     relateRID = "byu.hr.relate"
     relateAppURL = meta:rulesetURI.replace(re#core.krl$#,"relate.krl")
-    canRelate  = function(_headers){
+    canRelate  = function(){
+      wrangler:installedRIDs() >< relateRID
+    }
+    wellKnown_Rx = function(_headers){
       hcs = html:cookies(_headers)
-      hcs.get("apps").split(",") >< relateRID
-        => hcs.get("wellKnown_Rx") | null
+      canRelate() => hcs.get("wellKnown_Rx") | null
     }
     canManageApps = function(){
       wrangler:installedRIDs() >< "byu.hr.manage_apps"
@@ -249,7 +251,7 @@ ruleset byu.hr.core {
       ack = function(){
         installEVENT = "byu_hr_core/manage_relationships_needed"
         installURL = <<#{meta:host}/c/#{meta:eci}/event/#{installEVENT}>>
-        linkURL = canRelate(_headers) => relateURL() | installURL
+        linkURL = canRelate() => relateURL() | installURL
         subs:inbound().map(function(s){
           eci = s.get("Tx")
           thisPico = ctx:channels.any(function(c){c{"id"}==eci})
@@ -275,7 +277,7 @@ to acknowledge a relationship as
       netid = html:cookies(_headers).get("netid")
       unlisted = personExists == "false"
       this_person = wrangler:name()
-      wellKnown_Rx = this_person == netid => null | canRelate(_headers)
+      wellKnown_Rx = this_person == netid => null | wellKnown_Rx(_headers)
       audio_eci = record_audio_eci()
       listURL = linkToList(netid,this_person)
       baseECI = listURL.extract(re#/c/([^/]+)/query/#).head()
