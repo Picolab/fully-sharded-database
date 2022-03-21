@@ -331,7 +331,10 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
       + html:footer()
     }
     adminECI = function(){
-      wrangler:channels("byu-hr-core").head().get("id")
+      wrangler:channels("byu-hr-core")
+        .reverse() // most recently created channel
+        .head()
+        .get("id")
     }
     skey_names = [
       "Last Name",
