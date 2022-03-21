@@ -235,6 +235,20 @@ ruleset byu.hr.core {
       )
     }
     index = function(_headers,personExists,subs_id){
+      ack = function(){
+        subs:inbound().map(function(s){
+          eci = s.get("Tx")
+          thisPico = ctx:channels.any(function(c){c{"id"}==eci})
+          thisPico => "" | <<<p>
+You have a request
+from #{wrangler:picoQuery(eci,meta:rid,"displayName")}
+to acknowledge a relationship as
+#{s.get("Rx_role")} to
+#{s.get("Tx_role")}, respectively.
+</p>
+>>
+        }).join("")
+      }
       full_name = pds:getData("person",element_names.head())
       read_only = wrangler:channels()
         .filter(function(c){c.get("id")==meta:eci})
@@ -293,14 +307,7 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
 >> | ""}
 >> | "")
 + "".klog("after form")
-      + (netid == this_person && subs:inbound().length() => <<<p>
-You have a request
-from #{wrangler:picoQuery(subs:inbound().head().get("Tx"),meta:rid,"displayName")}
-to acknowledge a relationship as
-#{subs:inbound().head().get("Rx_role")} to
-#{subs:inbound().head().get("Tx_role")}, respectively.
-</p>
->> | "")
+      + (netid == this_person && subs:inbound().length() => ack() | "")
 + "".klog("after acknowledge")
       + exports()
 + "".klog("after exports")
