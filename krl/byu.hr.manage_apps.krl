@@ -145,6 +145,7 @@ table input {
              or byu_hr_manage_apps app_deleted
     pre {
       referer = event:attr("_headers").get("referer")
+.klog("_redirect to")
     }
     if referer then send_directive("_redirect",{"url":referer})
   }
