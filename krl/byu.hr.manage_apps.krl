@@ -137,11 +137,12 @@ table input {
     if rid != meta:rid then noop()
     fired {
       ent:apps{rid} := spec
-      raise byu_hr_manage_apps event "refresh_needed" attributes event:attrs
+      raise byu_hr_manage_apps event "app_installed" attributes event:attrs
     }
   }
   rule redirectBack {
-    select when byu_hr_manage_apps refresh_needed
+    select when byu_hr_manage_apps app_installed
+             or byu_hr_manage_apps app_deleted
     pre {
       referer = event:attr("_headers").get("referer")
     }
@@ -166,7 +167,7 @@ table input {
     if rid then noop()
     fired {
       clear ent:apps{rid}
-      raise byu_hr_manage_apps event "refresh_needed" attributes event:attrs
+      raise byu_hr_manage_apps event "app_deleted" attributes event:attrs
     }
   }
 }
