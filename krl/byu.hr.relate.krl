@@ -91,7 +91,7 @@ ruleset byu.hr.relate {
       )
     }
     fired {
-      raise byu_hr_relate event "channel_created"
+      raise byu_hr_relate event "channel_created" attributes event:attrs
     }
   }
   rule keepChannelsClean {

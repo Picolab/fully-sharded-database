@@ -467,8 +467,8 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
     }
   }
   rule redirectToRelateHome {
-    select when wrangler ruleset_installed where event:attr("rids") >< relateRID
-      && event:attr("tx") == meta:txnId
+    select when byu_hr_relate channel_created
+      where event:attr("tx") == meta:txnId
     send_directive("_redirect",{"url":relateURL().klog("relateURL")})
   }
 }
