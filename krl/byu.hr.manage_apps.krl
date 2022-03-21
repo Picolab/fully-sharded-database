@@ -128,10 +128,10 @@ table input {
       rsname = rsMeta.get("name")
       spec = {"name":home,"status":"installed","rid":rid,"rsname":rsname}
     }
+    if rid != meta:rid then noop()
     fired {
       ent:apps{rid} := spec
       raise byu_hr_manage_apps event "refresh_needed" attributes event:attrs
-        if rid != meta:rid
     }
   }
   rule redirectBack {
