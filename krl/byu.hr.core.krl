@@ -242,6 +242,7 @@ ruleset byu.hr.core {
     relateURL = function(){
       relateECI = wrangler:channels("relationships").head().get("id")
       <<#{meta:host}/c/#{relateECI}/query/#{relateRID}/relate.html>>
+.klog("relateURL")
     }
     maRID = "byu.hr.manage_apps"
     index = function(_headers,personExists,subs_id){
