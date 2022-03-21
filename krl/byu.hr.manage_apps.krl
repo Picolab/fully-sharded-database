@@ -103,7 +103,7 @@ table input {
     }
     fired {
       raise byu_hr_manage_apps event "factory_reset"
-      raise byu_hr_core event "channel_created"
+      raise byu_hr_manage_apps event "channel_created"
     }
   }
   rule resetApps {
@@ -113,7 +113,7 @@ table input {
     }
   }
   rule keepChannelsClean {
-    select when byu_hr_core channel_created
+    select when byu_hr_manage_apps channel_created
     foreach wrangler:channels(["manage_apps"]).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
