@@ -237,6 +237,8 @@ ruleset byu.hr.core {
     index = function(_headers,personExists,subs_id){
       ack = function(){
         relateECI = wrangler:channels("relationships").head().get("id")
+        relateHOME = "byu.hr.relate/relate.html"
+        relateURL = <<#{meta:host}/c/#{relateECI}/query/#{relateHOME}>>
         subs:inbound().map(function(s){
           eci = s.get("Tx")
           thisPico = ctx:channels.any(function(c){c{"id"}==eci})
@@ -249,8 +251,8 @@ to acknowledge a relationship as
 </p>
 >>
         }).join("")
-        + (relateECI => <<<<<p>
-<a class="button" href="#{meta:host}/c/#{relateECI}/query/byu.hr.relate/relate.html">Manage your relationships</a>
+        + (relateECI => <<<p>
+<a class="button" href="#{relateURL}">Manage your relationships</a>
 </p>
 >> | "")
       }
