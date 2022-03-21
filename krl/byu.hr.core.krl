@@ -247,7 +247,7 @@ ruleset byu.hr.core {
     index = function(_headers,personExists,subs_id){
       ack = function(){
         installEVENT = "byu_hr_core/manage_relationships_needed"
-        installURL = <<#{meta:host}/c/#{meta:eci}/event/installEVENT>>
+        installURL = <<#{meta:host}/c/#{meta:eci}/event/#{installEVENT}>>
         linkURL = canRelate(_headers) => relateURL() | installURL
         subs:inbound().map(function(s){
           eci = s.get("Tx")
@@ -430,17 +430,17 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
       )
     }
     fired {
-      raise byu_hr_connect event "channel_created"
-      raise byu_hr_connect event "readonly_channel_created"
+      raise byu_hr_core event "channel_created"
+      raise byu_hr_core event "readonly_channel_created"
     }
   }
   rule keepChannelsClean {
-    select when byu_hr_connect channel_created
+    select when byu_hr_core channel_created
     foreach wrangler:channels(tags).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
   rule keepReadOnlyChannelsClean {
-    select when byu_hr_connect readonly_channel_created
+    select when byu_hr_core readonly_channel_created
     foreach wrangler:channels(tagsRO).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
