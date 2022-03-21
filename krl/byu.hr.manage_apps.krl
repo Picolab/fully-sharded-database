@@ -131,6 +131,7 @@ table input {
     fired {
       ent:apps{rid} := spec
       raise byu_hr_manage_apps event "refresh_needed" attributes event:attrs
+        if rid != meta:rid
     }
   }
   rule redirectBack {
