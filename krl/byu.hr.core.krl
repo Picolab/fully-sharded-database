@@ -12,10 +12,13 @@ ruleset byu.hr.core {
       , displayName
   }
   global {
+    tags = [meta:rid]
+    tagsRO = [meta:rid,"read-only"]
     event_types = [
       "tsv_import_available",
       "json_import_available",
       "new_field_value",
+      "manage_relationships_needed"
     ]
     eventPolicy = {
       "allow": event_types.map(function(et){
@@ -196,9 +199,11 @@ ruleset byu.hr.core {
 </div>
 >>
     }
+    relateRID = "byu.hr.relate"
+    relateAppURL = meta:rulesetURI.replace(re#core.krl$#,"relate.krl")
     canRelate  = function(_headers){
       hcs = html:cookies(_headers)
-      hcs.get("apps").split(",") >< "byu.hr.relate"
+      hcs.get("apps").split(",") >< relateRID
         => hcs.get("wellKnown_Rx") | null
     }
     canManageApps = function(){
@@ -234,11 +239,16 @@ ruleset byu.hr.core {
         {"netid":netid,"position":position}
       )
     }
+    relateURL = function(){
+      relateECI = wrangler:channels("relationships").head().get("id")
+      <<#{meta:host}/c/#{relateECI}/query/#{relateRID}/relate.html>>
+    }
+    maRID = "byu.hr.manage_apps"
     index = function(_headers,personExists,subs_id){
       ack = function(){
-        relateECI = wrangler:channels("relationships").head().get("id")
-        relateHOME = "byu.hr.relate/relate.html"
-        relateURL = <<#{meta:host}/c/#{relateECI}/query/#{relateHOME}>>
+        installEVENT = "byu_hr_core/manage_relationships_needed"
+        installURL = <<#{meta:host}/c/#{meta:eci}/event/installEVENT>>
+        linkURL = wellKnown_Rx => relateURL() | installURL
         subs:inbound().map(function(s){
           eci = s.get("Tx")
           thisPico = ctx:channels.any(function(c){c{"id"}==eci})
@@ -251,10 +261,10 @@ to acknowledge a relationship as
 </p>
 >>
         }).join("")
-        + (relateECI => <<<p>
-<a class="button" href="#{relateURL}">Manage your relationships</a>
+        + <<<p>
+<a class="button" href="#{linkURL}">Manage your relationships</a>
 </p>
->> | "")
+>>
       }
       full_name = pds:getData("person",element_names.head())
       read_only = wrangler:channels()
@@ -398,18 +408,6 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
         if full_name_changed || skey_names >< name
     }
   }
-  rule initialize {
-    select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
-    every {
-      wrangler:createChannel([meta:rid],eventPolicy,queryPolicy)
-      wrangler:createChannel(
-        [meta:rid,"read-only"],
-        {"allow":[],"deny":[{"domain":"*","name":"*"}]},
-        {"allow":[{"rid":meta:rid,"name":"index"},
-                  {"rid":meta:rid,"name":"audioURL"}],"deny":[]}
-      )
-    }
-  }
   rule childDesigChanged {
     select when byu_hr_core child_designation_changed
     pre {
@@ -419,5 +417,52 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
       "domain":"byu_hr_oit", "type":"new_child_designation",
       "attrs":{"netid":netid,"child_desig":child_desig(netid)}
     })
+  }
+  rule initialize {
+    select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
+    every {
+      wrangler:createChannel(tags,eventPolicy,queryPolicy)
+      wrangler:createChannel(
+        tagsRO,
+        {"allow":[],"deny":[{"domain":"*","name":"*"}]},
+        {"allow":[{"rid":meta:rid,"name":"index"},
+                  {"rid":meta:rid,"name":"audioURL"}],"deny":[]}
+      )
+    }
+    fired {
+      raise byu_hr_connect event "channel_created"
+      raise byu_hr_connect event "readonly_channel_created"
+    }
+  }
+  rule keepChannelsClean {
+    select when byu_hr_connect channel_created
+    foreach wrangler:channels(tags).reverse().tail() setting(chan)
+    wrangler:deleteChannel(chan.get("id"))
+  }
+  rule keepReadOnlyChannelsClean {
+    select when byu_hr_connect readonly_channel_created
+    foreach wrangler:channels(tagsRO).reverse().tail() setting(chan)
+    wrangler:deleteChannel(chan.get("id"))
+  }
+  rule installManageAppsRuleset {
+    select when byu_hr_core manage_relationships_needed
+    fired {
+      raise wrangler event "install_ruleset_request"
+        attributes event:attrs.put({
+          "absoluteURL":meta:rulesetURI,"rid":maRID,"tx":meta:txnId})
+    }
+  }
+  rule installRelateRuleset {
+    select when wrangler ruleset_installed where event:attr("rids") >< maRID
+      && event:attr("tx") == meta:txnId
+    fired {
+      raise byu_hr_manage_apps event "new_app" attributes event:attrs.put({
+        "url":relateAppURL})
+    }
+  }
+  rule redirectToRelateHome {
+    select when wrangler ruleset_installed where event:attr("rids") >< relateRID
+      && event:attr("tx") == meta:txnId
+    send_directive("_redirect",{"url":relateURL()})
   }
 }
