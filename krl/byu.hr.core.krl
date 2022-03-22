@@ -202,12 +202,10 @@ ruleset byu.hr.core {
     }
     relateRID = "byu.hr.relate"
     relateAppURL = meta:rulesetURI.replace(re#core.krl$#,"relate.krl")
-    canRelate  = function(){
-      wrangler:installedRIDs() >< relateRID
-    }
     getSubsECI = function(_headers){
       hcs = html:cookies(_headers)
-      canRelate() => hcs.get("wellKnown_Rx") | null
+      hcs.get("apps").split(",") >< relateRID
+         => hcs.get("wellKnown_Rx") | null
     }
     canManageApps = function(){
       wrangler:installedRIDs() >< "byu.hr.manage_apps"
@@ -251,7 +249,7 @@ ruleset byu.hr.core {
       ack = function(){
         installEVENT = "byu_hr_core/manage_relationships_needed"
         installURL = <<#{meta:host}/sky/event/#{meta:eci}/none/#{installEVENT}>>
-        hasRelateRS = canRelate()
+        hasRelateRS = wrangler:installedRIDs() >< relateRID
         linkURL = hasRelateRS => relateURL() | installURL
         linkText = hasRelateRS => "Manage your relationships"
                                 | "Install app to manage your relationships" 
@@ -281,7 +279,6 @@ to acknowledge a relationship as
       unlisted = personExists == "false"
       this_person = wrangler:name()
       wellKnown_Rx = this_person == netid => null | getSubsECI(_headers)
-.klog("wellKnown_Rx")
       audio_eci = record_audio_eci()
       listURL = linkToList(netid,this_person)
       baseECI = listURL.extract(re#/c/([^/]+)/query/#).head()
