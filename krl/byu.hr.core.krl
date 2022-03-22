@@ -205,7 +205,7 @@ ruleset byu.hr.core {
     canRelate  = function(){
       wrangler:installedRIDs() >< relateRID
     }
-    wellKnown_Rx = function(_headers){
+    getSubsECI = function(_headers){
       hcs = html:cookies(_headers)
       canRelate() => hcs.get("wellKnown_Rx") | null
     }
@@ -280,7 +280,7 @@ to acknowledge a relationship as
       netid = html:cookies(_headers).get("netid")
       unlisted = personExists == "false"
       this_person = wrangler:name()
-      wellKnown_Rx = this_person == netid => null | wellKnown_Rx(_headers)
+      wellKnown_Rx = this_person == netid => null | getSubsECI(_headers)
       audio_eci = record_audio_eci()
       listURL = linkToList(netid,this_person)
       baseECI = listURL.extract(re#/c/([^/]+)/query/#).head()
