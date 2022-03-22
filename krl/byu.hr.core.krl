@@ -250,7 +250,7 @@ ruleset byu.hr.core {
     index = function(_headers,personExists,subs_id){
       ack = function(){
         installEVENT = "byu_hr_core/manage_relationships_needed"
-        installURL = <<#{meta:host}/c/#{meta:eci}/event/#{installEVENT}>>
+        installURL = <<#{meta:host}/sky/event/#{meta:eci}/none/#{installEVENT}>>
         hasRelateRS = canRelate()
         linkURL = hasRelateRS => relateURL() | installURL
         linkText = hasRelateRS => "Manage your relationships"
@@ -469,11 +469,4 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
         "url":relateAppURL})
     }
   }
-/* try letting byu_hr_manage_apps refresh the core page
-  rule redirectToRelateHome {
-    select when byu_hr_relate channel_created
-      where event:attr("tx") == meta:txnId
-    send_directive("_redirect",{"url":relateURL().klog("relateURL")})
-  }
-*/
 }
