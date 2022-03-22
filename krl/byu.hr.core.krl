@@ -281,6 +281,7 @@ to acknowledge a relationship as
       unlisted = personExists == "false"
       this_person = wrangler:name()
       wellKnown_Rx = this_person == netid => null | getSubsECI(_headers)
+.klog("wellKnown_Rx")
       audio_eci = record_audio_eci()
       listURL = linkToList(netid,this_person)
       baseECI = listURL.extract(re#/c/([^/]+)/query/#).head()
