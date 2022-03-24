@@ -7,6 +7,7 @@ ruleset byu.hr.login {
       listURL
   }
   global {
+    domainRoot = meta:host.extract(re#(http.*):\d+$#).head()
     policyId = "abacb4f4-ed09-427f-c4cf-08d8ef1f9e90"
     verificationResponse = function(){
       ent:lastResponse
@@ -44,12 +45,9 @@ ruleset byu.hr.login {
       netid re#(.+)# setting(netid)
     pre {
       referer = event:attrs{["_headers","referer"]}
-      prefix = meta:host + "/c/" + meta:eci + "/query/" + meta:rid + "/"
-      pages = "(credential|password).html"
-      expected_re = ("^" + prefix + pages).replace(re#[.]#g,"[.]").as("RegExp")
-      alt_re = "^https://byname.byu.edu".as("RegExp")
+      expected_re = ("^"+domainRoot).replace(re#[.]#g,"[.]").as("RegExp")
     }
-    if referer && (referer.match(expected_re) || referer.match(alt_re)) then
+    if referer && referer.match(expected_re) then
       send_directive("_cookie",{"cookie": <<netid=#{netid}; Path=/>>})
     fired {
       raise byu_hr_login event "cookie_set" attributes event:attrs
@@ -81,9 +79,6 @@ ruleset byu.hr.login {
   }
   rule logout {
     select when byu_hr_login logout_request
-    pre {
-      domain_root = meta:host.extract(re#(http.*):\d+$#).head()
-    }
     every {
       send_directive("_cookie",{"cookie": <<logoutpath=; Path=/; Max-Age:-1>>})
       send_directive("_cookie",{"cookie": <<netid=; Path=/; Max-Age:-1>>})
@@ -91,7 +86,7 @@ ruleset byu.hr.login {
       send_directive("_cookie",{"cookie": <<wellKnown_Rx=; Path=/; Max-Age:-1>>})
       send_directive("_cookie",{"cookie": <<homepath=; Path=/; Max-Age:-1>>})
       send_directive("_cookie",{"cookie": <<apps=; Path=/; Max-Age:-1>>})
-      send_directive("_redirect",{"url":domain_root})
+      send_directive("_redirect",{"url":domainRoot})
     }
   }
   rule initialize {
