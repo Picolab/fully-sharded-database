@@ -42,51 +42,35 @@ body {
   cursor: pointer;
 }
 </style>
-    <style type="text/css">
-      div#loginchoice {
-       max-width:200px;
-       text-align:center;
-       border: 2px solid grey;
-       border-radius: 5px;
-       padding: 15px 5px;
-       margin-left: 20px;
-      }
-      div#loginchoice button {
-        cursor:pointer;
-      }
-      div#loginchoice p {
-        color: grey;
-      }
-    </style>
 <script type="text/javascript">
-function trySSO(){
   var matches = document.cookie.match(/(^| )fe.saml.netId=([^;|]+)/);
   if(matches){
     var netid = matches[2];
     if(netid) location = 'https://byname.byu.edu:8080/sky/event/ckyk9tjow02tekipbastj4bz6/none/byu_hr_login/needed'+'?netid='+netid
-  } else {
-    var the_button = document.getElementById("password");
-    the_button.setAttribute("disabled", "disabled");
-    alert("Try BYU single sign on, then return to this page");
   }
-  return false;
-}
 </script>
   </head>
   <body>
 <div id="byu_bar">
 <img class="logo" src="https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/BYU%20logo.svg">
 <span class="title">Calling Me By Name</span>
-<span class="login" onclick="return trySSO()">Sign In</span>
+<span class="login">Sign In</span>
 <img class="user-circle" src="https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/user-circle-o-white.svg">
 </div>
 <h1>Login</h1>
-<p>Please demonstrate that you are currently a member of the BYU community.</p>
-<p>To obtain a credential, visit <a href="https://ycred.byu.edu" target="_blank">YCred.byu.edu</a>.</p>
-<div id="loginchoice">
-<button onclick="location='credential.html'">Login with credential</button>
-<p>OR</p>
-<button id="password" onclick="trySSO()" title="Try BYU single sign on">Login with password</button>
-</div>
+<p>We have been unable to determine that you are currently a member of the BYU community.</p>
+<h2>Suggestion</h2>
+<p>We suggest that you visit some other BYU application,
+then return to this page and reload it to try again.
+</p>
+<h2>Experimental</h2>
+<p>If you possess a verifiable credential
+that states that you are a member of the BYU community,
+and you are holding it in an agent on your mobile phone,
+you can use it to identify yourself.
+<p>
+<button onclick="if(confirm('Click OK if you possess a verifiable credential in an app on your smartphone'))location='credential.html'">Login with credential</button>
+</p>
+<p>You can obtain a verifiable credential at <a href="https://ycred.byu.edu" target="_blank">YCred.byu.edu</a>.</p>
   </body>
 </html>
