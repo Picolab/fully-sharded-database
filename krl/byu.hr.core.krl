@@ -473,7 +473,7 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
   }
   rule proposeNewRelationship {
     select when byu_hr_core new_relationship
-      Rx_role re#(.+)# TX_role re#(.+)# setting(Rx_role,Tx_role)
+      Rx_role re#(.+)# Tx_role re#(.+)# setting(Rx_role,Tx_role)
     event:send({"eci":event:attrs{"wellKnown_Rx"},
       "domain":"wrangler","type":"subscription",
       "attrs": event:attrs
