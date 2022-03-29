@@ -456,10 +456,12 @@ Right to be forgotten
       first re#(.+)#
       setting(person_id,last,first)
     pre {
+      cleaned_last = last.html:defendHTML()
+      cleaned_first = first.html:defendHTML()
       import_data = {}
-        .put(element_names[0],last+", "+first)
-        .put(element_names[1],first)
-        .put(element_names[2],last)
+        .put(element_names[0],cleaned_last+", "+cleaned_first)
+        .put(element_names[1],cleaned_first)
+        .put(element_names[2],cleaned_last)
         .encode()
     }
     fired {

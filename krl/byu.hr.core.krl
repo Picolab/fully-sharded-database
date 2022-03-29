@@ -19,7 +19,8 @@ ruleset byu.hr.core {
       "tsv_import_available",
       "json_import_available",
       "new_field_value",
-      "manage_relationships_needed"
+      "manage_relationships_needed",
+      "new_relationship"
     ]
     eventPolicy = {
       "allow": event_types.map(function(et){
@@ -314,7 +315,7 @@ Esc to undo a change.
 >> | "")
 + "".klog("after this is me")
       + ((netid != this_person && wellKnown_Rx) => <<<div>
-<form action="#{meta:host}/sky/event/#{wellKnown_Rx}/none/wrangler/subscription">
+<form action="#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_core/new_relationship">
 <input type="hidden" name="wellKnown_Tx" value="#{subs:wellKnown_Rx().get("id")}">
 Propose a relationship with #{displayName()}:<br>
 Your role: <input name="Rx_role"> (e.x. team member)<br>
@@ -401,7 +402,7 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
       where element_names >< event:attr("name")
     pre {
       name = event:attr("name")
-      valueString = event:attr("value")
+      valueString = event:attr("value").html:defendHTML()
       value = valueString == "null" => null | valueString
       full_name_changed = name == element_names.head()
     }
@@ -465,6 +466,15 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
     fired {
       raise byu_hr_manage_apps event "new_app" attributes event:attrs.put({
         "url":relateAppURL})
+    }
+  }
+  rule proposeNewRalationship {
+    select when byu_hr_core new_relationship
+      Rx_role re#(.+)# TX_role re#(.+)# setting(Rx_role,Tx_role)
+    fired {
+      raise wrangler event "subscription" attributes event:attrs
+        .put("Rx_role",Rx_role.html:defendHTML())
+        .put("Tx_role",Tx_role.html:defendHTML())
     }
   }
 }

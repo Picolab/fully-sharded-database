@@ -1,6 +1,6 @@
 ruleset html.byu {
   meta {
-    provides header, footer, cookies
+    provides header, footer, cookies, defendHTML
     shares __testing
   }
   global {
@@ -108,6 +108,15 @@ body {
         .collect(function(v){v.head()})
         .map(function(v){v.head()[1]})
     }
+    defendHTML = function(input,max_length=50){
+      length = input.length()
+      input
+        .substr(0,length>max_length => max_length | null)
+        .replace(re#&#g,"&amp;")
+        .replace(re#<#g,"&lt;")
+        .replace(re#>#g,"&gt;")
+        .replace(re#'#g,"&apos;")
+        .replace(re#"#g,"&quot;")
+    }
   }
 }
-
