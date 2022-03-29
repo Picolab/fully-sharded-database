@@ -20,7 +20,6 @@ ruleset byu.hr.core {
       "json_import_available",
       "new_field_value",
       "manage_relationships_needed",
-      "new_relationship"
     ]
     eventPolicy = {
       "allow": event_types.map(function(et){
@@ -29,6 +28,14 @@ ruleset byu.hr.core {
       "deny": []
     }
     queryPolicy = {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
+    eventPolicyRO = {
+      "allow":[{"domain":"byu_hr_core","name":"new_relationship"}],
+      "deny": []
+    }
+    queryPolicyRO = {
+      "allow":[{"rid":meta:rid,"name":"index"},
+               {"rid":meta:rid,"name":"audioURL"}],"deny":[]
+    }
     __testing = {
       "events":__testing.get("events").filter(function(e){
         e.get("domain")=="byu_hr_core" && event_types >< e.get("name")
@@ -317,6 +324,7 @@ Esc to undo a change.
       + ((netid != this_person && wellKnown_Rx) => <<<div>
 <form action="#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_core/new_relationship">
 <input type="hidden" name="wellKnown_Tx" value="#{subs:wellKnown_Rx().get("id")}">
+<input type="hidden" name="wellKnown_Rx" value="#{wellKnown_Rx}">
 Propose a relationship with #{displayName()}:<br>
 Your role: <input name="Rx_role"> (e.x. team member)<br>
 Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
@@ -430,12 +438,7 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
     every {
       wrangler:createChannel(tags,eventPolicy,queryPolicy)
-      wrangler:createChannel(
-        tagsRO,
-        {"allow":[],"deny":[{"domain":"*","name":"*"}]},
-        {"allow":[{"rid":meta:rid,"name":"index"},
-                  {"rid":meta:rid,"name":"audioURL"}],"deny":[]}
-      )
+      wrangler:createChannel(tagsRO,eventPolicyRO,queryPolicyRO)
     }
     fired {
       raise byu_hr_core event "channel_created"
@@ -468,13 +471,14 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
         "url":relateAppURL})
     }
   }
-  rule proposeNewRalationship {
+  rule proposeNewRelationship {
     select when byu_hr_core new_relationship
       Rx_role re#(.+)# TX_role re#(.+)# setting(Rx_role,Tx_role)
-    fired {
-      raise wrangler event "subscription" attributes event:attrs
+    event:send({"eci":event:attrs{"wellKnown_Rx"},
+      "domain":"wrangler","type":"subscription",
+      "attrs": event:attrs
         .put("Rx_role",Rx_role.html:defendHTML())
         .put("Tx_role",Tx_role.html:defendHTML())
-    }
+    })
   }
 }
