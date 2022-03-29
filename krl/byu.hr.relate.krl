@@ -100,17 +100,13 @@ ruleset byu.hr.relate {
     wrangler:deleteChannel(chan.get("id"))
   }
   rule redirectBack {
-    select when wrangler outbound_pending_subscription_added
-             or wrangler subscription_removed
+    select when wrangler subscription_removed
              or wrangler outbound_subscription_cancelled
              or wrangler subscription_added
              or wrangler inbound_subscription_cancelled
     pre {
       referer = event:attr("_headers").get("referer")
-      added_arg = "subs_id="+event:attr("Id")
-      arg_intro = referer.match(re#[?]#) => "&" | "?"
-      url = referer + arg_intro + added_arg
     }
-    if url then send_directive("_redirect",{"url":url})
+    if referer then send_directive("_redirect",{"url":referer})
   }
 }

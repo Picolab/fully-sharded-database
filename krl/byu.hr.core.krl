@@ -253,7 +253,7 @@ ruleset byu.hr.core {
       <<#{meta:host}/c/#{relateECI}/query/#{relateRID}/relate.html>>
     }
     maRID = "byu.hr.manage_apps"
-    index = function(_headers,personExists,subs_id){
+    index = function(_headers,personExists){
       ack = function(){
         installEVENT = "byu_hr_core/manage_relationships_needed"
         installURL = <<#{meta:host}/sky/event/#{meta:eci}/none/#{installEVENT}>>
@@ -332,9 +332,7 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
 <input type="hidden" name="channel_type" value="relationship">
 <button type="submit">Submit</button>
 </form>
-</div>#{subs_id => <<
-<p>Your invitation has been sent</p>
->> | ""}
+</div>
 >> | "")
 + "".klog("after form")
       + (netid == this_person && subs:inbound().length() => ack() | "")
@@ -474,11 +472,17 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
   rule proposeNewRelationship {
     select when byu_hr_core new_relationship
       Rx_role re#(.+)# Tx_role re#(.+)# setting(Rx_role,Tx_role)
-    event:send({"eci":event:attrs{"wellKnown_Rx"},
-      "domain":"wrangler","type":"subscription",
-      "attrs": event:attrs
-        .put("Rx_role",Rx_role.html:defendHTML())
-        .put("Tx_role",Tx_role.html:defendHTML())
-    })
+    pre {
+      referer = event:attr("_headers").get("referer")
+    }
+    every {
+      event:send({"eci":event:attrs{"wellKnown_Rx"},
+        "domain":"wrangler","type":"subscription",
+        "attrs": event:attrs
+          .put("Rx_role",Rx_role.html:defendHTML())
+          .put("Tx_role",Tx_role.html:defendHTML())
+      })
+      send_directive("_redirect",{"url":referer})
+    }
   }
 }
