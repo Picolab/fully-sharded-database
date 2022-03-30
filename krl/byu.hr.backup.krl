@@ -15,15 +15,10 @@ ruleset byu.hr.backup {
   }
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
-    pre {
-      old_channels = wrangler:channels(tags)
-        .reverse()
-        .tail()
-    }
     wrangler:createChannel(tags,eventPolicy,queryPolicy)
     fired {
       raise byu_hr_backup event "channel_created" attributes {
-        "old_channels":old_channels
+        "old_channels":wrangler:channels(tags).reverse().tail()
       }
     }
   }
