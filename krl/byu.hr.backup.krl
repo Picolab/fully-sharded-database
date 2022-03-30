@@ -3,7 +3,7 @@ ruleset byu.hr.backup {
     use module io.picolabs.wrangler alias wrangler
   }
   global {
-    tags = [meta:rid.replace(re#[.]#,"-")]
+    tags = [meta:rid.replace(re#[.]#g,"-")]
     eventPolicy = {
       "allow":[{"domain":meta:rid.replace(re#[.]#,"_"),"name":"*"}],
       "deny":[]
@@ -16,13 +16,9 @@ ruleset byu.hr.backup {
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
     pre {
-      what = tags.klog("tags")
       old_channels = wrangler:channels(tags)
-.klog("channels")
         .reverse()
-.klog("reversed")
         .tail()
-.klog("tailed")
     }
     wrangler:createChannel(tags,eventPolicy,queryPolicy)
     fired {
