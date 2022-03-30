@@ -5,7 +5,7 @@ ruleset byu.hr.backup {
   global {
     tags = [meta:rid.replace(re#[.]#g,"-")]
     eventPolicy = {
-      "allow":[{"domain":meta:rid.replace(re#[.]#,"_"),"name":"*"}],
+      "allow":[{"domain":meta:rid.replace(re#[.]#g,"_"),"name":"*"}],
       "deny":[]
     }
     queryPolicy = {
