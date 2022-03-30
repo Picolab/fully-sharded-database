@@ -1,6 +1,7 @@
 ruleset byu.hr.backup {
   meta {
     use module io.picolabs.wrangler alias wrangler
+    shares preparation
   }
   global {
     tags = [meta:rid.replace(re#[.]#g,"-")]
@@ -11,6 +12,9 @@ ruleset byu.hr.backup {
     queryPolicy = {
       "allow":[{"rid":meta:rid,"name":"*"}],
       "deny":[]
+    }
+    preparation = function(){
+      wrangler:children().length()
     }
   }
   rule initialize {
