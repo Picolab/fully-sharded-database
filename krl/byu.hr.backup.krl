@@ -17,12 +17,14 @@ ruleset byu.hr.backup {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
     wrangler:createChannel(tags,eventPolicy,queryPolicy)
     fired {
-      raise byu_hr_backup event "channel_created"
+      raise byu_hr_backup event "channel_created" attributes {
+        "old_channels":wrangler:channels(tags).reverse().tail()
+      }
     }
   }
   rule cleanupChannels {
     select when byu_hr_backup channel_created
-    foreach wrangler:channels(tags).reverse().tail() setting(chan)
+    foreach event:attr("old_channels") setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
 }
