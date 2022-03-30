@@ -5,11 +5,11 @@ ruleset byu.hr.backup {
   global {
     tags = [meta:rid.replace(re#[.]#,"-")]
     eventPolicy = {
-      "allow":[],
+      "allow":[{"domain":meta:rid.replace(re#[.]#,"_"),"name":"*"}],
       "deny":[]
     }
     queryPolicy = {
-      "allow":[],
+      "allow":[{"rid":meta:rid,"name":"*"}],
       "deny":[]
     }
   }
