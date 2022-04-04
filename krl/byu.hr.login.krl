@@ -37,6 +37,9 @@ ruleset byu.hr.login {
     select when byu_hr_login needed
     pre {
       referer = event:attrs{["_headers","referer"]}.klog("referer")
+      expected_re = ("^"+domainRoot).replace(re#[.]#g,"[.]").as("RegExp")
+        .klog("expected_re")
+      ok = referer.match(expected_re).klog("ok")
     }
     send_directive("referer",{"referer":referer})
   }
