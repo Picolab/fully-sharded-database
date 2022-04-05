@@ -7,7 +7,9 @@ ruleset byu.hr.login {
       listURL
   }
   global {
-    domainRoot = meta:host.extract(re#(http.*):\d+$#).head()
+    domainRoot = function(){
+      meta:host.extract(re#(http.*):\d+$#).head()
+    }
     policyId = "abacb4f4-ed09-427f-c4cf-08d8ef1f9e90"
     verificationResponse = function(){
       ent:lastResponse
@@ -37,7 +39,7 @@ ruleset byu.hr.login {
     select when byu_hr_login needed
     pre {
       referer = event:attrs{["_headers","referer"]}.klog("referer")
-      expected_re = ("^"+domainRoot).replace(re#[.]#g,"[.]").as("RegExp")
+      expected_re = ("^"+domainRoot()).replace(re#[.]#g,"[.]").as("RegExp")
       make_legible = expected_re.encode()
         .klog("expected_re")
       ok = referer.match(expected_re).klog("ok")
@@ -49,7 +51,7 @@ ruleset byu.hr.login {
       netid re#(.+)# setting(netid)
     pre {
       referer = event:attrs{["_headers","referer"]}
-      expected_re = ("^"+domainRoot).replace(re#[.]#g,"[.]").as("RegExp")
+      expected_re = ("^"+domainRoot()).replace(re#[.]#g,"[.]").as("RegExp")
     }
     if referer && referer.match(expected_re) then
       send_directive("_cookie",{"cookie": <<netid=#{netid}; Path=/>>})
@@ -90,7 +92,7 @@ ruleset byu.hr.login {
       send_directive("_cookie",{"cookie": <<wellKnown_Rx=; Path=/; Max-Age:-1>>})
       send_directive("_cookie",{"cookie": <<homepath=; Path=/; Max-Age:-1>>})
       send_directive("_cookie",{"cookie": <<apps=; Path=/; Max-Age:-1>>})
-      send_directive("_redirect",{"url":domainRoot})
+      send_directive("_redirect",{"url":domainRoot()})
     }
   }
   rule initialize {
