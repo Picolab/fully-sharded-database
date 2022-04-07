@@ -295,7 +295,7 @@ to acknowledge a relationship as
       redirectURL = listURL.replace((this_person+"$").as("RegExp"),netid)
       head_stuff = styles + (read_only => scripts_ro() | scripts())
       html:header("person",head_stuff,null,null,_headers)
-      + <<<a class="button" href="#{listURL}">Back to list of names</a>
+      + <<<a class="button" href="#{listURL}">See list of names</a>
 <table>
 >>
       + getData().map(function(s){s.entry(read_only)}).join("")
