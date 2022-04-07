@@ -40,7 +40,7 @@ ruleset byu.hr.login {
     pre {
       referer = event:attrs{["_headers","referer"]}.klog("referer")
       expected_re = ("^"+domainRoot()).replace(re#[.]#g,"[.]").as("RegExp")
-      make_legible = expected_re.encode()
+      make_legible = expected_re.as("String")
         .klog("expected_re")
       ok = referer.match(expected_re).klog("ok")
     }
