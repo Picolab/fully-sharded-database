@@ -201,7 +201,9 @@ ruleset byu.hr.core {
       value_desc = cells.tail().join(" is ").extract(re#(.*) \((This .*)\)$#)
       value = value_desc.head()
       desc = value_desc.tail().join("")
-      <<<td title="#{desc}">#{name}</td>
+      onclick = read_only => ""
+                           | << onclick="this.nextElementSibling.focus()">>
+      <<<td title="#{desc}"#{onclick}>#{name}</td>
 <td#{read_only => "" | cell_attrs.join(" ")}>#{value}</td>
 >>
     }
@@ -320,8 +322,7 @@ to acknowledge a relationship as
 + "".klog("after audio_widgets")
       + (netid == this_person && not read_only => <<<p>
 You may edit your information:
-click in it, change, and press Enter key.
-Esc to undo a change.
+click, change, and press Enter key (or Esc to undo a change).
 </p>
 >> | "")
 + "".klog("after you may edit")
