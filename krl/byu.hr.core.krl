@@ -140,7 +140,12 @@ ruleset byu.hr.core {
     scripts = function(){
 <<    <script type="text/javascript">
       var updURL = "#{meta:host}/c/#{meta:eci}/event/byu_hr_core/new_field_value?";
-      function selAll(cell){
+      function cache_it(ev){
+        var e = ev || window.event;
+        var thespan = e.target.textContent;
+        var thename = e.target.previousElementSibling.textContent;
+        sessionStorage.setItem(thename,thespan);
+        var cell = e.target;
         window.getSelection().selectAllChildren(cell);
       }
       function munge(ev) {
@@ -151,14 +156,20 @@ ruleset byu.hr.core {
           e.target.blur();
         }else if(keyCode==13 || keyCode==="Enter"
             || keyCode==9 || keyCode==="Tab"){
-          var thespan = e.target.textContent;
-          // persist
-          var thename = e.target.previousElementSibling.textContent;
+          e.preventDefault();
+          e.target.blur();
+          return false;
+        }
+      }
+      function save_it(ev){
+        var e = ev || window.event;
+        var thespan = e.target.textContent;
+        var thename = e.target.previousElementSibling.textContent;
+        var oldspan = sessionStorage.getItem(thename);
+        if(oldspan && oldspan !== thespan){
           var httpReq = new XMLHttpRequest();
           httpReq.open("GET",updURL+"name="+thename+"&value="+thespan);
           httpReq.send();
-          e.target.blur();
-          return false;
         }
       }
     </script>
@@ -180,15 +191,19 @@ ruleset byu.hr.core {
 >>
 }
     table_row = function(string,read_only){
-      cell_attrs =
-        << contenteditable onkeydown="munge(event)" onfocus="selAll(this)">>
+      cell_attrs = [
+        "","contenteditable",
+        <<onfocus="cache_it(event)">>,
+        <<onkeydown="munge(event)">>,
+        <<onblur="save_it(event)">>,
+      ]
       cells = string.split(" is ")
       name = cells.head()
       value_desc = cells.tail().join(" is ").extract(re#(.*) \((This .*)\)$#)
       value = value_desc.head()
       desc = value_desc.tail().join("")
       <<<td title="#{desc}">#{name}</td>
-<td#{read_only => "" | cell_attrs}>#{value}</td>
+<td#{read_only => "" | cell_attrs.join(" ")}>#{value}</td>
 >>
     }
     entry = function(string,read_only){
