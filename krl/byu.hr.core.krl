@@ -156,7 +156,6 @@ ruleset byu.hr.core {
           e.target.blur();
         }else if(keyCode==13 || keyCode==="Enter"
             || keyCode==9 || keyCode==="Tab"){
-          e.preventDefault();
           e.target.blur();
           return false;
         }
