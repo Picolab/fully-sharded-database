@@ -145,15 +145,15 @@ ruleset byu.hr.core {
         var thespan = e.target.textContent;
         var thename = e.target.previousElementSibling.textContent;
         sessionStorage.setItem(thename,thespan);
-        var cell = e.target;
-        window.getSelection().selectAllChildren(cell);
+        window.getSelection().selectAllChildren(e.target);
       }
       function munge(ev) {
         var e = ev || window.event;
         var keyCode = e.code || e.keyCode;
         if(keyCode==27 || keyCode==="Escape"){
-          document.execCommand("undo");
-          e.target.blur();
+          var thename = e.target.previousElementSibling.textContent;
+          e.target.textContent = sessionStorage.getItem(thename);
+          window.getSelection().selectAllChildren(e.target);
         }else if(keyCode==13 || keyCode==="Enter"
             || keyCode==9 || keyCode==="Tab"){
           e.target.blur();
