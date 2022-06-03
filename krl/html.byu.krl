@@ -1,26 +1,15 @@
 ruleset html.byu {
   meta {
     provides header, footer, cookies, defendHTML
-    shares __testing
   }
   global {
-    __testing = { "queries":
-      [ { "name": "__testing" }
-      //, { "name": "entry", "args": [ "key" ] }
-      ] , "events":
-      [ //{ "domain": "d1", "type": "t1" }
-      //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
-      ]
-    }
     byu_logo_svg = "https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/BYU%20logo.svg"
     user_circle_svg = "https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/user-circle-o-white.svg"
     header = function(title,scripts,unused,notused,_headers) {
       logout_url = meta:host.extract(re#(.+):\d+#).head()
       the_cookies = cookies(_headers)
       netid = the_cookies.get("netid")
-.klog("netid")
       display_name = the_cookies.get("displayname")
-.klog("display_name")
       logout_path = the_cookies.get("logoutpath")
       logoutURL = logout_path => meta:host+logout_path | logout_url+"?old"
       home_path = the_cookies.get("homepath")
