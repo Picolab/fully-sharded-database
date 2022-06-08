@@ -69,9 +69,10 @@ ruleset byu.hr.relate {
 </li>
 >>
       }
+      the_li = list.map(renderRel).join("")
       <<<ul>
 >>
-      + (list.length() => list.map(renderRel).join("") | "none")
+      + (the_li => the_li | "none")
       + <<</ul>
 >>
     }
