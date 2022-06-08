@@ -1,7 +1,7 @@
 ruleset byu.hr.backup {
   meta {
     use module io.picolabs.wrangler alias wrangler
-    shares preparation
+    shares preparation, names
   }
   global {
     tags = [meta:rid.replace(re#[.]#g,"-")]
@@ -15,6 +15,9 @@ ruleset byu.hr.backup {
     }
     preparation = function(){
       wrangler:children().length()
+    }
+    names = function(){
+      wrangler:children().map(function(c){c{"name"}})
     }
   }
   rule initialize {
