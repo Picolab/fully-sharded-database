@@ -23,10 +23,14 @@ ruleset byu.hr.relate {
             .head()
         }
         displayName = function(eci){
+huh = eci.klog("eci for displayName")
           thisPico = ctx:channels.any(function(c){c{"id"}==eci})
+.klog("thisPico")
+return_value =
           eci.isnull() => (Rx.isnull() =>"unknown" | findNetid()) |
           thisPico     => "you" |
                           wrangler:picoQuery(eci,"byu.hr.core","displayName")
+return return_value.klog("return_value")
         }
         dmap = {
           "outb":{"eid":"cancel-outbound",
