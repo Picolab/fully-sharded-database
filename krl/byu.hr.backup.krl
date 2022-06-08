@@ -17,7 +17,9 @@ ruleset byu.hr.backup {
       wrangler:children().length()
     }
     names = function(){
-      wrangler:children().map(function(c){c{"name"}})
+      wrangler:children()
+        .map(function(c){c{"name"}})
+        .filter(function(n){not n.match(re#^n\d{5}$#)})
     }
   }
   rule initialize {
