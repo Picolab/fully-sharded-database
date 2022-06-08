@@ -7,6 +7,8 @@ ruleset byu.hr.relate {
     shares relate
   }
   global {
+    coreRID = "byu.hr.core"
+    wranglerRID = "io.picolabs.wrangler"
     render = function(list,type,canDelete=true,canAccept=false){
       renderRel = function(rel){
         Rx = rel.get("Rx")
@@ -22,15 +24,16 @@ ruleset byu.hr.relate {
             .filter(function(n){n!=myNetid})
             .head()
         }
+        otherDisplayName = function(eci){
+          oRIDs = wrangler:picoQuery(eci,wranglerRID,"installedRIDs")
+          isParticipant = oRIDs >< coreRID
+          isParticipant => wrangler:picoQuery(eci,coreRID,"displayName")
+                         | wrangler:picoQuery(eci,wranglerRID,"name")
+        }
         displayName = function(eci){
-huh = eci.klog("eci for displayName")
           thisPico = ctx:channels.any(function(c){c{"id"}==eci})
-.klog("thisPico")
-return_value =
           eci.isnull() => (Rx.isnull() =>"unknown" | findNetid()) |
-          thisPico     => "you" |
-                          wrangler:picoQuery(eci,"byu.hr.core","displayName")
-return return_value.klog("return_value")
+          thisPico     => "you" | otherDisplayName(eci)
         }
         dmap = {
           "outb":{"eid":"cancel-outbound",
