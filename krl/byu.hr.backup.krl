@@ -1,6 +1,7 @@
 ruleset byu.hr.backup {
   meta {
     use module io.picolabs.wrangler alias wrangler
+    use module io.picolabs.subscription alias subs
     shares preparation, names
   }
   global {
@@ -13,13 +14,16 @@ ruleset byu.hr.backup {
       "allow":[{"rid":meta:rid,"name":"*"}],
       "deny":[]
     }
+    isSurrogate = function(n){
+      n.match(re#^n\d{5}$#)
+    }
     preparation = function(){
       wrangler:children().length()
     }
     names = function(){
       wrangler:children()
         .map(function(c){c{"name"}})
-        .filter(function(n){not n.match(re#^n\d{5}$#)})
+        .filter(function(n){not n.isSurrogate()})
     }
   }
   rule initialize {
@@ -35,5 +39,12 @@ ruleset byu.hr.backup {
     select when byu_hr_backup channel_created
     foreach event:attr("old_channels") setting(chan)
     wrangler:deleteChannel(chan.get("id"))
+  }
+  rule proposeSubscriptions {
+    select when backup subscriptions_needed
+    foreach
+      wrangler:children().filter(function(c){not c{"name"}.isSurrogate()})
+      setting(participant)
+    send_directive("participant",participant)
   }
 }
