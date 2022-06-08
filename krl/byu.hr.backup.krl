@@ -46,5 +46,8 @@ ruleset byu.hr.backup {
       wrangler:children().filter(function(c){not c{"name"}.isSurrogate()})
       setting(participant)
     send_directive("participant",participant)
+    fired {
+      // propose subscription Rx_role "participant list" Tx_role "participant"
+    }
   }
 }

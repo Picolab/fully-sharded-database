@@ -13,6 +13,8 @@ ruleset byu.hr.relate {
       renderRel = function(rel){
         Rx = rel.get("Rx")
         myNetid = wrangler:name()
+        hideBookkeepingRel = rel.get("Rx_role") == "participant"
+          && rel.get("Tx_role") == "participant list"
         findNetid = function(){
           wrangler:channels()
             .filter(function(c){c.get("id")==Rx})
@@ -58,6 +60,7 @@ ruleset byu.hr.relate {
           dmap{[type,"text"]}} this relationship #{
           dmap{[type,"msg"]}}. This cannot be undone.')">#{
           dmap{[type,"text"]}}</a> >>
+        hideBookkeepingRel => "" |
         <<<li><span style="display:none">#{rel.encode()}</span>
 #{displayName(Rx).capitalize()} as #{rel.get("Rx_role")} and
 #{displayName(rel.get("Tx"))} as #{rel.get("Tx_role")}
