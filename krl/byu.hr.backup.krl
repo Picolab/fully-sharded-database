@@ -41,7 +41,7 @@ ruleset byu.hr.backup {
     wrangler:deleteChannel(chan.get("id"))
   }
   rule proposeSubscriptions {
-    select when backup subscriptions_needed
+    select when byu_hr_backup subscriptions_needed
     foreach
       wrangler:children().filter(function(c){not c{"name"}.isSurrogate()})
       setting(participant)
