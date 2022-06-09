@@ -444,10 +444,13 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
     select when byu_hr_core child_designation_changed
     pre {
       netid = wrangler:name()
+      getvaleq = function(k,v){function(s){s{k}==v}}
       list_subs = subs:established("Tx_role","participant list")
-      getkey = function(key){function(s){s{key}}}
-      list_ecis = list_subs => list_subs.map(getkey("Tx"))
-                            | [wrangler:parent_eci()]
+        .filter(getvaleq("Rx_role","participant"))
+      ls_len = list_subs.length()
+      getval = function(key){function(s){s{key}}}
+      list_ecis = ls_len => list_subs.map(getval("Tx"))
+                          | [wrangler:parent_eci()]
     }
     if list_ecis.length() then noop()
     fired {
