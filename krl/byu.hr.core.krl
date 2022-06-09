@@ -173,7 +173,7 @@ ruleset byu.hr.core {
       }
     </script>
 >>
-}
+    }
     scripts_ro = function(){
 <<    <script type="text/javascript">
       function claim_pico(full_name,claimURL,redirectURL){
@@ -188,7 +188,7 @@ ruleset byu.hr.core {
       }
     </script>
 >>
-}
+    }
     table_row = function(string,read_only){
       cell_attrs = [
         "","contenteditable",
@@ -257,8 +257,11 @@ ruleset byu.hr.core {
       record_audio_link + 10.chr() + play_audio_tag + "<br>" + 10.chr()
     }
     linkToList = function(netid,position){
+      list_subs = subs:established("Tx_role","participant list")
+        .head() // default to earliest created
+      list_eci = list_subs => list_subs{"Tx"} | wrangler:parent_eci()
       ctx:query(
-        wrangler:parent_eci(),
+        list_eci,
         "byu.hr.login",
         "listURL",
         {"netid":netid,"position":position}
@@ -441,8 +444,23 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
     select when byu_hr_core child_designation_changed
     pre {
       netid = wrangler:name()
+      list_subs = subs:established("Tx_role","participant list")
+      getkey = function(key){function(s){s{key}}}
+      list_ecis = list_subs => list_subs.map(getkey("Tx"))
+                            | [wrangler:parent_eci()]
     }
-    event:send({"eci":wrangler:parent_eci(),"eid":"child_desig_changed",
+    if list_ecis.length() then noop()
+    fired {
+      raise byu_hr_core event "cdc_notification_needed" attributes {
+        "netid":netid, "list_ecis":list_ecis,
+      }
+    }
+  }
+  rule notifyChildDesigChanged {
+    select when byu_hr_core cdc_notification_needed
+      netid re#^(.+)$# setting(netid)
+    foreach event:attr("list_ecis") setting(notify_eci)
+    event:send({"eci":notify_eci,"eid":"child_desig_changed",
       "domain":"byu_hr_oit", "type":"new_child_designation",
       "attrs":{"netid":netid,"child_desig":child_desig(netid)}
     })
