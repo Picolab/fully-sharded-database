@@ -19,8 +19,9 @@ ruleset byu.hr.oit {
       }
       subs:established("RX_role","participant list")
         .filter(function(s){s{"Tx_role"}=="participant"})
+.klog("the subscriptions")
         .map(function(s){
-            {"eci":s{"Tx"}, "name":s{"Rx"}.map(participant_name)}
+            {"eci":s{"Tx"}, "name":s{"Rx"}} // .map(participant_name)}
           })
     }
     getLoggedInECI = function(person_id){
