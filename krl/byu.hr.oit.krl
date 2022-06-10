@@ -3,9 +3,26 @@ ruleset byu.hr.oit {
     name "list of persons"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
+    use module io.picolabs.subscription alias subs
     shares index, personExists
+,subs_as_children
   }
   global {
+    subs_as_children = function(){
+      participant_name = function(eci){
+        wrangler:channels()
+          .filter(function(c){c{"id"}==eci})
+          .head()
+          .get("tags")
+          .filter(function(t){t != "participant"})
+          .head()
+      }
+      subs:established("RX_role","participant list")
+        .filter(function(s){s{"Tx_role"}=="participant"})
+        .map(function(s){
+            {"eci":s{"Tx"}, "name":s{"Rx"}.map(participant_name)}
+          })
+    }
     getLoggedInECI = function(person_id){
       wrangler:children()
         .filter(function(c){
