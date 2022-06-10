@@ -45,16 +45,14 @@ ruleset byu.hr.backup {
     foreach
       wrangler:children().filter(function(c){not c{"name"}.isSurrogate()})
       setting(participant)
-if participant{"name"} == "b1conrad" then // for now just one test case
     send_directive("participant",participant)
     fired {
-      // propose subscription Rx_role "participant list" Tx_role "participant"
       raise wrangler event "subscription" attributes {
         "wellKnown_Tx": participant{"eci"},
         "Rx_role": "participant list",
         "Tx_role": "participant",
-        "name": participant{"name"} + "-participant_list",
-        "channel_type": "participation",
+        "name": participant{"name"},
+        "channel_type": "participant",
       }
     }
   }
