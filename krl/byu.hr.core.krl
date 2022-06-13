@@ -282,7 +282,6 @@ to acknowledge a relationship as
 </p>
 >>
       }
-      full_name = pds:getData("person",element_names.head())
       read_only = wrangler:channels()
         .filter(function(c){c.get("id")==meta:eci})
         .head()
@@ -293,7 +292,6 @@ to acknowledge a relationship as
       audio_eci = record_audio_eci()
       listURL = linkToList(netid,this_person)
       baseECI = listURL.extract(re#/c/([^/]+)/query/#).head()
-      redirectURL = listURL.replace((this_person+"$").as("RegExp"),netid)
       head_stuff = styles + (read_only => "" | scripts())
       html:header("person",head_stuff,null,null,_headers)
       + <<<a class="button" href="#{listURL}">See list of names</a>
