@@ -11,7 +11,7 @@ ruleset byu.hr.oit {
     subs_as_children = function(){
       all_channels = wrangler:channels()
       participant_name = function(eci){
-        all_channels()
+        all_channels
           .filter(function(c){c{"id"}==eci})
           .head()
           .get("tags")
