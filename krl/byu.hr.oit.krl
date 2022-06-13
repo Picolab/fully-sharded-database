@@ -17,11 +17,10 @@ ruleset byu.hr.oit {
           .filter(function(t){t != "participant"})
           .head()
       }
-      subs:established("RX_role","participant list")
+      subs:established("Rx_role","participant list")
         .filter(function(s){s{"Tx_role"}=="participant"})
-.klog("the subscriptions")
         .map(function(s){
-            {"eci":s{"Tx"}, "name":s{"Rx"}} // .map(participant_name)}
+            {"eci":s{"Tx"}, "name":s{"Rx"}.map(participant_name)}
           })
     }
     getLoggedInECI = function(person_id){
