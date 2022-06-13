@@ -341,25 +341,12 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
         .head()
         .get("id")
     }
-    skey_names = [
-      "Last Name",
-      "Work Email",
-      "F/T-P/T Status",
-    ]
-    getKey = function(){
-      stuff = skey_names.map(function(n){
-        pds:getData("person",n)
-      }).join(":")
-      math:hash("sha256",stuff)
-        .substr(0,9)
-    }
     child_desig = function(name){
       full_name = pds:getData("person",element_names.head())
-      skey = getKey()
       the_eci = getECI() // read-only ECI
       has_audio = pds:getData("person","audio").encode()
       return
-      [full_name,name,the_eci,skey,has_audio].join("|")
+      [full_name,name,the_eci,"",has_audio].join("|")
     }
     audioURL = function(){
       pds:getData("person","audio") || ""
@@ -413,7 +400,7 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
         "value":value
       }
       raise byu_hr_core event "child_designation_changed"
-        if full_name_changed || skey_names >< name
+        if full_name_changed
     }
   }
   rule childDesigChanged {

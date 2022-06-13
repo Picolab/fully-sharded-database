@@ -63,7 +63,6 @@ ruleset byu.hr.oit {
           child_eci = parts[5]
           the_eci = is_self => ctx:query(child_eci,"byu.hr.core","adminECI")
                              | parts[2]
-          skey = parts[3]
           has_audio = parts[4].decode()
           record_audio_eci = is_self => ctx:query(child_eci,"byu.hr.core","record_audio_eci") | null
           record_audio_link = is_self => <<#{meta:host}/c/#{record_audio_eci}/query/byu.hr.record/audio.html>> | ""
