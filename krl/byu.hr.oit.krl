@@ -9,8 +9,9 @@ ruleset byu.hr.oit {
   }
   global {
     subs_as_children = function(){
+      all_channels = wrangler:channels()
       participant_name = function(eci){
-        wrangler:channels()
+        all_channels()
           .filter(function(c){c{"id"}==eci})
           .head()
           .get("tags")
@@ -20,7 +21,7 @@ ruleset byu.hr.oit {
       subs:established("Rx_role","participant list")
         .filter(function(s){s{"Tx_role"}=="participant"})
         .map(function(s){
-            {"eci":s{"Tx"}, "name":s{"Rx"}.map(participant_name)}
+            {"eci":s{"Tx"}, "name":s{"Rx"}.participant_name()}
           })
     }
     getLoggedInECI = function(person_id){
