@@ -243,7 +243,8 @@ ruleset byu.hr.core {
     }
     linkToList = function(netid,position){
       list_subs = subs:established("Tx_role","participant list")
-        .head() // default to earliest created
+        .reverse() // default to latest created
+        .head()
       list_eci = list_subs => list_subs{"Tx"} | wrangler:parent_eci()
       ctx:query(
         list_eci,
