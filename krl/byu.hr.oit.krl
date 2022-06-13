@@ -5,7 +5,6 @@ ruleset byu.hr.oit {
     use module html.byu alias html
     use module io.picolabs.subscription alias subs
     shares index, personExists
-,subs_as_children
   }
   global {
     subs_as_children = function(){
@@ -25,14 +24,14 @@ ruleset byu.hr.oit {
           })
     }
     getLoggedInECI = function(person_id){
-      wrangler:children()
+      subs_as_children()
         .filter(function(c){
           c.get("name")==person_id
         }).head().get("eci")
     }
     personExists = function(netid,list){
       desig_re = ("^[^|]+[|]"+netid+"[|]").as("RegExp")
-      list.isnull() => wrangler:children().any(function(c){c{"name"}==netid})
+      list.isnull() => subs_as_children().any(function(c){c{"name"}==netid})
                      | list.any(function(d){d.match(desig_re)})
     }
     make_index = function(){
@@ -42,7 +41,7 @@ ruleset byu.hr.oit {
         ctx:query(child_eci,"byu.hr.core","child_desig",{
           "name":c.get("name")})+"|"+child_eci
       }
-      wrangler:children()
+      subs_as_children()
         .filter(function(c){
           eci = c.get("eci") // family channel ECI
           omit_child = match(c.get("name"),re#^\*#)
