@@ -174,21 +174,6 @@ ruleset byu.hr.core {
     </script>
 >>
     }
-    scripts_ro = function(){
-<<    <script type="text/javascript">
-      function claim_pico(full_name,claimURL,redirectURL){
-        if(confirm("You are claiming that your full name is "+full_name+".")){
-          var httpReq = new XMLHttpRequest();
-          httpReq.onload = function(){location = redirectURL;}
-          httpReq.onerror = function(){alert(httpReq.responseText);}
-          httpReq.open("GET",claimURL,true);
-          httpReq.send();
-          alert("This will take just a moment.");
-        }
-      }
-    </script>
->>
-    }
     table_row = function(string,read_only){
       cell_attrs = [
         "","contenteditable",
@@ -303,16 +288,13 @@ to acknowledge a relationship as
         .head()
         .get("tags") >< "read-only"
       netid = html:cookies(_headers).get("netid")
-      unlisted = personExists == "false"
       this_person = wrangler:name()
       wellKnown_Rx = this_person == netid => null | getSubsECI(_headers)
       audio_eci = record_audio_eci()
       listURL = linkToList(netid,this_person)
       baseECI = listURL.extract(re#/c/([^/]+)/query/#).head()
-      claimECI = wrangler:channels(["system","child"]).head().get("id")
-      claimURL = meta:host+"/sky/event/"+baseECI+"/claim/byu_hr_oit/pico_claimed?eci="+claimECI+"&good_name="+netid
       redirectURL = listURL.replace((this_person+"$").as("RegExp"),netid)
-      head_stuff = styles + (read_only => scripts_ro() | scripts())
+      head_stuff = styles + (read_only => "" | scripts())
       html:header("person",head_stuff,null,null,_headers)
       + <<<a class="button" href="#{listURL}">See list of names</a>
 <table>
@@ -334,11 +316,6 @@ click, change, and press Enter key (or Esc to undo a change).
 </p>
 >> | "")
 + "".klog("after manage apps")
-      + ((this_person.match(re#^n\d{5}$#) && unlisted) => <<<p>
-<button onclick="claim_pico('#{full_name}','#{claimURL}','#{redirectURL}')">This is me!</button>
-</p>
->> | "")
-+ "".klog("after this is me")
       + ((netid != this_person && wellKnown_Rx) => <<<div>
 <form action="#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_core/new_relationship">
 <input type="hidden" name="wellKnown_Tx" value="#{subs:wellKnown_Rx().get("id")}">

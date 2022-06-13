@@ -372,7 +372,6 @@ Right to be forgotten
   }
   rule renameChild {
     select when byu_hr_oit child_has_rulesets
-             or byu_hr_oit pico_claimed
     pre {
       child_eci = event:attr("eci")
       name = event:attr("good_name")
@@ -387,9 +386,6 @@ Right to be forgotten
         "domain":"wrangler","type":"name_changed",
         "attrs":{"name":name}
       })
-    }
-    fired {
-      raise byu_hr_oit event "index_refresh_needed" if event:name == "pico_claimed"
     }
   }
   rule populateChild {
