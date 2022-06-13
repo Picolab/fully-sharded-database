@@ -5,6 +5,7 @@ ruleset byu.hr.oit {
     use module html.byu alias html
     use module io.picolabs.subscription alias subs
     shares index, personExists
+    provides subs_as_children
   }
   global {
     subs_as_children = function(){

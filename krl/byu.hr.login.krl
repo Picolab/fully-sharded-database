@@ -3,6 +3,7 @@ ruleset byu.hr.login {
     use module io.picolabs.wrangler alias wrangler
     use module id.trinsic.sdk alias trinsic
       with apiKey = meta:rulesetConfig{"api_key"} // a String from Trinsic
+    use module byu.hr.oit alias main
     shares verificationResponse, getVerification,
       listURL
   }
@@ -29,7 +30,7 @@ ruleset byu.hr.login {
       theURL+fragment
     }
     getLoggedInECI = function(person_id){
-      wrangler:children()
+      main:subs_as_children()
         .filter(function(c){
           c.get("name")==person_id
         }).head().get("eci")
