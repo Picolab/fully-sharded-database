@@ -440,7 +440,7 @@ Right to be forgotten
   }
   rule createIndexes {
     select when byu_hr_oit index_refresh_needed
-             or byu_hr_oit child_populated
+             or wrangler subscription_added
              or wrangler child_deleted
     pre {
       start_time = time:now()
@@ -488,7 +488,9 @@ Right to be forgotten
         .put(element_names[1],cleaned_first)
         .put(element_names[2],cleaned_last)
         .encode()
+      display_name = cleaned_first + " " + cleaned_last
     }
+    send_directive("_cookie",{"cookie":<<displayname=#{display_name}; Path=/>>})
     fired {
       raise byu_hr_oit event "new_person_available" attributes {
         "person_id": person_id,
