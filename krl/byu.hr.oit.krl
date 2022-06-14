@@ -409,6 +409,18 @@ Right to be forgotten
       raise byu_hr_oit event "child_populated" attributes event:attrs
     }
   }
+  rule subscribeToChildAsParticipant {
+    select when wrangler child_initialized
+    fired {
+      raise wrangler event "subscription" attributes {
+        "wellKnown_Tx": event:attrs{"eci"},
+        "Rx_role": "participant list",
+        "Tx_role": "participant",
+        "name": event:attrs{"name"}.replace(re#^\*#,""),
+        "channel_type": "participant",
+      }
+    }
+  }
   rule deleteChild {
     select when byu_hr_oit person_deletion_request
       person_id re#(.+)# // required

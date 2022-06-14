@@ -486,4 +486,16 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
       send_directive("_redirect",{"url":referer})
     }
   }
+  rule acceptParticipantInboundSubscription {
+    select when wrangler inbound_pending_subscription_added
+    pre {
+      ok = event:attrs{"Tx_role"} == "participant list"
+        && event:attrs{"Rx_role"} == "participant"
+    }
+    if ok then noop()
+    fired {
+      raise wrangler event "pending_subscription_approval"
+        attributes event:attrs
+    }
+  }
 }
