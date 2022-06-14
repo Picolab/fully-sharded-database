@@ -157,8 +157,5 @@ This recording will not be used for any other purpose.
         "domain":"person","key":"audio"
       }
     }
-    finally {
-      raise byu_hr_core event "child_designation_changed"
-    }
   }
 }

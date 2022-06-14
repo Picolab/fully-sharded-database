@@ -401,9 +401,10 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
     }
   }
   rule childDesigChanged {
-    select when pds data_added
-      domain re#^person$#
+    select when pds data_removed domain re#^person$#
+             or pds data_added domain re#^person$#
       where event:attr("key")==element_names.head()
+         || event:attr("key")=="audio"
     pre {
       netid = wrangler:name()
       getvaleq = function(k,v){function(s){s{k}==v}}
