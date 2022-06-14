@@ -258,6 +258,9 @@ Right to be forgotten
         return false;
       }
       window.scrollTo(0, 0);
+      if(location.hash){
+        document.getElementById(location.hash.subtr(1)).scrollIntoView();
+      }
       function doOptIn(the_form){
         var url = '#{meta:host+"/sky/event/"+meta:eci+"/opt_in/byu_hr_oit/opt_in"}';
         var last = the_form.last.value;
