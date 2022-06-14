@@ -368,7 +368,7 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
     pre {
       json = event:attr("json").decode()
     }
-    if json.typeof(json) == "Map" then noop()
+    if json.typeof() == "Map" then noop()
     fired {
       raise byu_hr_core event "internal_import"
         attributes {"json":json}
