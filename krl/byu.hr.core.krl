@@ -391,7 +391,6 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
       name = event:attr("name")
       valueString = event:attr("value").html:defendHTML()
       value = valueString == "null" => null | valueString
-      full_name_changed = name == element_names.head()
     }
     fired {
       raise pds event "new_data_available" attributes {
@@ -399,12 +398,12 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
         "key":name,
         "value":value
       }
-      raise byu_hr_core event "child_designation_changed"
-        if full_name_changed
     }
   }
   rule childDesigChanged {
-    select when byu_hr_core child_designation_changed
+    select when pds data_added
+      domain re#^person$#
+      key re#^Full Name \(Last, First\)$#
     pre {
       netid = wrangler:name()
       getvaleq = function(k,v){function(s){s{k}==v}}
