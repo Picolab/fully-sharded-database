@@ -434,6 +434,7 @@ Right to be forgotten
     }
     if referer.isExpected() &&  eci.klog("eci to delete") then
     every {
+      send_directive("_cookie",{"cookie": <<displayname=; Path=/; Max-Age:-1>>})
       event:send({"eci":eci,"domain":"wrangler","type":"rulesets_need_to_cleanup"})
       event:send({"eci":eci,"domain":"wrangler","type":"ready_for_deletion"})
     }
