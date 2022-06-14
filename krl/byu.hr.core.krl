@@ -403,7 +403,7 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
   rule childDesigChanged {
     select when pds data_added
       domain re#^person$#
-      key re#^Full Name \(Last, First\)$#
+      where event:attr("key")==element_names.head()
     pre {
       netid = wrangler:name()
       getvaleq = function(k,v){function(s){s{k}==v}}
