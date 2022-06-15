@@ -57,9 +57,9 @@ Trim empty space at the start and end of your name.
 <br>
 Here are some websites that allow you to do this:
 <ul>
-<li><a href="https://online-voice-recorder.com/">https://online-voice-recorder.com/</a></li>
-<li><a href="https://www.rev.com/onlinevoicerecorder">https://www.rev.com/onlinevoicerecorder</a></li>
-<li><a href="https://vocaroo.com/">https://vocaroo.com/</a></li>
+<li><a href="https://online-voice-recorder.com/" target="_blank">https://online-voice-recorder.com/</a></li>
+<li><a href="https://www.rev.com/onlinevoicerecorder" target="_blank">https://www.rev.com/onlinevoicerecorder</a></li>
+<li><a href="https://vocaroo.com/" target="_blank">https://vocaroo.com/</a></li>
 </ul>
 Download the recording into a file on your computer.
 </li>
