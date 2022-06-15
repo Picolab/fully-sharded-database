@@ -153,9 +153,11 @@ ruleset byu.hr.core {
         if(keyCode==27 || keyCode==="Escape"){
           var thename = e.target.previousElementSibling.textContent;
           e.target.textContent = sessionStorage.getItem(thename);
+          window.getSelection().removeAllRanges()
           e.target.blur();
         }else if(keyCode==13 || keyCode==="Enter"
             || keyCode==9 || keyCode==="Tab"){
+          e.preventDefault();
           e.target.blur();
           return false;
         }
