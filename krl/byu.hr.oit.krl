@@ -283,7 +283,7 @@ Right to be forgotten
         return false;
       }
       function doOptOut(the_form){
-        var url = '#{meta:host+"/sky/event/"+meta:eci+"/opt_out/byu_hr_oit/person_deletion_request"}';
+        var url = '#{meta:host+"/sky/event/"+meta:eci+"/opt_out/byu_hr_oit/opt_out"}';
         var netid = the_form.person_id.value;
         if(confirm("You (NetID "+netid+") wish to opt out. This cannot be undone.")){
           var form_data = "person_id="+netid;
@@ -425,9 +425,13 @@ Right to be forgotten
     }
   }
   rule deleteChild {
-    select when byu_hr_oit person_deletion_request
-      person_id re#(.+)# // required
-      setting(person_id)
+    select when byu_hr_oit opt_out
+                  person_id re#(.+)# // required
+                  setting(person_id)
+             or
+                byu_hr_oit person_deletion_request // deprecated
+                  person_id re#(.+)# // required
+                  setting(person_id)
     pre {
       referer = event:attrs{["_headers","referer"]}
       isExpected = function(refr){
