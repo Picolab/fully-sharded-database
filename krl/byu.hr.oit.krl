@@ -339,7 +339,7 @@ Right to be forgotten
   }
   rule keepChannelsClean {
     select when byu_hr_oit channel_created
-    foreach wrangler:channels(ridAsTag) setting(chan)
+    foreach wrangler:channels(ridAsTag).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan{"id"})
   }
   rule checkForDuplicateNewPerson {
