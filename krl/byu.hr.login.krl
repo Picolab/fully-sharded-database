@@ -27,7 +27,7 @@ ruleset byu.hr.login {
       fragment = position => "#" + position
                | netid    => "#" + netid
                | ""
-      theURL+fragment
+      theURL.klog("the URL")+fragment
     }
     getLoggedInECI = function(person_id){
       main:subs_as_children()
