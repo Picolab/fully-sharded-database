@@ -322,16 +322,25 @@ Right to be forgotten
       "byu.hr.core",
       "byu.hr.record",
     ]
+    ridAsTag = meta:rid.replace(re#[.]#g,"-")
   }
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
     every {
       wrangler:createChannel(
-        [meta:rid],
+        [ridAsTag],
         {"allow":[{"domain":"byu_hr_oit","name":"*"}],"deny":[]},
         {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
       )
     }
+    fired {
+      raise byu_hr_oit event "channel_created"
+    }
+  }
+  rule keepChannelsClean {
+    select when byu_hr_oit channel_created
+    foreach wrangler:channels(ridAsTag) setting(chan)
+    wrangler:deleteChannel(chan{"id"})
   }
   rule checkForDuplicateNewPerson {
     select when byu_hr_oit new_person_available
