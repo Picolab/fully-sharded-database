@@ -484,9 +484,10 @@ Right to be forgotten
   }
   rule childDesigChanged {
     select when byu_hr_oit new_child_designation
-      netid re#(.+)#
-      child_desig re#(.+)#
-      setting(netid,new_child_desig)
+                    netid re#(.+)#
+                    child_desig re#(.+)#
+                    setting(netid,new_child_desig)
+                  where ent:existing_index.length()
     pre {
       desig_re = ("^[^|]+[|]"+netid+"[|]").as("RegExp")
       sanity = new_child_desig.match(desig_re).klog("sanity")
