@@ -64,7 +64,7 @@ Here are some websites that allow you to do this:
 Download the recording into a file on your computer.
 </li>
 <li>Upload the file you just saved:
-<input type="file" accept="audio/*" capture id="recorder">
+<input type="file" accept="audio/*" id="recorder" onclick="this.value=null">
 <br>
 File sizes:
 <span id="file_size">No file chosen</span>.
