@@ -475,6 +475,13 @@ Right to be forgotten
       "end_time":time:now()
     })
   }
+  rule createIndexFirst {
+    select when byu_hr_oit new_child_designation
+      where ent:existing_index.isnull()
+    fired {
+      ent:existing_index := make_index()
+    }
+  }
   rule childDesigChanged {
     select when byu_hr_oit new_child_designation
       netid re#(.+)#
