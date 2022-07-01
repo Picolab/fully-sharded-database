@@ -236,12 +236,12 @@ ruleset byu.hr.core {
     audio_widgets = function(netid,eci){
       record_audio_link = netid == wrangler:name()
         => <<<a class="button" href="#{meta:host}/c/#{eci}/query/byu.hr.record/audio.html">&#x1F3A4; Manage your audio</a>
-<br>
 >> | ""
       audio = pds:getData("person","audio")
       play_audio_tag = audio => <<<audio controls src="#{audio}"></audio>
 >> | ""
-      play_audio_tag + record_audio_link
+      play_audio_tag + record_audio_link + <<<br>
+>>
     }
     linkToList = function(netid,position){
       list_subs = subs:established("Tx_role","participant list")
