@@ -247,6 +247,14 @@ ruleset byu.hr.core {
       list_subs = subs:established("Tx_role","participant list")
         .reverse() // default to latest created
         .head()
+/*
+      list_host = list_subs{"Tx_host"} || meta:host
+      theURL = <<#{list_host}/c/#{list_subs{"Tx"}}/query/byu.hr.oit/index.html>>
+      fragment = position => "#" + position
+               | netid    => "#" + netid
+               | ""
+      theURL.klog("the URL")+fragment
+*/
       list_eci = list_subs => list_subs{"Tx"} | wrangler:parent_eci()
       ctx:query(
         list_eci,
@@ -273,7 +281,7 @@ ruleset byu.hr.core {
           thisPico = ctx:channels.any(function(c){c{"id"}==eci})
           thisPico => "" | <<<p>
 You have a request
-from #{wrangler:picoQuery(eci,meta:rid,"displayName")}
+from #{wrangler:picoQuery(eci,meta:rid,"displayName")} // ,_host=s{"Tx_host"}
 to acknowledge a relationship as
 #{s.get("Rx_role")} to
 #{s.get("Tx_role")}, respectively.
@@ -417,7 +425,7 @@ Their role: <input name="Tx_role"> (e.x. virtual team lead)<br>
       ls_len = list_subs.length()
       getval = function(key){function(s){s{key}}}
       list_ecis = ls_len => list_subs.map(getval("Tx"))
-                          | [wrangler:parent_eci()]
+                          | [wrangler:parent_eci()] // shouldn't happen
     }
     if list_ecis.length() then noop()
     fired {
