@@ -134,6 +134,7 @@ ruleset byu.hr.core {
         border-radius: 15px;
         padding: 10px;
         color: black;
+        vertical-align: top;
       }
     </style>
 >>
@@ -234,14 +235,12 @@ ruleset byu.hr.core {
     }
     audio_widgets = function(netid,eci){
       record_audio_link = netid == wrangler:name()
-        => <<<p>
-<a class="button" href="#{meta:host}/c/#{eci}/query/byu.hr.record/audio.html">&#x1F3A4; Manage your audio</a>
-</p>
->> | "<br>"
+        => <<<a class="button" href="#{meta:host}/c/#{eci}/query/byu.hr.record/audio.html">&#x1F3A4; Manage your audio</a>
+>> | ""
       audio = pds:getData("person","audio")
       play_audio_tag = audio => <<<audio controls src="#{audio}"></audio>
 >> | ""
-      record_audio_link + 10.chr() + play_audio_tag + "<br>" + 10.chr()
+      play_audio_tag + record_audio_link
     }
     linkToList = function(netid,position){
       list_subs = subs:established("Tx_role","participant list")
