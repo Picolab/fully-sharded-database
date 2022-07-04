@@ -281,7 +281,7 @@ ruleset byu.hr.core {
           thisPico = ctx:channels.any(function(c){c{"id"}==eci})
           thisPico => "" | <<<p>
 You have a request
-from #{wrangler:picoQuery(eci,meta:rid,"displayName")} // ,_host=s{"Tx_host"}
+from #{wrangler:picoQuery(eci,meta:rid,"displayName"/*,_host=s{"Tx_host"}*/)}
 to acknowledge a relationship as
 #{s.get("Rx_role")} to
 #{s.get("Tx_role")}, respectively.
