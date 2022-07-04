@@ -91,6 +91,9 @@ table input {
       + display_apps()
       + html:footer()
     }
+    app_rids = function(_headers){
+      html:cookies(_headers){"apps"}.split(",")
+    }
   }
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
@@ -133,8 +136,13 @@ table input {
       home = rsMeta.get("shares").head() + ".html"
       rsname = rsMeta.get("name")
       spec = {"name":home,"status":"installed","rid":rid,"rsname":rsname}
+      new_apps = app_rids(event:attr("_headers"))
+        .union([rid])
+        .join(",")
+.klog("new_apps")
     }
-    if rid != meta:rid then noop()
+    if rid != meta:rid
+      then send_directive("_cookie",{"cookie": <<apps=#{new_apps}; Path=/>>})
     fired {
       ent:apps{rid} := spec
       raise byu_hr_manage_apps event "app_installed" attributes event:attrs
@@ -163,8 +171,13 @@ table input {
     select when wrangler:ruleset_uninstalled where event:attr("tx") == meta:txnId
     pre {
       rid = event:attr("rid").klog("rid")
+      new_apps = app_rids(event:attr("_headers"))
+        .difference([rid])
+        .join(",")
+.klog("new_apps")
     }
-    if rid then noop()
+    if rid
+      then send_directive("_cookie",{"cookie": <<apps=#{new_apps}; Path=/>>})
     fired {
       clear ent:apps{rid}
       raise byu_hr_manage_apps event "app_deleted" attributes event:attrs
