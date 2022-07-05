@@ -464,7 +464,7 @@ Right to be forgotten
         "eci":eci,
         "domain":"wrangler",
         "type":"ready_for_deletion",
-        "co_id": meta:rid,
+        "attrs":{"co_id": meta:rid},
       })
     }
   }
