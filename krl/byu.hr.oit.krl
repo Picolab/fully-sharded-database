@@ -471,7 +471,7 @@ Right to be forgotten
   rule createIndexes {
     select when byu_hr_oit index_refresh_needed
              or wrangler subscription_added
-             or wrangler child_deleted //where event:attr("co_id")==meta:rid
+             or wrangler child_deleted where event:attr("co_id")==meta:rid
     pre {
       start_time = time:now()
     }
