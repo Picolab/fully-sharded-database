@@ -360,6 +360,7 @@ Right to be forgotten
       setting(person_id)
     fired {
       raise wrangler event "new_child_request" attributes {
+        "co_id": meta:rid,
         "name": "*"+person_id,
         "import_data": event:attr("import_data")
       }
@@ -367,6 +368,7 @@ Right to be forgotten
   }
   rule installRulesetsInChild {
     select when wrangler new_child_created
+      where event:attr("co_id") == meta:rid
     foreach core_rids setting(rid)
     pre {
       eci = event:attr("eci")
@@ -403,6 +405,7 @@ Right to be forgotten
   rule populateChild {
     select when wrangler child_initialized
       import_data re#(.+)# setting(import_data)
+      where event:attr("co_id") == meta:rid
     pre {
       type = import_data.match(re#^[{]#) => "JSON"
            | import_data.match(re#^"#)   => "TSV"
@@ -423,6 +426,7 @@ Right to be forgotten
   }
   rule subscribeToChildAsParticipant {
     select when wrangler child_initialized
+      where event:attr("co_id") == meta:rid
     fired {
       raise wrangler event "subscription" attributes {
         "wellKnown_Tx": event:attrs{"eci"},
@@ -451,14 +455,23 @@ Right to be forgotten
     if referer.isExpected() &&  eci.klog("eci to delete") then
     every {
       send_directive("_cookie",{"cookie": <<displayname=; Path=/; Max-Age:-1>>})
-      event:send({"eci":eci,"domain":"wrangler","type":"rulesets_need_to_cleanup"})
-      event:send({"eci":eci,"domain":"wrangler","type":"ready_for_deletion"})
+      event:send({
+        "eci":eci,
+        "domain":"wrangler",
+        "type":"rulesets_need_to_cleanup",
+      })
+      event:send({
+        "eci":eci,
+        "domain":"wrangler",
+        "type":"ready_for_deletion",
+        "co_id": meta:rid,
+      })
     }
   }
   rule createIndexes {
     select when byu_hr_oit index_refresh_needed
              or wrangler subscription_added
-             or wrangler child_deleted
+             or wrangler child_deleted where event:attr("co_id")==meta:rid
     pre {
       start_time = time:now()
     }
