@@ -41,7 +41,7 @@ ruleset byu.hr.manage_apps {
       link_to_delete = <<<a href="#{meta:host}/sky/event/#{meta:eci}/none/#{event_domain}/app_unwanted?rid=#{rid}" onclick="return confirm('This cannot be undone, and #{rsname} may be lost if you proceed.')">del</a> >>
       <<<tr>
 <td>#{app.get("status")}</td>
-<td>#{app.get("rid")}</td>
+<td>#{rid}</td>
 <td>#{linkToAppHome(app)}</td>
 <td>#{url}</td>
 <td>#{built_ins().keys() >< rid => "N/A" | link_to_delete}</td>
