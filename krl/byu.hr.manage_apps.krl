@@ -7,6 +7,7 @@ ruleset byu.hr.manage_apps {
     shares manage, apps, app
   }
   global {
+    event_domain = meta:rid.replace(re#[.-]#g,"_")
     ruleset = function(rid){
       ctx:rulesets.filter(function(rs){rs{"rid"}==rid}).head()
     }
@@ -18,7 +19,7 @@ ruleset byu.hr.manage_apps {
     }
     built_ins = function(){
       {}
-        .put("byu.hr.manage_apps",
+        .put(meta:rid,
           { "name":"manage.html", "status":"active", "rid":meta:rid})
         .put("byu.hr.record",
           { "name":"audio.html", "status":"built-in", "rid":"byu.hr.record"})
@@ -37,7 +38,7 @@ ruleset byu.hr.manage_apps {
       rsname = app.get("rsname")
       rid = app.get("rid")
       url = ruleset(rid).get("url")
-      link_to_delete = <<<a href="#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_manage_apps/app_unwanted?rid=#{rid}" onclick="return confirm('This cannot be undone, and #{rsname} may be lost if you proceed.')">del</a> >>
+      link_to_delete = <<<a href="#{meta:host}/sky/event/#{meta:eci}/none/#{event_domain}/app_unwanted?rid=#{rid}" onclick="return confirm('This cannot be undone, and #{rsname} may be lost if you proceed.')">del</a> >>
       <<<tr>
 <td>#{app.get("status")}</td>
 <td>#{app.get("rid")}</td>
@@ -60,7 +61,7 @@ ruleset byu.hr.manage_apps {
 <tr>
 <td colspan="3">Add an app by URL:</td>
 <td colspan="2">
-<form method="POST" action="#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_manage_apps/new_app">
+<form method="POST" action="#{meta:host}/sky/event/#{meta:eci}/none/#{event_domain}/new_app">
 <input type="text" name="url" placeholder="app URL">
 <button type="submit">Add</button>
 </form>
@@ -100,7 +101,7 @@ table input {
     every {
       wrangler:createChannel(
         ["manage_apps"],
-        {"allow":[{"domain":"byu_hr_manage_apps","name":"*"}],"deny":[]},
+        {"allow":[{"domain":event_domain,"name":"*"}],"deny":[]},
         {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
       )
     }
