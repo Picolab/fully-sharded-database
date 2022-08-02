@@ -140,7 +140,6 @@ table input {
       new_apps = app_rids(event:attr("_headers"))
         .union([rid])
         .join(",")
-.klog("new_apps")
     }
     if rid != meta:rid
       then send_directive("_cookie",{"cookie": <<apps=#{new_apps}; Path=/>>})
@@ -159,6 +158,14 @@ table input {
   }
   rule deleteApp {
     select when byu_hr_manage_apps app_unwanted
+      rid re#(.+)#
+    fired {
+      // delay one evaluation cycle
+      raise explicit event "app_unwanted" attributes event:attrs
+    }
+  }
+  rule actuallyDeleteApp {
+    select when explicit app_unwanted
       rid re#(.+)# setting(rid)
     pre {
       permanent = built_ins().keys() >< rid
@@ -171,11 +178,10 @@ table input {
   rule updateApps {
     select when wrangler:ruleset_uninstalled where event:attr("tx") == meta:txnId
     pre {
-      rid = event:attr("rid").klog("rid")
+      rid = event:attr("rid")
       new_apps = app_rids(event:attr("_headers"))
         .difference([rid])
         .join(",")
-.klog("new_apps")
     }
     if rid
       then send_directive("_cookie",{"cookie": <<apps=#{new_apps}; Path=/>>})
