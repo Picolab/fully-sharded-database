@@ -125,18 +125,52 @@ ruleset byu.hr.relate {
  */
   rule theyDenyMyProposal {
     select when wrangler outbound_subscription_cancelled
+    fired {
+      raise byname_notification event "status" attributes {
+        "application":meta:rid,
+        "subject":"your proposal was denied",
+        "description":event:attrs.delete("_headers").encode(),
+      }
+    }
   }
   rule theyAcceptMyProposal {
     select when wrangler outbound_pending_subscription_approved
+    fired {
+      raise byname_notification event "status" attributes {
+        "application":meta:rid,
+        "subject":"your proposal was accepted",
+        "description":event:attrs.delete("_headers").encode(),
+      }
+    }
   }
   rule theyDeleteEstablished {
     select when wrangler subscription_removed
+    fired {
+      raise byname_notification event "status" attributes {
+        "application":meta:rid,
+        "subject":"a relationship was deleted",
+        "description":event:attrs.delete("_headers").encode(),
+      }
+    }
   }
   rule theyPropose {
     select when wrangler inbound_pending_subscription_added
-      Rs_role Tx_role name
+    fired {
+      raise byname_notification event "status" attributes {
+        "application":meta:rid,
+        "subject":"you have received a relationship proposal",
+        "description":event:attrs.delete("_headers").encode(),
+      }
+    }
   }
   rule theyDeleteProposal {
     select when werangler inbound_subscription_cancelled
+    fired {
+      raise byname_notification event "status" attributes {
+        "application":meta:rid,
+        "subject":"a proposed relationship was cancelled",
+        "description":event:attrs.delete("_headers").encode(),
+      }
+    }
   }
 }
