@@ -62,7 +62,7 @@ ruleset byu.hr.manage_apps {
 <td colspan="3">Add an app by URL:</td>
 <td colspan="2">
 <form method="POST" action="#{meta:host}/sky/event/#{meta:eci}/none/#{event_domain}/new_app">
-<input type="text" name="url" placeholder="app URL">
+<input class="wide90" type="text" name="url" placeholder="app URL">
 <button type="submit">Add</button>
 </form>
 </td>
@@ -79,17 +79,31 @@ td, th {
   border: 1px solid black;
   padding: 5px;
 }
-table input {
+input.wide90 {
   width: 90%;
 }
 </style>
 >>
     manage = function(_headers){
+      eci = wrangler:channels("wrangler").head().get("id")
+      event_spec = "wrangler/install_ruleset_request"
+      installURL = <<#{meta:host}/sky/event/#{eci}/none/#{event_spec}>>
       html:header("manage apps",styles,null,null,_headers)
       + <<
 <h1>Manage apps</h1>
 >>
       + display_apps()
+      + <<
+<h2>Technical</h2>
+<p>If your app needs a module, install it here first:</p>
+<form action="#{installURL}">
+<input class="wide90" name="url" placeholder="module URL">
+<br>
+<input class="wide90" name="config" placeholder="{}">
+<br>
+<button type="submit">Install</button>
+</form>
+>>
       + html:footer()
     }
     app_rids = function(_headers){
