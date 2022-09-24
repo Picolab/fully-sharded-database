@@ -85,9 +85,8 @@ input.wide90 {
 </style>
 >>
     manage = function(_headers){
-      eci = wrangler:channels("wrangler").head().get("id")
-      event_spec = "wrangler/install_ruleset_request"
-      installURL = <<#{meta:host}/sky/event/#{eci}/none/#{event_spec}>>
+      event_spec = <<#{event_domain}/module_needed>>
+      installURL = <<#{meta:host}/sky/event/#{meta:eci}/none/#{event_spec}>>
       html:header("manage apps",styles,null,null,_headers)
       + <<
 <h1>Manage apps</h1>
@@ -135,6 +134,16 @@ input.wide90 {
     select when byu_hr_manage_apps channel_created
     foreach wrangler:channels(["manage_apps"]).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
+  }
+  rule getModuleInstalled {
+    select when byu_hr_manage_apps module_needed
+      url re#(.+)#
+      config re#(.*)#
+      setting(url,config)
+    fired {
+      raise wrangler event "install_ruleset_request" attributes
+        event:attrs.put("config",config.decode())
+    }
   }
   rule installApp {
     select when byu_hr_manage_apps new_app
