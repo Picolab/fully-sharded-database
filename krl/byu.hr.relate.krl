@@ -120,4 +120,23 @@ ruleset byu.hr.relate {
     }
     if referer then send_directive("_redirect",{"url":referer})
   }
+/*
+ * Notable events
+ */
+  rule theyDenyMyProposal {
+    select when wrangler outbound_subscription_cancelled
+  }
+  rule theyAcceptMyProposal {
+    select when wrangler outbound_pending_subscription_approved
+  }
+  rule theyDeleteEstablished {
+    select when wrangler subscription_removed
+  }
+  rule theyPropose {
+    select when wrangler inbound_pending_subscription_added
+      Rs_role Tx_role name
+  }
+  rule theyDeleteProposal {
+    select when werangler inbound_subscription_cancelled
+  }
 }
