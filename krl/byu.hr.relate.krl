@@ -164,7 +164,7 @@ ruleset byu.hr.relate {
     }
   }
   rule theyDeleteProposal {
-    select when werangler inbound_subscription_cancelled
+    select when wrangler inbound_subscription_cancelled
     fired {
       raise byname_notification event "status" attributes {
         "application":meta:rid,
