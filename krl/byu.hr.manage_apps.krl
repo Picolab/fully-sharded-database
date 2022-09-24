@@ -112,22 +112,9 @@ table input {
   }
   rule resetApps {
     select when byu_hr_manage_apps factory_reset
-    pre {
-      myapps = ["byu.hr.connect","com.vcpnews.fav-color","org.picostack.logging","com.vcpnews.bazaar_apps","com.vcpnews.introspect","com.vcpnews.wovyn-sensors","org.picostack.greeting","number_game","com.vcpnews.console","byu.events","my.movies.app","org.picostack.observer"]
-        .reduce(
-          function(all,rid){
-            rsMeta = wrangler:rulesetMeta(rid)
-            home = rsMeta.get("shares").head() + ".html"
-            rsname = rsMeta.get("name")
-            spec = {"name":home,"status":"installed","rid":rid,"rsname":rsname}
-            all.put(rid,spec)
-          },
-          built_ins()
-        )
-    }
-    //if ent:apps.isnull() then noop()
+    if ent:apps.isnull() then noop()
     fired {
-      ent:apps := myapps //built_ins()
+      ent:apps := built_ins()
     }
   }
   rule keepChannelsClean {
