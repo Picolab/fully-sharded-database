@@ -128,7 +128,7 @@ ruleset byu.hr.relate {
     fired {
       raise byname_notification event "status" attributes {
         "application":meta:rid,
-        "subject":"your proposal was denied",
+        "subject":"your proposal was declined",
         "description":event:attrs.delete("_headers").encode(),
       }
     }
