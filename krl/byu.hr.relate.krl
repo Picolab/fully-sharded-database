@@ -4,9 +4,16 @@ ruleset byu.hr.relate {
     use module io.picolabs.subscription alias subs
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    shares relate
+    shares relate, otherNameCache
+    provides otherName
   }
   global {
+    otherNameCache = function(){
+      ent:otherNameCache
+    }
+    otherName = function(id){
+      ent:otherNameCache{id}
+    }
     coreRID = "byu.hr.core"
     wranglerRID = "io.picolabs.wrangler"
     render = function(list,type,canDelete=true,canAccept=false){
@@ -123,6 +130,31 @@ ruleset byu.hr.relate {
 /*
  * Notable events
  */
+  rule initCache {
+    select when byu_hr_relate cache_flush
+    fired {
+      ent:otherNameCache := {}
+    }
+  }
+  rule cacheOtherName {
+    select when byu_hr_relate cache_flush
+    foreach subs:established() setting(rel)
+    pre {
+      otherDisplayName = function(eci){
+        oRIDs = wrangler:picoQuery(eci,wranglerRID,"installedRIDs")
+        isParticipant = oRIDs >< coreRID
+        isParticipant => wrangler:picoQuery(eci,coreRID,"displayName")
+                       | wrangler:picoQuery(eci,wranglerRID,"name")
+      }
+      eci = rel{"Tx"}
+      thisPico = ctx:channels.any(function(c){c{"id"}==eci})
+      name = thisPico => "you" | otherDisplayName(eci)
+    }
+    if rel{"Rx_role"} != "participant" then noop()
+    fired {
+      ent:otherNameCache{rel{"Id"}} := name
+    }
+  }
   rule theyDenyMyProposal {
     select when wrangler outbound_subscription_cancelled
     fired {
