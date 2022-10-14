@@ -21,6 +21,13 @@ ruleset html.byu {
   <head>
     <title>#{title}</title>
     <meta charset="UTF-8">
+<!-- OneTrust Cookies Consent Notice start for byu.edu -->
+<script type="text/javascript" src="https://cdn.cookielaw.org/consent/6985a5b2-0d75-4cac-8d42-8564ff47121f/OtAutoBlock.js" ></script>
+<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="6985a5b2-0d75-4cac-8d42-8564ff47121f" ></script>
+<script type="text/javascript">
+function OptanonWrapper() { }
+</script>
+<!-- OneTrust Cookies Consent Notice end for byu.edu -->
 #{scripts.defaultsTo("")}
 <style type="text/css">
 body {
@@ -84,7 +91,11 @@ body {
 >>
     }
     footer = function() {
-      <<  </body>
+      <<
+<a href="https://privacy.byu.edu/" target="_blank">Privacy Notice</a>
+ | 
+<a href="https://infosec.byu.edu/cookie-prefs" target="_blank">Cookie Preferences</a>
+  </body>
 </html>
 >>
     }
