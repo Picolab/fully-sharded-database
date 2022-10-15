@@ -14,8 +14,10 @@ ruleset html.byu {
       logoutURL = logout_path => meta:host+logout_path | logout_url+"?old"
       home_path = the_cookies.get("homepath")
       homeURL = home_path => meta:host+home_path | null
-      displayLink = homeURL => <<<a href="#{homeURL}">#{display_name}</a> >>
+      displayLink = homeURL => <<<a href="#{homeURL}">#{display_name}</a\>>>
                              | null
+      CMBN = "Calling Me By Name"
+      displayCMBN = homeURL => <<<a href="#{homeURL}">#{CMBN}</a\>>> | CMBN
       <<<!DOCTYPE HTML>
 <html>
   <head>
@@ -49,7 +51,7 @@ body {
 #byu_bar img.user-circle {
   float:right;
 }
-#byu_bar .title {
+#byu_bar .cmbn {
   color: white;
   vertical-align: middle;
   font-size: 24px;
@@ -61,7 +63,7 @@ body {
   vertical-align: middle;
   margin: 23px 20px 0 0;
 }
-#byu_bar .logout a {
+#byu_bar a {
   color: inherit;
   text-decoration: none;
 }
@@ -71,16 +73,12 @@ body {
   vertical-align: middle;
   margin: 23px 0 0 0;
 }
-#byu_bar .username a {
-  color: inherit;
-  text-decoration: none;
-}
 </style>
   </head>
   <body>#{netid
   => <<<div id="byu_bar">
 <img class="logo" src="#{byu_logo_svg}">
-<span class="title">Calling Me By Name</span>
+<span class="cmbn">#{displayCMBN}</span>
 <span class="logout"><a href="#{logoutURL}">Sign Out</a></span>
 <img class="user-circle" src="#{user_circle_svg}">
 <span class="username">#{displayLink || display_name || netid}</span>
@@ -92,9 +90,11 @@ body {
     }
     footer = function() {
       <<
+<div>
 <a href="https://privacy.byu.edu/" target="_blank">Privacy Notice</a>
  | 
 <a href="https://infosec.byu.edu/cookie-prefs" target="_blank">Cookie Preferences</a>
+</div>
   </body>
 </html>
 >>
