@@ -12,7 +12,7 @@ todo: offer it to them by finding their SDK repo and issuing a pull request
 
 `io.picolabs.pds` is a very general purpose ruleset, and ought to be incorporated into the pico-engine repository.
 
-todo: make it so
+todo: make it so (pico engine issue #[596](https://github.com/Picolab/pico-engine/issues/596))
 
 `html` is even more general purpose, and we need to figure out where it goes. This was borrowed (copied) from another repo and augmented with a `cookies` function.
 Then we created `html.byu` which has standard headers and footers for BYU applications, and `html` is no longer used in this repo.
