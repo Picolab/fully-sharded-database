@@ -116,4 +116,6 @@ The above discussion describes the "going viral" part of the bootstrap.
 To get things started, a pico engine administrator manually installed
 the manage apps and relate rulesets in their own participant pico.
 
+This person then logged in and began proposing relationships
+with other participants.
 
