@@ -4,8 +4,7 @@ ruleset byu.hr.login {
     use module id.trinsic.sdk alias trinsic
       with apiKey = meta:rulesetConfig{"api_key"} // a String from Trinsic
     use module byu.hr.oit alias main
-    shares verificationResponse, getVerification,
-      listURL
+    shares verificationResponse, getVerification, audit, listURL
   }
   global {
     domainRoot = function(){
@@ -35,6 +34,9 @@ ruleset byu.hr.login {
           c.get("name")==person_id
         }).head().get("eci")
     }
+    audit = function(){
+      ent:audit
+    }
   }
   rule doxReferer {
     select when byu_hr_login needed
@@ -54,10 +56,11 @@ ruleset byu.hr.login {
       setting(id1,id2)
     pre {
       // todo verify id1
+      attrs = event:attrs.put({"netid":id2})
     }
     fired {
       ent:audit := ent:audit.defaultsTo([]).append(event:attrs)
-      raise byu_hr_login event "needed" attributes {"netid":id2}
+      raise byu_hr_login event "needed" attributes attrs
     }
   }
   rule setCookie {
