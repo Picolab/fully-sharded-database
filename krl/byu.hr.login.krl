@@ -51,7 +51,7 @@ ruleset byu.hr.login {
   }
   rule alternateFlow {
     select when byu_hr_login verified
-      id1 re#^\d{9}$#
+      id1 re#^(\d{9})$#
       id2 re#(..+)#
       setting(id1,id2)
     pre {
@@ -63,6 +63,12 @@ ruleset byu.hr.login {
     fired {
       ent:audit := ent:audit.defaultsTo([]).append(event:attrs)
       raise byu_hr_login event "needed" attributes attrs
+    }
+  }
+  rule clearAudit {
+    select when byu_hr_login audit_used
+    fired {
+      clear ent:audit
     }
   }
   rule setCookie {
