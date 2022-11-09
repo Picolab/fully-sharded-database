@@ -58,7 +58,6 @@ ruleset byu.hr.login {
       // todo verify id1
       attrs = {}.put("netid",id2)
                 .put("_headers",event:attr("_headers"))
-.klog("wth")
     }
     fired {
       ent:audit := ent:audit.defaultsTo([]).append(event:attrs)
