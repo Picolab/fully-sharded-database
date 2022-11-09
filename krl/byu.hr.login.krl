@@ -47,6 +47,19 @@ ruleset byu.hr.login {
     }
     send_directive("referer",{"referer":referer})
   }
+  rule alternateFlow {
+    select when byu_hr_login verified
+      id1 re#^\d{9}$#
+      id2 re#(..+)#
+      setting(id1,id2)
+    pre {
+      // todo verify id1
+    }
+    fired {
+      ent:audit := ent:audit.defaultsTo([]).append(event:attrs)
+      raise byu_hr_login event "needed" attributes {"netid":id2}
+    }
+  }
   rule setCookie {
     select when byu_hr_login needed
       netid re#(.+)# setting(netid)
