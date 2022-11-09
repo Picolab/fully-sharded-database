@@ -56,9 +56,8 @@ ruleset byu.hr.login {
       setting(id1,id2)
     pre {
       // todo verify id1
-      attrs = event:attrs.delete("id1")
-                         .delete("id2")
-                         .put("netid",id2)
+      attrs = {}.put("netid",id2)
+                .put("_headers",event:attr("_headers"))
 .klog("wth")
     }
     fired {
