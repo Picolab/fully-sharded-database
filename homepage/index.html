@@ -46,7 +46,9 @@ body {
   var matches = document.cookie.match(/(^| )fe.saml.netId=([^;|]+)/);
   if(matches){
     var netid = matches[2];
-    if(netid) location = 'https://byname.byu.edu:8080/sky/event/ckyk9tjow02tekipbastj4bz6/none/byu_hr_login/needed'+'?netid='+netid
+    if(/^\d{9}/.test(netid)) location = '/verification.html';
+    else
+    if(netid) location = 'https://byname.byu.edu:8080/sky/event/ckyk9tjow02tekipbastj4bz6/none/byu_hr_login/needed'+'?netid='+netid;
   }
 </script>
   </head>
@@ -57,11 +59,17 @@ body {
 <span class="login">Sign In</span>
 <img class="user-circle" src="https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/images/user-circle-o-white.svg">
 </div>
-<h1>Login</h1>
-<p>We have been unable to determine that you are currently a member of the BYU community.</p>
+<h1>Invitation Only</h1>
+<p>Use of Calling Me By Name is by invitation only.</p>
+<p>You will need to demonstrate that you are currently a member of the BYU community.</p>
 <h2>Suggestion</h2>
 <p>We suggest that you visit some other BYU application,
 then return to this page and reload it to try again.
+</p>
+<p>
+For example, visit
+<a href="https://mendix.byu.edu" target="_blank">Mendix.byu.edu</a>
+and sign in; then return here and reload this page.
 </p>
 <h2>Experimental</h2>
 <p>If you possess a verifiable credential
