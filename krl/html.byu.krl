@@ -23,13 +23,11 @@ ruleset html.byu {
   <head>
     <title>#{title}</title>
     <meta charset="UTF-8">
-<!-- OneTrust Cookies Consent Notice start for byu.edu -->
-<script type="text/javascript" src="https://cdn.cookielaw.org/consent/6985a5b2-0d75-4cac-8d42-8564ff47121f/OtAutoBlock.js" ></script>
-<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="6985a5b2-0d75-4cac-8d42-8564ff47121f" ></script>
-<script type="text/javascript">
-function OptanonWrapper() { }
-</script>
-<!-- OneTrust Cookies Consent Notice end for byu.edu -->
+<!-- MeruData Cookie Consent Banner and Cookie AutoBlocking -->
+<script src="https://ccm.merudata.app/assets/c5d6912a-d8fc-4138-8d1d-6daeb3056f57/ccmconfig.js"></script>
+<script src="https://ccm.merudata.app/assets/c5d6912a-d8fc-4138-8d1d-6daeb3056f57/ccm.min.js"></script>
+<link rel="stylesheet" href="https://ccm.merudata.app/assets/c5d6912a-d8fc-4138-8d1d-6daeb3056f57/ccm.min.css" media="print" onload="this.media='all'">
+<!-- End MeruData Cookie Consent Banner and Cookie AutoBlocking -->
 #{scripts.defaultsTo("")}
 <style type="text/css">
 body {
