@@ -157,8 +157,10 @@ input.wide90 {
     select when wrangler ruleset_installed where event:attr("tx") == meta:txnId
     foreach event:attr("rids") setting(rid)
     pre {
+      omit_main = function(s){s != "main_url"}
       rsMeta = wrangler:rulesetMeta(rid)
-      home = rsMeta.get("shares").head() + ".html"
+      shared = rsMeta.get("shares").filter(omit_main)
+      home = shared.head() + ".html"
       rsname = rsMeta.get("name")
       spec = {"name":home,"status":"installed","rid":rid,"rsname":rsname}
       new_apps = app_rids(event:attr("_headers"))
