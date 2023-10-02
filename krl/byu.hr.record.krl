@@ -7,8 +7,8 @@ ruleset byu.hr.record {
     shares audio, test_audio, export_audio
   }
   global {
-    export_audio = function(_headers){
-      netid = html:cookies(_headers).get("netid")
+    export_audio = function(){
+      netid = wrangler:name()
       netid + chr(9) + pds:getData("person","audio")
     }
     test_audio = function(_headers){
