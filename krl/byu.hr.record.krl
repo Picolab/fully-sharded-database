@@ -4,9 +4,13 @@ ruleset byu.hr.record {
     use module html.byu alias html
     use module io.picolabs.pds alias pds
     use module io.picolabs.wrangler alias wrangler
-    shares audio, test_audio
+    shares audio, test_audio, export_audio
   }
   global {
+    export_audio = function(_headers){
+      netid = html:cookies(_headers).get("netid")
+      netid + chr(9) + pds:getData("person","audio")
+    }
     test_audio = function(_headers){
       html:header("test audio","",null,null,_headers)
       + <<<audio controls src="#{pds:getData("person","audio")}"></audio>
@@ -93,7 +97,7 @@ Buttons below will return to the previous page.
 </li>
 </ol>
 <h2>Export</h2>
-#{ saved_audio => <<<form method="GET" action="#{meta:host}/sky/cloud/#{meta:eci}/#{meta:rid}/export_audio">
+#{ saved_audio => <<<form method="GET" action="#{meta:host}/sky/cloud/#{meta:eci}/#{meta:rid}/export_audio.txt">
 <button type="submit">Export audio</button>
 </form>
 >> | ""}<h2>Privacy Notice</h2>
