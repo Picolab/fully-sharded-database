@@ -92,7 +92,11 @@ Buttons below will return to the previous page.
 </form>
 </li>
 </ol>
-<h2>Privacy Notice</h2>
+<h2>Export</h2>
+#{ saved_audio => <<<form method="GET" action="#{meta:host}/sky/cloud/#{meta:eci}/#{meta:rid}/export_audio">
+<button type="submit">Export audio</button>
+</form>
+>> | ""}<h2>Privacy Notice</h2>
 <p>
 By saving a recording of your voice saying your name,
 you consent to its use by other members of the BYU community
