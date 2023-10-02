@@ -145,6 +145,14 @@ This recording will not be used for any other purpose.
         {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
       )
     }
+    fired {
+      raise byu_hr_record event "channel_created"
+    }
+  }
+  rule keepChannelsClean {
+    select when byu_hr_record channel_created
+    foreach wrangler:channels(["record_audio"]).reverse().tail() setting(chan)
+    wrangler:deleteChannel(chan.get("id"))
   }
   rule acceptNewAudio {
     select when byu_hr_core new_audio
